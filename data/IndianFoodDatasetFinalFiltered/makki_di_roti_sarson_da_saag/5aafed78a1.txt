@@ -1,0 +1,5 @@
+makki_di_roti_sarson_da_saag 0.376172 0.496528 0.449219 0.987500
+makki_di_roti_sarson_da_saag 0.577344 0.498611 0.842187 0.994444
+makki_di_roti_sarson_da_saag 0.259766 0.379167 0.217969 0.547222
+makki_di_roti_sarson_da_saag 0.788672 0.608333 0.297656 0.688889
+makki_di_roti_sarson_da_saag 0.451562 0.472917 0.207813 0.545833
