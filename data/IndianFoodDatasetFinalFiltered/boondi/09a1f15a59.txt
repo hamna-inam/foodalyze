@@ -1,3 +1,3 @@
-boondi 0.509115 0.539062 0.898438 0.539062
-boondi 0.153646 0.253906 0.307292 0.207031
-boondi 0.498698 0.555664 0.997396 0.888672
+version https://git-lfs.github.com/spec/v1
+oid sha256:39d4bdc554f2bac506ebd7890eabf1edcd0f27abf48ed84718dfbd34e5dc6dc5
+size 129

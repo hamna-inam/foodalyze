@@ -1,1 +1,3 @@
-chikki 0.501672 0.494083 0.802676 0.976331
+version https://git-lfs.github.com/spec/v1
+oid sha256:e004e0a303c216554c9d8d0172dacbb20a78e495d4cc46c7a23f2858cb0c8053
+size 43

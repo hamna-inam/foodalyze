@@ -1,2 +1,3 @@
-kachori 0.818342 0.075294 0.359788 0.150588
-kachori 0.500882 0.541765 0.945326 0.728235
+version https://git-lfs.github.com/spec/v1
+oid sha256:657048b6acec9ea9bd3c41ccb16fc1eeb7ecc0cb2dbb7ba27fbcd525d85dba56
+size 88

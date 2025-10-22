@@ -1,1 +1,3 @@
-kofta 0.499333 0.491429 0.996000 0.982857
+version https://git-lfs.github.com/spec/v1
+oid sha256:e2045fd847560ed0b50eba8f750b22e868ef95e3f3a72219e2c3cc5970f11e5d
+size 42

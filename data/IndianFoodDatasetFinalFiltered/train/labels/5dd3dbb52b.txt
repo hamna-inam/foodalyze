@@ -1,1 +1,3 @@
-rabri 0.647541 0.207273 0.377049 0.196364
+version https://git-lfs.github.com/spec/v1
+oid sha256:4fba6e928162a917801efd66868b005e28870f7e948d3212a4c8f5c12efcfecc
+size 42

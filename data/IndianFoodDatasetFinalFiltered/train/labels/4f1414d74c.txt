@@ -1,2 +1,3 @@
-chapati 0.804211 0.147004 0.389474 0.290262
-chapati 0.207895 0.585206 0.415789 0.754682
+version https://git-lfs.github.com/spec/v1
+oid sha256:55eca2be99b03bbbf66a7253e0633b477e629e87d0a3f4388f9fd001aa351e72
+size 88

@@ -1,1 +1,3 @@
-misi_roti 0.471042 0.520619 0.633205 0.824742
+version https://git-lfs.github.com/spec/v1
+oid sha256:08d469f90bce68c5f62bc1ebb5feb52e301179bff5e9217f00eded5184987aec
+size 46

@@ -1,2 +1,3 @@
-ras_malai 0.231000 0.774333 0.462000 0.450000
-ras_malai 0.676500 0.644667 0.645000 0.517333
+version https://git-lfs.github.com/spec/v1
+oid sha256:b54116f857d7ffee41af1bdbbfaa12cc63020e293e01f5039011bb55f5be2c98
+size 92

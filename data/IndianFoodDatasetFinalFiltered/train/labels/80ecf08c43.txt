@@ -1,1 +1,3 @@
-navrattan_korma 0.523636 0.396175 0.690909 0.595628
+version https://git-lfs.github.com/spec/v1
+oid sha256:8ede634490e610a6cc6bdaa0ee9a9d4ef64a8c8b79d3bf77899c7b0e30d29722
+size 52

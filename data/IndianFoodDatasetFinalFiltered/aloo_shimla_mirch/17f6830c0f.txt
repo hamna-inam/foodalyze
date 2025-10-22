@@ -1,1 +1,3 @@
-aloo_shimla_mirch 0.891071 0.691667 0.210714 0.305556
+version https://git-lfs.github.com/spec/v1
+oid sha256:1c5cb674ca0fbc39af3747b4066c022d1301eaee01c1f307b076349bfee54a87
+size 54

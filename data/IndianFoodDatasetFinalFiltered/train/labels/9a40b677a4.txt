@@ -1,1 +1,3 @@
-qubani_ka_meetha 0.551562 0.467130 0.609375 0.834259
+version https://git-lfs.github.com/spec/v1
+oid sha256:c3573410df43c88933e175ec0d065544c854c6882c24bc280e923952f1126a86
+size 53

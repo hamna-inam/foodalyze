@@ -1,2 +1,3 @@
-chicken_tikka 0.924444 0.833333 0.142222 0.333333
-chicken_tikka 0.495556 0.506667 0.991111 0.977778
+version https://git-lfs.github.com/spec/v1
+oid sha256:2007f87f0fb8bbc06dc6bd107b88190bd25021304f623cfc6a6d85099e02db91
+size 100

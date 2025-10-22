@@ -1,2 +1,3 @@
-gulab_jamun 0.497895 0.554502 0.995789 0.890995
-gulab_jamun 0.620000 0.710900 0.229474 0.176935
+version https://git-lfs.github.com/spec/v1
+oid sha256:7b4c55b2da4f7269624e4318680e2d4d5ee9e3e8071aa04f91c4f57e6beb25f5
+size 96

@@ -1,2 +1,3 @@
-dal_makhani 0.527473 0.568841 0.868132 0.449275
-dal_makhani 0.582418 0.128623 0.637363 0.163043
+version https://git-lfs.github.com/spec/v1
+oid sha256:27bb784df0c5614746ae97252885321f449b37d93cf82e9eae4d2b5a63f4f770
+size 96

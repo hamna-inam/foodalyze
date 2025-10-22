@@ -1,2 +1,3 @@
-gajar_ka_halwa 0.581818 0.486339 0.807273 0.874317
-gajar_ka_halwa 0.194545 0.267760 0.389091 0.535519
+version https://git-lfs.github.com/spec/v1
+oid sha256:c92ed19296117d18b352a490800250d29c1109033d7d0fb1029ff5995cda7dd3
+size 102

@@ -1,2 +1,3 @@
-chak_hao_kheer 0.490234 0.530457 0.457031 0.868020
-chak_hao_kheer 0.132812 0.312183 0.265625 0.624365
+version https://git-lfs.github.com/spec/v1
+oid sha256:f84ac8d74d1ab27a34871e4c7c140d8365863dbddaa85813724dadf526021b24
+size 102

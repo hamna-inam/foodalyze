@@ -1,1 +1,3 @@
-chhena_kheeri 0.493333 0.522222 0.968889 0.777778
+version https://git-lfs.github.com/spec/v1
+oid sha256:11ffabf7ea616c2a14537512e656d4fad28c7dc6e601366bd007259172d38074
+size 50

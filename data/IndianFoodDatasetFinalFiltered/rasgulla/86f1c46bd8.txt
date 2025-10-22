@@ -1,2 +1,3 @@
-rasgulla 0.518182 0.688525 0.810909 0.568306
-rasgulla 0.190909 0.327869 0.294545 0.655738
+version https://git-lfs.github.com/spec/v1
+oid sha256:cd5d88e3bfb34418ff0219ac960f4540bba55b7660f00e1d2088952633f0a7cf
+size 90

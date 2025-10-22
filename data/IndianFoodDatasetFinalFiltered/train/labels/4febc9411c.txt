@@ -1,1 +1,3 @@
-lassi 0.352692 0.533662 0.399231 0.691297
+version https://git-lfs.github.com/spec/v1
+oid sha256:e3fca890369f40fd8cefd89e387ba9eeda269aef893dc6689e6f331ff85dc5c9
+size 42

@@ -1,1 +1,3 @@
-cham_cham 0.375556 0.500000 0.564444 0.360000
+version https://git-lfs.github.com/spec/v1
+oid sha256:8395e30eb5fedb32e2f978a0f2d699ed07728e3e739ac567aedd75a23e2206db
+size 46

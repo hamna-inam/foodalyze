@@ -1,1 +1,3 @@
-paneer_butter_masala 0.506667 0.668889 0.506667 0.324444
+version https://git-lfs.github.com/spec/v1
+oid sha256:0ce03b5392c829d54737346635201a9d86957c471989c659f796b1f606d4db4c
+size 57

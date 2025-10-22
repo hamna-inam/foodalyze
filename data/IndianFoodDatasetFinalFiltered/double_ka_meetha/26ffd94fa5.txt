@@ -1,2 +1,3 @@
-double_ka_meetha 0.725000 0.132632 0.524194 0.265263
-double_ka_meetha 0.499194 0.576842 0.998387 0.684211
+version https://git-lfs.github.com/spec/v1
+oid sha256:00963b40c3596ff77099f92709dcd848c25c123314faa377105b4646a353c184
+size 106

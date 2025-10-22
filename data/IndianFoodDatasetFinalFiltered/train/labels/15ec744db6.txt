@@ -1,1 +1,3 @@
-chicken_tikka_masala 0.519439 0.489375 0.961121 0.973750
+version https://git-lfs.github.com/spec/v1
+oid sha256:09072659b9f03971b56f3c161136a4d01982f4053e312c25ad73b7e3e6d40009
+size 57

@@ -1,1 +1,3 @@
-sohan_halwa 0.500000 0.492347 0.992218 0.984694
+version https://git-lfs.github.com/spec/v1
+oid sha256:60e471b991ffb468d53959bef9882a895fc4b95a46dd54cfbe882bb8cdd00ad8
+size 48

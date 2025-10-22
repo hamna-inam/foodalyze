@@ -1,2 +1,3 @@
-makki_di_roti_sarson_da_saag 0.851429 0.205910 0.291429 0.333651
-makki_di_roti_sarson_da_saag 0.560714 0.373689 0.530000 0.346997
+version https://git-lfs.github.com/spec/v1
+oid sha256:4c894434ba23c6523c3a3b4ab20715b9e6e135e60511070279d1513cb3e8d78c
+size 130

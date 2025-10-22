@@ -1,3 +1,3 @@
-dharwad_pedha 0.622656 0.421528 0.484375 0.837500
-dharwad_pedha 0.540625 0.557639 0.159375 0.295833
-dharwad_pedha 0.506641 0.495833 0.682031 0.983333
+version https://git-lfs.github.com/spec/v1
+oid sha256:ed0acd0626763eca8b67a7071cd21f577f42a4c2e83b0d7dce680d2a5495ac5a
+size 150

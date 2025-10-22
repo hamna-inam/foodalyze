@@ -1,1 +1,3 @@
-malapua 0.497917 0.462500 0.991667 0.802778
+version https://git-lfs.github.com/spec/v1
+oid sha256:09e05c00cfc4f04670425d0077fd31f27165f11e49a7da811e3268969c1433cb
+size 44

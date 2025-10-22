@@ -1,1 +1,3 @@
-mysore_pak 0.524858 0.476786 0.913352 0.953571
+version https://git-lfs.github.com/spec/v1
+oid sha256:f18fd67f8381d714ad3bf8d3d2ef38305764a6be2527f7c7b73aeee99dad16ac
+size 47

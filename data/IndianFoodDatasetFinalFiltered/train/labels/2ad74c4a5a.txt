@@ -1,2 +1,3 @@
-sheer_korma 0.497268 0.483636 0.994536 0.676364
-sheer_korma 0.497268 0.483636 0.994536 0.683636
+version https://git-lfs.github.com/spec/v1
+oid sha256:1f542a0163e2f75bd68c1c1fab5efae127bdde02174657d252b527c44a461495
+size 96

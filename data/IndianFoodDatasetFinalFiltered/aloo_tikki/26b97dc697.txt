@@ -1,3 +1,3 @@
-aloo_tikki 0.330909 0.326364 0.432727 0.401818
-aloo_tikki 0.597273 0.778182 0.390909 0.418182
-aloo_tikki 0.785455 0.571818 0.425455 0.434545
+version https://git-lfs.github.com/spec/v1
+oid sha256:16c97c42aa062bd7393bace865daf67a65e7abb08e0d7453abd3621937de3cac
+size 141

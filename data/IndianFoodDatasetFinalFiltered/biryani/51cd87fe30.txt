@@ -1,2 +1,3 @@
-biryani 0.499396 0.490000 0.998792 0.940000
-biryani 0.164855 0.184375 0.109903 0.198750
+version https://git-lfs.github.com/spec/v1
+oid sha256:d7825b899733b24a1a0f45dc7d390e8ca329149938bb3aba11cfff8e67292bb7
+size 88

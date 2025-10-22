@@ -1,2 +1,3 @@
-pootharekulu 0.416538 0.240484 0.360769 0.379469
-pootharekulu 0.561538 0.533449 0.487692 0.414072
+version https://git-lfs.github.com/spec/v1
+oid sha256:a9908a301295593780bb2fd87984e90763deb4f702aca9a870b15fffa6f3df52
+size 98

@@ -1,2 +1,3 @@
-unni_appam 0.498069 0.502577 0.316602 0.345361
-unni_appam 0.833977 0.500000 0.308880 0.340206
+version https://git-lfs.github.com/spec/v1
+oid sha256:a94fe207600cd54393094f29cd239da06101c65cebe7b23998e730f354bdf54f
+size 94

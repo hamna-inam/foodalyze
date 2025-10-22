@@ -1,1 +1,3 @@
-dum_aloo 0.497283 0.516423 0.994565 0.624088
+version https://git-lfs.github.com/spec/v1
+oid sha256:1b0c6945326a0ec4cb827d4e9eeca9bd000ad494fe50f28859401e3f1400bf71
+size 45

@@ -1,2 +1,3 @@
-kadai_paneer 0.524265 0.547549 0.945588 0.691176
-kadai_paneer 0.309559 0.111275 0.619118 0.222549
+version https://git-lfs.github.com/spec/v1
+oid sha256:7faaf407622ba0e55d6a449e06d118d87ac32ced6c385266472c5630f0dbb924
+size 98

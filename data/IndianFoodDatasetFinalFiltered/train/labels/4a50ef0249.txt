@@ -1,2 +1,3 @@
-poha 0.484444 0.522222 0.968889 0.946667
-poha 0.755556 0.593333 0.133333 0.368889
+version https://git-lfs.github.com/spec/v1
+oid sha256:7ec1738eab1eefd428ea73fb6a7a8e9a612ccab9596741543df0aeb551c55338
+size 82

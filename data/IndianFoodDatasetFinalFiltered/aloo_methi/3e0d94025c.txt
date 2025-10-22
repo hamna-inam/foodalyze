@@ -1,2 +1,3 @@
-aloo_methi 0.108571 0.153310 0.217143 0.285714
-aloo_methi 0.511429 0.545296 0.965714 0.700348
+version https://git-lfs.github.com/spec/v1
+oid sha256:26eda2dbeff9577d74e0f04d98dea9013d6e5b9bf295db4c956a69b15112b65d
+size 94

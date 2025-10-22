@@ -1,1 +1,3 @@
-daal_puri 0.809421 0.207523 0.379430 0.415045
+version https://git-lfs.github.com/spec/v1
+oid sha256:4e78208490ae02c0784878d78a0bb9c9fe29417ce2e10077d2629d5e6120431a
+size 46

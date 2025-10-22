@@ -1,1 +1,3 @@
-kalakand 0.248980 0.492718 0.497959 0.985437
+version https://git-lfs.github.com/spec/v1
+oid sha256:50c309ac3b37bbf47d67781de77fedde6b36b5f2df246860ebca2312300f4c64
+size 45

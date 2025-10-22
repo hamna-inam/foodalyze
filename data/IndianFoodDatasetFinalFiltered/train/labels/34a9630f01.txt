@@ -1,1 +1,3 @@
-aloo_matar 0.407917 0.492500 0.810833 0.810000
+version https://git-lfs.github.com/spec/v1
+oid sha256:9315fc5a5afcbeb82d6be228c853fe479959b2f66867dfdb3eae92f800d9a4be
+size 47

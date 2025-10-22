@@ -1,1 +1,3 @@
-misti_doi 0.375000 0.478426 0.750000 0.903553
+version https://git-lfs.github.com/spec/v1
+oid sha256:dec2cc2bdf4bef9cdda71e0334dab42c7304aaac94c57d661e82b5e9af420c8b
+size 46

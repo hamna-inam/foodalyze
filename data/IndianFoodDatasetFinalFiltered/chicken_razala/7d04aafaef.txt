@@ -1,3 +1,3 @@
-chicken_razala 0.179479 0.314063 0.358958 0.366875
-chicken_razala 0.197586 0.084062 0.245235 0.168125
-chicken_razala 0.708704 0.527813 0.582592 0.504375
+version https://git-lfs.github.com/spec/v1
+oid sha256:8edcbfad7fb83009542294c9bd0eef1c801057299feb2f217a22da8d12f19843
+size 153

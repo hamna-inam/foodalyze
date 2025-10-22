@@ -1,2 +1,3 @@
-bhatura 0.631868 0.525362 0.714286 0.463768
-bhatura 0.175824 0.773551 0.351648 0.445652
+version https://git-lfs.github.com/spec/v1
+oid sha256:62235041ec062c4b848f0dc7d98fde5d9c0d29fc0415841b54120c1a8dccd1bb
+size 88

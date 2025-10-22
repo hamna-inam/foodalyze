@@ -1,1 +1,3 @@
-aloo_tikki 0.195556 0.224444 0.328889 0.315556
+version https://git-lfs.github.com/spec/v1
+oid sha256:3a9c7287344edf608c8ea3830f7c503ff3bb1d3e1ba152d0ce05d418a93cf4ac
+size 47

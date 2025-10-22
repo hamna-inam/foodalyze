@@ -1,1 +1,3 @@
-dal_tadka 0.581667 0.491071 0.823333 0.982143
+version https://git-lfs.github.com/spec/v1
+oid sha256:0261572184fb5c84e5cdaaa0ee7294615d9d89d5cee3a5f6ebd2b33eaedc7be7
+size 46

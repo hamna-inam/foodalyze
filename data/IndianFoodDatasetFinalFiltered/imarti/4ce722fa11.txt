@@ -1,1 +1,3 @@
-imarti 0.196000 0.641667 0.392000 0.450000
+version https://git-lfs.github.com/spec/v1
+oid sha256:ddb7adec837af2ca1f2bb1f7a2305a07b21179de7c119225ee880a9cca08eef4
+size 43

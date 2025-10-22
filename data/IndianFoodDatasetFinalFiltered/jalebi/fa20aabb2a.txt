@@ -1,2 +1,3 @@
-jalebi 0.896250 0.385455 0.205000 0.454545
-jalebi 0.657500 0.228182 0.362500 0.409091
+version https://git-lfs.github.com/spec/v1
+oid sha256:2ca87e3cce2a8e2715a93fc129776bdcf87c97bea984a8d04966cdb30357b1a6
+size 86

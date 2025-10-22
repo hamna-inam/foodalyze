@@ -1,2 +1,3 @@
-chana_masala 0.500000 0.507273 0.989071 0.694545
-chana_masala 0.693989 0.149091 0.524590 0.298182
+version https://git-lfs.github.com/spec/v1
+oid sha256:220ea0c0307b063a0314cd84c355b22cedd109dddbbbbe538e02c0a428c2baf3
+size 98

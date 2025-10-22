@@ -1,1 +1,3 @@
-karela_bharta 0.647059 0.382199 0.691176 0.345550
+version https://git-lfs.github.com/spec/v1
+oid sha256:b40c11bdf6c8418dd5115b2baac0d68f05a2ef8788225ef7466d37bfb4d3814f
+size 50

@@ -1,3 +1,3 @@
-sheer_korma 0.361940 0.188247 0.347761 0.229084
-sheer_korma 0.802239 0.149900 0.392537 0.299801
-sheer_korma 0.598507 0.546315 0.791045 0.540837
+version https://git-lfs.github.com/spec/v1
+oid sha256:df11904ad0eef4a3d6ad2d2f67810b94536975799bb2ca5ab59bd22bff0d22ad
+size 144

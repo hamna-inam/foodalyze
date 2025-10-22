@@ -1,2 +1,3 @@
-bhindi_masala 0.610840 0.520147 0.770508 0.841026
-bhindi_masala 0.500977 0.498901 0.992188 0.994872
+version https://git-lfs.github.com/spec/v1
+oid sha256:d54c04765859ca88e6d56c508ec59cc515cef9c9946bfdedbfbc97890591b79e
+size 100

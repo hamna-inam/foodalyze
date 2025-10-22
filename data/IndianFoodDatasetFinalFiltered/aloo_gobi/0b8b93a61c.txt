@@ -1,2 +1,3 @@
-aloo_gobi 0.492453 0.492105 0.977358 0.984211
-aloo_gobi 0.211321 0.592105 0.128302 0.184211
+version https://git-lfs.github.com/spec/v1
+oid sha256:aae9a37d4515b8c599f7876ee54e7099e7858b9ed40f90a32ecd2117fe023807
+size 92

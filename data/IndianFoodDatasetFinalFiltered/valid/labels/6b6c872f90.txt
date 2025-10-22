@@ -1,1 +1,3 @@
-butter_chicken 0.707602 0.542373 0.502924 0.345763
+version https://git-lfs.github.com/spec/v1
+oid sha256:52f05c8e50d856921b22b04d67fed7e72b3d28bd83df05cdccf5c7d7ed4793fb
+size 51

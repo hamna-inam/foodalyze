@@ -1,1 +1,3 @@
-palak_paneer 0.558333 0.479167 0.870000 0.958333
+version https://git-lfs.github.com/spec/v1
+oid sha256:aac8e33f566ae892a9462d0e7c1dc604c94468de7ac7239f34e4a04809ff9524
+size 49

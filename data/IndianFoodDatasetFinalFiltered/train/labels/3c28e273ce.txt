@@ -1,2 +1,3 @@
-kajjikaya 0.445946 0.515464 0.876448 0.917526
-kajjikaya 0.640927 0.381443 0.324324 0.268041
+version https://git-lfs.github.com/spec/v1
+oid sha256:a516895f78d288c2aa1f9d604145749fbc0fc4ba09b95b67a44275821e7a4d7d
+size 92

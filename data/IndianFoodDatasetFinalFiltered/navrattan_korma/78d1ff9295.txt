@@ -1,4 +1,3 @@
-navrattan_korma 0.461390 0.507732 0.698842 0.902062
-navrattan_korma 0.229730 0.417526 0.088803 0.185567
-navrattan_korma 0.187259 0.041237 0.196911 0.082474
-navrattan_korma 0.496139 0.487113 0.992278 0.974227
+version https://git-lfs.github.com/spec/v1
+oid sha256:45f1f50422d52a3ad48afbe10234c3be13bc7b3232e40d5bc5cc28c8db36b847
+size 208

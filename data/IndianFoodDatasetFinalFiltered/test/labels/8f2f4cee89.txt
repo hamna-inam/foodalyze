@@ -1,1 +1,3 @@
-sohan_papdi 0.573571 0.372500 0.395714 0.550000
+version https://git-lfs.github.com/spec/v1
+oid sha256:03b4a75029cceae54cd40ff35085fa9cf632f5e0e1fb9301e1635c1b957f241a
+size 48
