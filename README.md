@@ -3,8 +3,9 @@ A YOLOv8-powered API for detecting Indian food dishes and estimating their calor
 
 ---
 
-## 🏛️ Architecture
+##  Architecture
 This diagram shows the complete MLOps workflow, from model training to a monitored API endpoint.
+
 
 ```mermaid
 graph TD
