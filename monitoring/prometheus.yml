@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s # How often to check your app for metrics
+
+scrape_configs:
+  - job_name: 'fastapi-app'
+    static_configs:
+      - targets: ['app:8000']
