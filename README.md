@@ -38,7 +38,7 @@ graph TD
 
 ##  Quick Start
 
-Get the API running locally in **two simple steps** 👇
+Get the API running locally in **two simple steps** 
 
 ###  Clone the Repository
 
