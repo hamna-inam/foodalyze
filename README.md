@@ -1,6 +1,3 @@
-
----
-
 ````markdown
 #  Foodalyze
 A **YOLOv8-powered API** for detecting Indian food dishes and estimating their calorie content.
