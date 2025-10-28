@@ -1,8 +1,7 @@
-````markdown
+
 #  Foodalyze
 A **YOLOv8-powered API** for detecting Indian food dishes and estimating their calorie content.
 
----
 
 ##  Architecture
 
@@ -172,7 +171,7 @@ Monitors for **data drift** between training and validation datasets.
 
 ---
 
-## ☁️ Cloud Deployment (Bonus D9)
+## Cloud Deployment (Bonus D9)
 
 The app can be deployed on **AWS** using **S3** and **EC2**.
 
