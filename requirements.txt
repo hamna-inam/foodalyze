@@ -1,7 +1,22 @@
+# --- Core App ---
 fastapi
 uvicorn[standard]
-ultralytics
-pillow
 python-multipart
-starlette-prometheus  
-opencv-python-headless 
+ultralytics
+opencv-python-headless # For cv2, headless is better for servers
+
+# --- Monitoring (D5) ---
+starlette-prometheus
+
+# --- Testing (D4) ---
+pytest
+pytest-cov
+fastapi-client
+
+# --- Linters (D4 & D6) ---
+ruff
+black
+
+# --- Hooks (D6) ---
+pre-commit
+gitleaks
