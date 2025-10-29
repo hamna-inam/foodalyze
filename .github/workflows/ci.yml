@@ -107,7 +107,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull the new image
-        run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
+        run: docker pull ghcr.io/alina1114/foodalyze:${{ github.sha }}
       - name: Run the canary container
         run: |
           docker run \
@@ -115,7 +115,7 @@ jobs:
             --name canary \
             -p 8000:8000 \
             -e CANARY=true \
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ghcr.io/alina1114/foodalyze:${{ github.sha }}
       - name: Wait for canary to be healthy
         run: |
           echo "Waiting for canary API to start..."
