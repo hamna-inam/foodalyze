@@ -61,12 +61,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install pip-audit
-        run: pip install pip-audit
+      - name: Install latest pip-audit
+        run: pip install --upgrade pip-audit
       - name: Scan dependencies for vulnerabilities
         run: |
-          cd $(dirname requirements.txt)
-          pip-audit --progress-spinner off --format columns --fail-on CRITICAL
+          pip-audit --progress-spinner off --format columns
+
 
   # D4c: Build and push Docker image
   build-docker:
