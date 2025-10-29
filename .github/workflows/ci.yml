@@ -1,0 +1,159 @@
+name: CI/CD Pipeline
+
+# D4: Triggers on push to main and any Pull Request
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  # D4a: Linting job
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install linters
+        run: pip install ruff black
+      - name: Run linters
+        run: |
+          ruff .
+          black --check .
+
+  # D4b: Testing job
+  test:
+    runs-on: ubuntu-latest
+    needs: lint # Runs after linting
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests with coverage
+        # We check coverage for 'app.py' (module name 'app')
+        run: pytest --cov=app --cov-fail-under=80
+
+  # D8: Security scan job
+  scan:
+    runs-on: ubuntu-latest
+    needs: test # Runs after testing
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pip-audit
+        run: pip install pip-audit
+      - name: Scan dependencies for vulnerabilities
+        # Fails the build if any Critical CVEs are found
+        run: pip-audit -r requirements.txt --fail-on CRITICAL
+
+  # D4c: Build and push Docker image
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: scan # Runs after scanning
+    permissions:
+      contents: read
+      packages: write # Permission to push to GHCR
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Tags the image with the unique commit SHA
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+  # D4d: Canary deployment job
+  canary-deploy:
+    runs-on: ubuntu-latest
+    needs: build-docker # Runs after the image is built
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull the new image
+        run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
+      - name: Run the canary container
+        run: |
+          docker run \
+            -d \
+            --name canary \
+            -p 8000:8000 \
+            -e CANARY=true \
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+      - name: Wait for canary to be healthy
+        run: |
+          echo "Waiting for canary API to start..."
+          sleep 15 # Give the container 15s to start up
+          # Ping the /health endpoint. -f makes it fail if status is not 200
+          curl -f http://localhost:8000/health
+
+  # D4e: Acceptance testing job
+  acceptance-tests:
+    runs-on: ubuntu-latest
+    needs: canary-deploy # Runs after the canary is deployed
+    steps:
+      - name: Checkout code
+        # We need the code to get the sample_food.jpg
+        uses: actions/checkout@v4
+      - name: Run 5+ acceptance tests
+        run: |
+          echo "Running acceptance tests against http://localhost:8000"
+          
+          # Test 1: Health check
+          echo "Test 1: /health"
+          curl -f http://localhost:8000/health
+          
+          # Test 2: Predict endpoint (golden query 1)
+          echo "Test 2: /predict"
+          curl -f -X 'POST' \
+            'http://localhost:8000/predict' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: multipart/form-data' \
+            -F 'file=@./tests/sample_food.jpg'
+          
+          # Test 3: Predict endpoint (golden query 2 - low confidence)
+          echo "Test 3: /predict?conf=0.1"
+          curl -f -X 'POST' \
+            'http://localhost:8000/predict?conf=0.1' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: multipart/form-data' \
+            -F 'file=@./tests/sample_food.jpg'
+
+          # Test 4: Predict endpoint (golden query 3 - high confidence)
+          echo "Test 4: /predict?conf=0.9"
+          curl -f -X 'POST' \
+            'http://localhost:8000/predict?conf=0.9' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: multipart/form-data' \
+            -F 'file=@./tests/sample_food.jpg'
+
+          # Test 5: /model_info endpoint
+          echo "Test 5: /model_info"
+          curl -f http://localhost:8000/model_info
+          
+          # Test 6: / (root) endpoint
+          echo "Test 6: /"
+          curl -f http://localhost:8000/
+
+          echo "✅ All 6 acceptance tests passed!"

@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # This is your FastAPI app from Member 1
+  app:
+    build: .
+    container_name: foodalyze_app
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mounts your code for live-reloading (optional, good for dev)
+      - ./src:/app/src
+      - ./models:/app/models
+      - ./class_mapping.json:/app/class_mapping.json # Mount the class mapping
+    # This ensures prometheus/grafana start *after* the app
+    depends_on:
+      - mlflow
+
+  # D5: MLflow
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.13.0
+    container_name: mlflow_server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlflow-data:/mlruns # Persists MLflow data
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:////mlruns/mlflow.db --default-artifact-root /mlruns
+
+  # D5: Prometheus
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      # Mounts your config file into the container
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: --config.file=/etc/prometheus/prometheus.yml
+    depends_on:
+      - app # Prometheus needs the app to be running to scrape it
+
+  # D5: Grafana
+  grafana:
+    image: grafana/grafana-oss:11.0.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus # Grafana needs Prometheus to be running
+    volumes:
+      # Mounts your datasource config, so Prometheus is auto-added
+      - ./monitoring/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
