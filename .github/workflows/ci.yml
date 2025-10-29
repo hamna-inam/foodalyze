@@ -21,7 +21,7 @@ jobs:
         run: pip install ruff black
       - name: Run linters
         run: |
-          ruff .
+          ruff check .
           black --check .
 
   # D4b: Testing job
