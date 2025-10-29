@@ -93,7 +93,7 @@ jobs:
           context: .
           push: true
           # Tags the image with the unique commit SHA (lowercase repo name is required)
-          tags: ghcr.io/${{ github.repository,, }}:${{ github.sha }}
+          tags: ghcr.io/alina1114/foodalyze:${{ github.sha }}
 
   # D4d: Canary deployment job
   canary-deploy:
