@@ -19,4 +19,5 @@ black
 
 # --- Hooks (D6) ---
 pre-commit
-gitleaks
+#gitleaks
+
