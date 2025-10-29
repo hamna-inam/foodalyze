@@ -19,7 +19,7 @@ def test_health_check():
     assert response.status_code == 200
     json_data = response.json()
     assert json_data["status"] == "OK"
-    assert json_data["model_loaded"] == True
+    assert json_data["model_loaded"] 
 
 def test_root_endpoint():
     """Tests the main / endpoint."""
@@ -77,4 +77,5 @@ def test_predict_no_file():
     """Tests sending a request to /predict without a file."""
     response = client.post("/predict")
     # 422 Unprocessable Entity is the correct FastAPI error
+
     assert response.status_code == 422
