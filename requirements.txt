@@ -250,6 +250,7 @@ ruamel.yaml==0.17.17
 ruff==0.14.2
 s3transfer==0.13.0
 scikit-learn==1.7.1
+starlette-prometheus>=0.10.0
 scipy==1.16.1
 scmrepo==3.5.2
 semver==3.0.4
@@ -314,6 +315,7 @@ yarl==1.22.0
 yfinance==0.2.55
 zc.lockfile==4.0
 zipp==3.21.0
+
 
 
 
