@@ -21,7 +21,7 @@ with mlflow.start_run():
         imgsz=640,
         batch=16,
         project="runs/train",
-        name="foodalyze_yolov8"
+        name="foodalyze_yolov8",
     )
 
     # Log results to MLflow

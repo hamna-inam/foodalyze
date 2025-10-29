@@ -3,10 +3,12 @@ import shutil
 import random
 
 # ====== CONFIG ======
-BASE_DIR = r"D:\Desktop\AlinasPrograms\Projects\Foodalyze\data\IndianFoodDatasetFinalFiltered"
-TRAIN_SPLIT = 0.8   # 80% train
-VAL_SPLIT = 0.1     # 10% val
-TEST_SPLIT = 0.1    # 10% test
+BASE_DIR = (
+    r"D:\Desktop\AlinasPrograms\Projects\Foodalyze\data\IndianFoodDatasetFinalFiltered"
+)
+TRAIN_SPLIT = 0.8  # 80% train
+VAL_SPLIT = 0.1  # 10% val
+TEST_SPLIT = 0.1  # 10% test
 IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png")  # accepted image types
 # =====================
 
@@ -31,8 +33,9 @@ n_total = len(all_images)
 n_train = int(TRAIN_SPLIT * n_total)
 n_val = int(VAL_SPLIT * n_total)
 train_imgs = all_images[:n_train]
-val_imgs = all_images[n_train:n_train + n_val]
-test_imgs = all_images[n_train + n_val:]
+val_imgs = all_images[n_train : n_train + n_val]
+test_imgs = all_images[n_train + n_val :]
+
 
 def copy_files(img_list, split):
     for img_path in img_list:
@@ -51,11 +54,14 @@ def copy_files(img_list, split):
         # optional: print progress
         print(f"Copied: {img_name} → {split}")
 
+
 # copy images and labels
 copy_files(train_imgs, "train")
 copy_files(val_imgs, "valid")
 copy_files(test_imgs, "test")
 
 print("\nDataset restructured successfully!")
-print(f"Total images: {n_total} | train: {len(train_imgs)}, val: {len(val_imgs)}, test: {len(test_imgs)}")
+print(
+    f"Total images: {n_total} | train: {len(train_imgs)}, val: {len(val_imgs)}, test: {len(test_imgs)}"
+)
 print(f"Check folders: {BASE_DIR}\\train, {BASE_DIR}\\valid, {BASE_DIR}\\test")
