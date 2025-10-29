@@ -36,9 +36,10 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: | 
-          pip install -r requirements.txt || true
-          pip install "ultralytics>=8.2.0,<8.3" pytest pytest-cov httpx
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install fastapi pytest pytest-cov
       - name: Run tests with coverage
         env:
           PYTHONPATH: ${{ github.workspace }}
