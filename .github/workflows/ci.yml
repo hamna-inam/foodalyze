@@ -65,7 +65,7 @@ jobs:
         run: pip install pip-audit
       - name: Scan dependencies for vulnerabilities
         # Fails the build if any Critical CVEs are found
-        run: pip-audit -r requirements.txt --progress-spinner off --format columns --fail-on CRITICAL
+        run: pip-audit --progress-spinner off --format columns --requirement=requirements.txt --fail-on CRITICAL
 
   # D4c: Build and push Docker image
   build-docker:
