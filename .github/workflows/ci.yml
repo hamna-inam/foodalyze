@@ -92,8 +92,8 @@ jobs:
         with:
           context: .
           push: true
-          # Tags the image with the unique commit SHA
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          # Tags the image with the unique commit SHA (lowercase repo name is required)
+          tags: ghcr.io/${{ github.repository,, }}:${{ github.sha }}
 
   # D4d: Canary deployment job
   canary-deploy:
