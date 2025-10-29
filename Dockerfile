@@ -6,6 +6,13 @@ WORKDIR /app
 # Create a non-root user for security
 RUN groupadd --system app && useradd --system --gid app app
 
+# Install build dependencies for native Python packages (box2d-py, twofish, etc.)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    swig \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip
