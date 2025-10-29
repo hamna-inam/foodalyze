@@ -36,7 +36,9 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: | 
+          pip install -r requirements.txt || true
+          pip install "ultralytics>=8.2.0,<8.3" pytest pytest-cov
       - name: Run tests with coverage
         # We check coverage for 'app.py' (module name 'app')
         run: pytest --cov=app --cov-fail-under=80
