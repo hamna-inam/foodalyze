@@ -1,7 +1,6 @@
 import mlflow
 import mlflow.pyfunc
 from ultralytics import YOLO
-import os
 
 # Start an MLflow run
 mlflow.set_experiment("Foodalyze-YOLOv8")
