@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import JSONResponse
 import uvicorn
 import cv2
 import numpy as np
-from pathlib import Path
 import json
 import logging
 from datetime import datetime

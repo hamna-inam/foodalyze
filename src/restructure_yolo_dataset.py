@@ -56,6 +56,6 @@ copy_files(train_imgs, "train")
 copy_files(val_imgs, "valid")
 copy_files(test_imgs, "test")
 
-print(f"\nDataset restructured successfully!")
+print("\nDataset restructured successfully!")
 print(f"Total images: {n_total} | train: {len(train_imgs)}, val: {len(val_imgs)}, test: {len(test_imgs)}")
 print(f"Check folders: {BASE_DIR}\\train, {BASE_DIR}\\valid, {BASE_DIR}\\test")
