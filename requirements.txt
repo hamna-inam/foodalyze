@@ -233,7 +233,7 @@ python-json-logger==3.3.0
 pytokens==0.2.0
 pytz==2025.2
 pywin32==311; platform_system == "Windows"
-pywinpty==2.0.15
+pywinpty; platform_system == "Windows"
 PyYAML==6.0.2
 pyzmq==27.0.1
 referencing==0.36.2
@@ -312,6 +312,7 @@ yarl==1.22.0
 yfinance==0.2.55
 zc.lockfile==4.0
 zipp==3.21.0
+
 
 
 
