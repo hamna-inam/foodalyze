@@ -10,8 +10,7 @@ RUN groupadd --system app && useradd --system --gid app app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     swig \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install Python dependencies
 COPY requirements.txt .
@@ -27,8 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1 \
     libglib2.0-0 \
     curl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /app
 
@@ -36,10 +34,8 @@ WORKDIR /app
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 
-# Copy installed dependencies from builder
-# This part can be heavy, but cleaning apt caches above helps prevent disk overflow
+# Copy only Python dependencies (skip /usr/local/bin to save space)
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
-COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
 # Copy application files
 COPY app.py .
