@@ -41,7 +41,14 @@ jobs:
           pip install "ultralytics>=8.2.0,<8.3" pytest pytest-cov
       - name: Run tests with coverage
         # We check coverage for 'app.py' (module name 'app')
-        run: pytest --cov=app --cov-fail-under=80
+        run: pytest -v --maxfail=1 --disable-warnings --cov=app --cov-fail-under=80
+      - name: Debug test environment
+        run: |
+          echo "Listing project files for verification..."
+          ls -R
+          echo "Checking Python version and installed packages..."
+          python --version
+          pip list
 
   # D8: Security scan job
   scan:
@@ -158,4 +165,4 @@ jobs:
           echo "Test 6: /"
           curl -f http://localhost:8000/
 
-          echo "✅ All 6 acceptance tests passed!"
+          echo "All 6 acceptance tests passed!"
