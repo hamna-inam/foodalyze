@@ -6,20 +6,27 @@ WORKDIR /app
 # Create a non-root user for security
 RUN groupadd --system app && useradd --system --gid app app
 
-# Install build dependencies for native Python packages (box2d-py, twofish, etc.)
+# Install system build tools for packages like box2d-py and twofish
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     swig \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
+
 # Stage 2: Final Image - Copy only what's needed
 FROM python:3.11-slim
+
+# Install only runtime libraries needed by OpenCV and curl (for healthcheck)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
