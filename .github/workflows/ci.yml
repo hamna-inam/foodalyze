@@ -38,7 +38,7 @@ jobs:
       - name: Install dependencies
         run: | 
           pip install -r requirements.txt || true
-          pip install "ultralytics>=8.2.0,<8.3" pytest pytest-cov
+          pip install "ultralytics>=8.2.0,<8.3" pytest pytest-cov httpx
       - name: Run tests with coverage
         # We check coverage for 'app.py' (module name 'app')
         run: pytest -v --maxfail=1 --disable-warnings --cov=app --cov-fail-under=80
