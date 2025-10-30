@@ -138,52 +138,60 @@ jobs:
           # Ping the /health endpoint. -f makes it fail if status is not 200
           curl -f http://localhost:8000/health
 
-  # D4e: Acceptance testing job
+   # D4e: Acceptance testing job
   acceptance-tests:
     runs-on: ubuntu-latest
     needs: canary-deploy # Runs after the canary is deployed
     steps:
       - name: Checkout code
-        # We need the code to get the sample_food.jpg
+        # Needed for sample image
         uses: actions/checkout@v4
+
       - name: Run 5+ acceptance tests
+        env:
+          BASE_URL: "http://16.16.192.156:8000"   # <-- Replace with your EC2 IP
         run: |
-          echo "Running acceptance tests against http://localhost:8000"
-          
-          # Test 1: Health check
+          echo "Running acceptance tests against $BASE_URL"
+
+          # Wait up to 30s for API to become ready
+          for i in {1..6}; do
+            echo "Checking if API is up (attempt $i)..."
+            if curl -f "$BASE_URL/health" > /dev/null 2>&1; then
+              echo "API is up!"
+              break
+            fi
+            echo "Still waiting..."
+            sleep 5
+          done
+
           echo "Test 1: /health"
-          curl -f http://localhost:8000/health
-          
-          # Test 2: Predict endpoint (golden query 1)
+          curl -f "$BASE_URL/health"
+
           echo "Test 2: /predict"
           curl -f -X 'POST' \
-            'http://localhost:8000/predict' \
+            "$BASE_URL/predict" \
             -H 'accept: application/json' \
             -H 'Content-Type: multipart/form-data' \
             -F 'file=@./tests/sample_food.jpg'
-          
-          # Test 3: Predict endpoint (golden query 2 - low confidence)
+
           echo "Test 3: /predict?conf=0.1"
           curl -f -X 'POST' \
-            'http://localhost:8000/predict?conf=0.1' \
+            "$BASE_URL/predict?conf=0.1" \
             -H 'accept: application/json' \
             -H 'Content-Type: multipart/form-data' \
             -F 'file=@./tests/sample_food.jpg'
 
-          # Test 4: Predict endpoint (golden query 3 - high confidence)
           echo "Test 4: /predict?conf=0.9"
           curl -f -X 'POST' \
-            'http://localhost:8000/predict?conf=0.9' \
+            "$BASE_URL/predict?conf=0.9" \
             -H 'accept: application/json' \
             -H 'Content-Type: multipart/form-data' \
             -F 'file=@./tests/sample_food.jpg'
 
-          # Test 5: /model_info endpoint
           echo "Test 5: /model_info"
-          curl -f http://localhost:8000/model_info
-          
-          # Test 6: / (root) endpoint
-          echo "Test 6: /"
-          curl -f http://localhost:8000/
+          curl -f "$BASE_URL/model_info"
 
-          echo "All 6 acceptance tests passed!"
+          echo "Test 6: / (root)"
+          curl -f "$BASE_URL/"
+
+          echo "All 6 acceptance tests passed successfully!"
