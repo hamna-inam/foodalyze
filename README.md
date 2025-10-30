@@ -172,18 +172,8 @@ Monitors for **data drift** between training and validation datasets.
 
 ## Cloud Deployment (Bonus D9)
 
-The app can be deployed on **AWS** using **S3** and **EC2**.
+The app can be deployed on **AWS** and **EC2**.
 
-###  AWS S3 (Model Storage)
-
-**Why:**
-S3 provides durable, scalable, and low-cost storage for the `best.pt` model file — decoupling model updates from Docker builds.
-
-**Steps:**
-
-1. Create an S3 bucket
-2. Upload `best.pt`
-3. Attach IAM role to EC2 with S3 read access
 
 ---
 
@@ -218,7 +208,7 @@ docker run -d -p 80:8000 ghcr.io/alina1114/foodalyze:latest
 * **ML Framework:** PyTorch + YOLOv8
 * **Monitoring:** MLflow, Evidently, Prometheus, Grafana
 * **Containerization:** Docker & Docker Compose
-* **Cloud:** AWS EC2 + S3
+* **Cloud:** AWS EC2 + cloudwatch
 
 ---
 
