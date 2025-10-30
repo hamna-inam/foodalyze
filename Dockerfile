@@ -36,6 +36,7 @@ COPY --from=builder /etc/group /etc/group
 
 # Copy only Python dependencies (skip /usr/local/bin to save space)
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
+COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
 # Copy application files
 COPY app.py .
