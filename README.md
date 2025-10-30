@@ -100,6 +100,7 @@ Upload an image to get **food detections**, **bounding boxes**, and **calorie es
 **Endpoint:** `POST /predict`
 **Query Parameter:** `conf=0.5` (optional)
 **Body:** `file` (image as `multipart/form-data`)
+![76b0b36d-4935-4ef0-a4e4-e58e225fcc33](https://github.com/user-attachments/assets/acf2c684-dfda-4d0e-aad5-65e0ec85cd89)
 
 #### Example cURL Request
 
@@ -157,6 +158,8 @@ Tracks and versions all trained models.
 Monitors for **data drift** between training and validation datasets.
 
 * **Dashboard:** [http://localhost:7000](http://localhost:7000)
+![1b695b93-1acc-4e06-ba9a-905c2fab8699](https://github.com/user-attachments/assets/ac783da0-6113-4441-9952-0458e560fc72)
+![17fad28c-fbdf-4ab1-ba37-5fefd86cfca9](https://github.com/user-attachments/assets/0e8299ac-8370-46df-9fe3-8b3e8ea6e1d0)
 
 ---
 
@@ -174,6 +177,7 @@ Monitors for **data drift** between training and validation datasets.
 
 The app can be deployed on **AWS** and **EC2**.
 
+![98ba1226-6a89-47a2-8a19-c3812f4ea977](https://github.com/user-attachments/assets/bf252fde-e8b6-459b-8651-570660c5a083)
 
 ---
 
