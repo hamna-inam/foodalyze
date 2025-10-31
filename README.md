@@ -1,5 +1,5 @@
 # Foodalyze
-
+## Your pocket nutritionist, powered by AI.
 A *YOLOv8-powered API* for detecting Indian food dishes and estimating their calorie content.
 
 -----
