@@ -8,34 +8,36 @@ A *YOLOv8-powered API* for detecting Indian food dishes and estimating their cal
 
 This diagram shows the complete MLOps workflow — from model training to a monitored API endpoint.
 
-mermaid
+
+
+  This diagram shows the complete MLOps workflow — from model training to a monitored API endpoint.
+
+```mermaid
 graph TD
     subgraph "MLOps & Monitoring (D5)"
-        D[best.pt Model] -- registers --> M(MLflow Model Registry);
-        E(FastAPI App) -- scrapes --> P(Prometheus);
-        P -- datasource --> G(Grafana Dashboard);
-        T(Training Data) --> EV(Evidently Report);
-        V(Validation Data) --> EV;
+        D[best.pt Model] -- registers --> M(MLflow Model Registry)
+        E(FastAPI App) -- scrapes --> P(Prometheus)
+        P -- datasource --> G(Grafana Dashboard)
+        T(Training Data) --> EV(Evidently Report)
+        V(Validation Data) --> EV
     end
 
     subgraph "CI/CD Pipeline (D4)"
-        A[Git Push/PR] --> B(GitHub Actions);
-        B -- runs --> L(Lint);
-        B -- runs --> TST(Test);
-        TST -- on pass --> BLD(Build Docker Image);
-        BLD -- push --> R(GHCR Registry);
-        R --> DPL(Canary Deploy);
-        DPL --> AT(Acceptance Tests);
+        A[Git Push/PR] --> B(GitHub Actions)
+        B -- runs --> L(Lint)
+        B -- runs --> TST(Test)
+        TST -- on pass --> BLD(Build Docker Image)
+        BLD -- push --> R(GHCR Registry)
+        R --> DPL(Canary Deploy)
+        DPL --> AT(Acceptance Tests)
     end
 
     subgraph "Inference API (D3, D7)"
-        U[User Upload] --> E;
-        E -- loads model from --> D;
-        E --> J(JSON Response);
+        U[User Upload] --> E
+        E -- loads model from --> D
+        E --> J(JSON Response)
     end
 
-
----
 
 ## Dataset: https://drive.google.com/file/d/1SOqkv7GBLbs_f6AISFvczdh1rRS29_AP/view?usp=sharing
 
