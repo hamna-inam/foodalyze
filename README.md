@@ -201,14 +201,11 @@ Metrics collected:
 
 <img width="1159" height="613" alt="image" src="https://github.com/user-attachments/assets/08bf807f-0f56-4850-b4cb-5276f2987d63" />
 
-<img width="1159" height="613" alt="image" src="https://github.com/user-attachments/assets/4b284291-7ed6-46a4-9a6c-68ce515da7e1" />
-
-
-*Note on Metrics:*
+**Note on Metrics:**
 
 While the assignment requested GPU utilization metrics, this setup collects CPU metrics instead (CPU usage %, memory usage %, and simulated CPU temperature).
 
-*Reason:*  
+**Reason:**  
 The local machine (MacBook) used for this project does not have a dedicated GPU accessible for monitoring by Python/Prometheus. Additionally, Kaggle/Colab GPU hours for this task had expired, preventing GPU-based experiments.  
 
 Collecting CPU metrics demonstrates the same Prometheus + Grafana monitoring workflow, including real-time scraping and visualization, which fulfills the monitoring and MLOps objectives.  
