@@ -287,4 +287,4 @@ See the [LICENSE](LICENSE) file for more details.
 
 
 ```
-# Note: Docker compose file isnt fully completeled ( Bonus Path )
+# Note: Docker compose file isnt fully completed ( Bonus Path )
