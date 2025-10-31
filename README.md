@@ -1,4 +1,4 @@
-<img width="1159" height="613" alt="image" src="https://github.com/user-attachments/assets/4b284291-7ed6-46a4-9a6c-68ce515da7e1" />#  Foodalyze
+#  Foodalyze
 A **YOLOv8-powered API** for detecting Indian food dishes and estimating their calorie content.
 
 
@@ -200,6 +200,8 @@ Metrics collected:
 <img width="1155" height="318" alt="image" src="https://github.com/user-attachments/assets/9d99bd73-b713-45e5-9665-8c12d3aa4031" />
 
 <img width="1159" height="613" alt="image" src="https://github.com/user-attachments/assets/08bf807f-0f56-4850-b4cb-5276f2987d63" />
+
+<img width="1159" height="613" alt="image" src="https://github.com/user-attachments/assets/4b284291-7ed6-46a4-9a6c-68ce515da7e1" />
 
 
 *Note on Metrics:*
