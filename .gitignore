@@ -1,7 +1,0 @@
-__pycache__/
-*.pt
-runs/
-data/*
-!data/*.dvc
-!data/.gitignore
-mlruns/
