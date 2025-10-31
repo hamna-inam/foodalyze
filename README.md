@@ -146,10 +146,35 @@ The project includes a **complete monitoring stack**, managed via `docker-compos
 
 ### MLflow (Model Registry)
 
+<<<<<<< HEAD
 Tracks and versions all trained models.
 
 * **URL:** [http://localhost:5000](http://localhost:5000)
 * **Registered Model:** *(Paste your MLflow model URL here)*
+=======
+Tracks and versions all trained models, including logged parameters, metrics, and artifacts.
+
+**Tracking URI**: file:///Users/bstar/Documents/Fall25/MLOps/MLFlow/mlruns
+
+URL: http://localhost:5000
+
+**Experiment Name**: YOLOv8_Indian_Food_Detection
+
+**Registered Model**: Foodalyze_YOLOv8_Detector
+
+Description: The model was logged and registered locally via MLflow using the YOLOv8 architecture.
+
+Trained for 30 epochs
+
+Image size: 640×640
+
+<img width="2876" height="1434" alt="image" src="https://github.com/user-attachments/assets/d09536d2-0d24-46f4-993c-ceaf6246b23e" />
+
+<img width="1600" height="427" alt="image" src="https://github.com/user-attachments/assets/92bda33a-2263-40c5-a082-cb47b7cafae3" />
+
+<img width="1600" height="472" alt="image" src="https://github.com/user-attachments/assets/47dd52a2-8437-469a-9c35-a202b8c2abd3" />
+
+>>>>>>> ae734ebe3fa43000b7c816f49e3784141643e50c
 
 ---
 
@@ -157,7 +182,14 @@ Tracks and versions all trained models.
 
 Monitors for **data drift** between training and validation datasets.
 
+<<<<<<< HEAD
 * **Dashboard:** [http://localhost:7000](http://localhost:7000)
+=======
+•⁠  ⁠URL (local): http://localhost:7001  (On Mac, port 7000 is already taken by ControlCe, which is part of Control Center / AFS (Apple File System service)
+•⁠  ⁠Report generated on held-out test set
+
+* **Dashboard:** 
+>>>>>>> ae734ebe3fa43000b7c816f49e3784141643e50c
 ![1b695b93-1acc-4e06-ba9a-905c2fab8699](https://github.com/user-attachments/assets/ac783da0-6113-4441-9952-0458e560fc72)
 ![17fad28c-fbdf-4ab1-ba37-5fefd86cfca9](https://github.com/user-attachments/assets/0e8299ac-8370-46df-9fe3-8b3e8ea6e1d0)
 
@@ -165,11 +197,39 @@ Monitors for **data drift** between training and validation datasets.
 
 ###  Prometheus & Grafana (API Metrics)
 
+<<<<<<< HEAD
 * **Prometheus** scrapes live API metrics (requests, latency, errors).
 * **Grafana** visualizes these metrics in real-time.
 
 **Grafana URL:** [http://localhost:3000](http://localhost:3000)
 **Login:** `admin / admin`
+=======
+**Prometheus URL**: http://localhost:9090
+
+**Grafana URL**: http://localhost:3000
+
+Metrics collected:
+•⁠  ⁠CPU usage (%)
+•⁠  ⁠Memory usage (%)
+•⁠  ⁠CPU temperature (simulated)
+
+<img width="1141" height="612" alt="image" src="https://github.com/user-attachments/assets/4448f63f-d787-466d-8cab-91468091bc84" />
+
+<img width="1155" height="318" alt="image" src="https://github.com/user-attachments/assets/9d99bd73-b713-45e5-9665-8c12d3aa4031" />
+
+<img width="1159" height="613" alt="image" src="https://github.com/user-attachments/assets/08bf807f-0f56-4850-b4cb-5276f2987d63" />
+
+**Note on Metrics:**
+
+While the assignment requested GPU utilization metrics, this setup collects CPU metrics instead (CPU usage %, memory usage %, and simulated CPU temperature).
+
+**Reason:**  
+The local machine (MacBook) used for this project does not have a dedicated GPU accessible for monitoring by Python/Prometheus. Additionally, Kaggle/Colab GPU hours for this task had expired, preventing GPU-based experiments.  
+
+Collecting CPU metrics demonstrates the same Prometheus + Grafana monitoring workflow, including real-time scraping and visualization, which fulfills the monitoring and MLOps objectives.  
+
+This workflow can be scaled to GPU metrics in environments with available GPUs (e.g., cloud GPU instances or Kaggle with active GPU credits).
+>>>>>>> ae734ebe3fa43000b7c816f49e3784141643e50c
 
 ---
 
