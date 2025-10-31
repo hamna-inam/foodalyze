@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
-import os, sys
+import os
+import sys
 from unittest.mock import patch, MagicMock
 import numpy as np
 
