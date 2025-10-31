@@ -18,6 +18,7 @@ TEST_IMAGE_PATH = os.path.join(os.path.dirname(__file__), "sample_food.jpg")
 # BASE TESTS
 # ---------------------------------------------------------------------------
 
+
 def test_health_check():
     """Tests if the /health endpoint is working."""
     response = client.get("/health")
@@ -49,6 +50,7 @@ def test_predict_endpoint():
     if not os.path.exists(TEST_IMAGE_PATH):
         # Skip this test if no real image is available
         import pytest
+
         pytest.skip("sample_food.jpg not found, skipping real prediction test")
 
     with open(TEST_IMAGE_PATH, "rb") as f:
@@ -79,6 +81,7 @@ def test_predict_no_file():
 # ---------------------------------------------------------------------------
 # ADDITIONAL TESTS FOR HIGHER COVERAGE (MOCKING YOLO + ERROR HANDLING)
 # ---------------------------------------------------------------------------
+
 
 @patch("app.cv2.imdecode", return_value=np.zeros((100, 100, 3), dtype=np.uint8))
 @patch("app.model")
