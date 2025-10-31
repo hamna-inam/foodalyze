@@ -146,10 +146,24 @@ The project includes a **complete monitoring stack**, managed via `docker-compos
 
 ### MLflow (Model Registry)
 
-Tracks and versions all trained models.
+Tracks and versions all trained models, including logged parameters, metrics, and artifacts.
 
-* **URL:** [http://localhost:5000](http://localhost:5000)
-* **Registered Model:** *(Paste your MLflow model URL here)*
+**Tracking URI**: file:///Users/bstar/Documents/Fall25/MLOps/MLFlow/mlruns
+
+URL: http://localhost:5000
+
+**Experiment Name**: YOLOv8_Indian_Food_Detection
+
+**Registered Model**: Foodalyze_YOLOv8_Detector
+
+Description: The model was logged and registered locally via MLflow using the YOLOv8 architecture.
+
+Trained for 30 epochs
+
+Image size: 640×640
+
+<img width="2876" height="1434" alt="image" src="https://github.com/user-attachments/assets/d09536d2-0d24-46f4-993c-ceaf6246b23e" />
+
 
 ---
 
