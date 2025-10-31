@@ -44,11 +44,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
         # We check coverage for 'app.py' (module name 'app')
-<<<<<<< HEAD
-        run: pytest -v --maxfail=1 --disable-warnings --cov=app --cov-fail-under=60
-=======
         run: pytest -v --maxfail=1 --disable-warnings --cov=app --cov-fail-under=80
->>>>>>> ae734ebe3fa43000b7c816f49e3784141643e50c
       - name: Debug test environment
         run: |
           echo "Listing project files for verification..."
