@@ -64,6 +64,7 @@ Then open:
 -----
 
 ## Makefile Commands
+## Note: Docker compose isnt complete (bonus path)
 
 | Command | Description |
 | :--- | :--- |
@@ -314,7 +315,7 @@ The YOLO model (best.pt) is stored and loaded from inside the Docker container.
 
 -----
 
-## Note: Docker compose isnt complete (bonus path)
+
 
 ## License
 
