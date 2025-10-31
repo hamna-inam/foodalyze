@@ -12,7 +12,15 @@ services:
       - ./src:/app/src
       - ./models:/app/models
       - ./class_mapping.json:/app/class_mapping.json # Mount the class mapping
-    # This ensures prometheus/grafana start *after* the app
+    
+    # --- THIS IS THE NEW SECTION ---
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - EXPERIMENT_NAME=YOLOv8_Indian_Food_Detection
+      - REGISTERED_MODEL_NAME=Foodalyze_YOLOv8_Detector
+    # -------------------------------
+
+    # This ensures mlflow starts *before* the app
     depends_on:
       - mlflow
 
