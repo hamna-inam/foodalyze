@@ -1,0 +1,68 @@
+Strategy,Food,Response,Ground Truth,ROUGE-L,BLEU,Semantic_Sim,Latency (s)
+Zero-Shot,samosa,"1. Samosa is a deep-fried snack that can be high in calories and fat.
+    2. Therefore, it is not considered a healthy food option.",Samosa is high in calories and fat due to deep frying. It is not considered healthy for daily consumption. Healthy swap: Try baked samosas or use whole wheat flour.,0.444,0.268,0.891,2.47
+Few-Shot,samosa,"1. No, it is deep-fried pastry filled with spiced potatoes or vegetables, making it high in calories.
+    2. Consider moderation and balance in your diet.",Samosa is high in calories and fat due to deep frying. It is not considered healthy for daily consumption. Healthy swap: Try baked samosas or use whole wheat flour.,0.182,0.078,0.491,2.82
+CoT,samosa,"1. Identify the main ingredients of samosa.
+    
+        Samosa is a popular snack that is typically made from a variety of ingredients, depending on the region and personal preferences. The most common ingredients include:
+        - Flour: Samosas are typically made from a dough that is made from wheat flour, water, and salt.
+        - Spices: Samosas are seasoned with a variety of spices, including cumin, coriander, turmeric, and chili powder.
+        - Filling: Samosas are typically filled with a variety of ingredients, including potatoes, peas, carrots, and onions.
+        - Vegetable oil: Samosas are typically deep-fried in vegetable oil.",Samosa is high in calories and fat due to deep frying. It is not considered healthy for daily consumption. Healthy swap: Try baked samosas or use whole wheat flour.,0.099,0.026,0.661,10.55
+Zero-Shot,idli,"1. Yes, idli is a healthy dish as it is made from fermented rice and black gram, which makes it a good source of protein and fiber.
+    2. However, the nutritional value depends on the ingredients used and the amount of salt and oil added during cooking.","Idli is a healthy, steamed fermented food. It is low in calories, easy to digest, and a good source of carbohydrates and protein. It is a great breakfast option.",0.316,0.136,0.869,4.02
+Few-Shot,idli,"1. Yes, it is a healthy option, as it is made from fermented rice and lentils.
+    2. However, it should be consumed in moderation, as it is high in carbohydrates and calories.","Idli is a healthy, steamed fermented food. It is low in calories, easy to digest, and a good source of carbohydrates and protein. It is a great breakfast option.",0.295,0.135,0.484,3.29
+CoT,idli,"1. Main ingredients of idli:
+        - Rice: White rice is the primary ingredient in idli batter. It is ground into a smooth, thick paste and allowed to ferment, which gives the idli its unique texture and flavor.
+        - Urad dal: Black gram or urad dal is a key ingredient in idli batter. It is soaked, ground into a smooth paste, and mixed with the rice paste to create the batter.
+        - Water: Water is used to mix and hydrate the rice and urad dal, creating the batter for idli.
+    2. Cooking method:
+        - Steamed: Idli is typically steamed, which is a healthier cooking method as it retains more nutrients and","Idli is a healthy, steamed fermented food. It is low in calories, easy to digest, and a good source of carbohydrates and protein. It is a great breakfast option.",0.163,0.076,0.743,10.46
+Zero-Shot,jalebi,"1. Jalebi is a traditional Indian dessert.
+    2. Jalebi is not considered a healthy food due to its high sugar content and lack of nutritional value.",Jalebi is unhealthy because it is deep-fried and soaked in sugar syrup. It has very high sugar content and empty calories. Healthy swap: Eat in moderation or try low-sugar versions.,0.241,0.178,0.808,2.6
+Few-Shot,jalebi,"1. No, it is a deep-fried sweet made from a twisted dough filled with sugar syrup.
+    2. It is high in calories and not considered a healthy food.",Jalebi is unhealthy because it is deep-fried and soaked in sugar syrup. It has very high sugar content and empty calories. Healthy swap: Eat in moderation or try low-sugar versions.,0.328,0.151,0.477,2.86
+CoT,jalebi,"1. Identify the main ingredients of jalebi.
+    
+        Jalebi is a popular Indian dessert made with several ingredients, including:
+        
+        - Jaggery (unrefined sugar)
+        - Flour (besan, a type of chickpea flour)
+        - Water
+        - Baking soda
+        - Cardamom powder
+        - Red food coloring (optional)
+
+    2. Analyze the cooking method (fried, steamed, etc.).
+    
+        Jalebi is typically deep-fried in oil.
+
+    3. Conclude if it is healthy or not.
+    
+        Jalebi is not considered a healthy food due to its high sugar content.",Jalebi is unhealthy because it is deep-fried and soaked in sugar syrup. It has very high sugar content and empty calories. Healthy swap: Eat in moderation or try low-sugar versions.,0.19,0.067,0.764,10.49
+Zero-Shot,chana_masala,"1. Chana_masala is a popular Indian dish made with chickpeas, spices, and herbs.
+    2. Chana_masala can be considered healthy as it is a good source of protein, fiber, and other essential nutrients.","Chana Masala is healthy as it is rich in protein and fiber from chickpeas. However, restaurant versions may have high oil. Healthy swap: Cook with less oil and minimal cream.",0.312,0.156,0.863,3.59
+Few-Shot,chana_masala,"1. Chana masala is a tasty and popular Indian dish made with chickpeas and spices.
+    2. While it's high in protein and fiber, it's also high in calories and oil, so enjoy it in moderation.","Chana Masala is healthy as it is rich in protein and fiber from chickpeas. However, restaurant versions may have high oil. Healthy swap: Cook with less oil and minimal cream.",0.299,0.123,0.849,3.73
+CoT,chana_masala,"1. Identify the main ingredients of chana_masala.
+    
+    Chana_masala is a popular Indian dish made with chickpeas (chana) as the main ingredient. The dish is usually flavored with various spices, herbs, and seasonings such as cumin, coriander, turmeric, chili powder, and garam masala. It may also include onions, tomatoes, and garlic. Some versions of chana_masala also include vegetables like potatoes, carrots, and peas.
+
+    2. Analyze the cooking method (fried, steamed, etc.).
+    
+    The cooking method for chana_masala can vary depending on the recipe and personal preferences. The most common methods are frying,","Chana Masala is healthy as it is rich in protein and fiber from chickpeas. However, restaurant versions may have high oil. Healthy swap: Cook with less oil and minimal cream.",0.145,0.0,0.728,10.46
+Zero-Shot,butter_chicken,"1. Butter chicken is a popular Indian dish made with marinated and fried chicken in a rich, creamy sauce.
+    2. While butter chicken can be tasty, it is not considered a healthy dish due to its high fat and calorie content from the heavy cream and butter used in the sauce.",Butter Chicken is typically high in calories and saturated fat due to butter and cream. It is better as an occasional treat. Healthy swap: Use yogurt instead of cream and reduce butter.,0.265,0.101,0.761,4.22
+Few-Shot,butter_chicken,"1. No, butter chicken is deep-fried chicken pieces in a creamy tomato-based sauce, making it high in calories and fat.
+    2. However, it can be considered healthier if you choose a restaurant or recipe that uses less butter and oil.",Butter Chicken is typically high in calories and saturated fat due to butter and cream. It is better as an occasional treat. Healthy swap: Use yogurt instead of cream and reduce butter.,0.297,0.134,0.758,3.93
+CoT,butter_chicken,"1. Identify the main ingredients of butter_chicken.
+    
+        To identify the main ingredients of butter_chicken, I will look at the definition of butter_chicken and its components.
+        Definition: Butter_chicken is a popular Indian dish that consists of a boneless, marinated chicken cooked in a buttery, tangy, and spicy sauce.
+
+        Main ingredients of butter_chicken:
+        - Boneless chicken: The main ingredient that makes up the bulk of the dish.
+        - Spices and herbs: Common spices and herbs used in butter_chicken include garam masala, paprika, cumin, coriander, turmeric, and ginger.
+        - Butter",Butter Chicken is typically high in calories and saturated fat due to butter and cream. It is better as an occasional treat. Healthy swap: Use yogurt instead of cream and reduce butter.,0.164,0.0,0.535,10.39
