@@ -1,3 +1,16 @@
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+# --- THIS IS APP.PY FOR MILESTONE 1---
+
 #!/usr/bin/env python3
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import uvicorn
@@ -8,7 +21,6 @@ import logging
 from datetime import datetime
 from ultralytics import YOLO
 
-# --- ADD THESE 3 LINES FOR MONITORING (D5) ---
 from starlette_prometheus import PrometheusMiddleware, metrics
 
 logging.basicConfig(level=logging.INFO)

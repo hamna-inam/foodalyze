@@ -1,60 +1,136 @@
 version: '3.8'
 
 services:
-  # This is your FastAPI app from Member 1
+  # ============================================================================
+  # FastAPI App - LLM + YOLO
+  # ============================================================================
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: foodalyze_app
     ports:
       - "8000:8000"
     volumes:
-      # Mounts your code for live-reloading (optional, good for dev)
       - ./src:/app/src
       - ./models:/app/models
-      - ./class_mapping.json:/app/class_mapping.json # Mount the class mapping
-    
-    # --- THIS IS THE NEW SECTION ---
+      - ./class_mapping.json:/app/class_mapping.json
+      - ./faiss_index:/app/faiss_index
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
       - EXPERIMENT_NAME=YOLOv8_Indian_Food_Detection
       - REGISTERED_MODEL_NAME=Foodalyze_YOLOv8_Detector
-    # -------------------------------
-
-    # This ensures mlflow starts *before* the app
+    networks:
+      - foodalyze
     depends_on:
       - mlflow
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
-  # D5: MLflow
+  # ============================================================================
+  # Streamlit UI
+  # ============================================================================
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    container_name: foodalyze_ui
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./ui.py:/app/ui.py:ro
+    environment:
+      - API_BASE_URL=http://app:8000
+    networks:
+      - foodalyze
+    depends_on:
+      - app
+    command: streamlit run ui.py --server.address=0.0.0.0
+
+  # ============================================================================
+  # MLflow - Model Registry
+  # ============================================================================
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.13.0
     container_name: mlflow_server
     ports:
       - "5000:5000"
     volumes:
-      - ./mlflow-data:/mlruns # Persists MLflow data
+      - ./mlflow-data:/mlruns
     command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:////mlruns/mlflow.db --default-artifact-root /mlruns
+    networks:
+      - foodalyze
 
-  # D5: Prometheus
+  # ============================================================================
+  # Prometheus - Metrics Collection
+  # ============================================================================
   prometheus:
     image: prom/prometheus:v2.53.0
     container_name: prometheus
     ports:
       - "9090:9090"
     volumes:
-      # Mounts your config file into the container
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
-    command: --config.file=/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - foodalyze
     depends_on:
-      - app # Prometheus needs the app to be running to scrape it
+      - app
 
-  # D5: Grafana
+  # ============================================================================
+  # Grafana - Dashboards
+  # ============================================================================
   grafana:
     image: grafana/grafana-oss:11.0.0
     container_name: grafana
     ports:
       - "3000:3000"
-    depends_on:
-      - prometheus # Grafana needs Prometheus to be running
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
     volumes:
-      # Mounts your datasource config, so Prometheus is auto-added
-      - ./monitoring/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./monitoring/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
+      - grafana_data:/var/lib/grafana
+    networks:
+      - foodalyze
+    depends_on:
+      - prometheus
+
+  # ============================================================================
+  # Drift Monitor - Evidently Drift Detection
+  # ============================================================================
+  drift-monitor:
+    image: python:3.11-slim
+    container_name: drift_monitor
+    ports:
+      - "7009:7009"
+    volumes:
+      - ./monitoring/drift_detection.py:/app/drift_detection.py:ro
+      - ./faiss_index:/app/faiss_index:ro
+    working_dir: /app
+    command: bash -c "pip install -q faiss-cpu evidently pydantic==1.10.12 pandas numpy fastapi uvicorn && python drift_detection.py"
+    networks:
+      - foodalyze
+    depends_on:
+      - prometheus
+
+# ============================================================================
+# Volumes - Persistent Storage
+# ============================================================================
+volumes:
+  mlflow-data:
+  prometheus_data:
+  grafana_data:
+
+# ============================================================================
+# Networks - Service Communication
+# ============================================================================
+networks:
+  foodalyze:
+    driver: bridge
