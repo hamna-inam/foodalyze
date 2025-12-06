@@ -81,9 +81,7 @@ graph TD
 ### 3.Data Flow & Ingestion (Milestone 2)
 How raw nutrition data is processed and stored for retrieval.
 
-Code snippet
 
-flowchart LR
     %% Data Sources
     CSV[📄 nutrition.csv]
     JSON[📄 swaps.json]
