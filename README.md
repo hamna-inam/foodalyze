@@ -150,6 +150,27 @@ Then open:
 | make monitor-down | Stops monitoring stack. |
 
 -----
+🛡️ Guardrails & Safety (Milestone 2 - D3) 
+We utilize a custom Policy Engine (src/guardrails.py) to enforce Responsible AI guidelines. This ensures the system remains safe, secure, and helpful.
+
+Protection Layers
+Input Validation (Security):
+
+PII Filter: Blocks emails, phone numbers, SSNs, and credit card patterns to prevent data leakage.
+
+Prompt Injection: Detects and blocks adversarial attacks like "Ignore previous instructions" or "System Override".
+
+Output Moderation (Safety):
+
+Toxicity Filter: Scans the generated response for harmful keywords (violence, hate speech) before showing it to the user.
+
+✅ Verification Results
+We performed an automated stress test against 12 different attack vectors (including PII leaks, DAN jailbreaks, and roleplay attacks).
+
+🏆 Result: 12/12 Passed (100% Block Rate) All malicious attempts were successfully intercepted by the guardrail middleware layer (HTTP 400 Bad Request).
+
+<img width="552" height="810" alt="image" src="https://github.com/user-attachments/assets/17b95f6f-17e1-431b-8b4f-39dfb951f4df" />
+
 
 ## API Documentation (D7)
 
