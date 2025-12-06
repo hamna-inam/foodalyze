@@ -84,16 +84,16 @@ How raw nutrition data is processed and stored for retrieval.
 ```mermaid
 flowchart LR
     %% Data Sources
-    CSV[📄 nutrition.csv]
-    JSON[📄 swaps.json]
+    CSV["📄 nutrition.csv"]
+    JSON["📄 swaps.json"]
     
     %% Processes
-    Ingest[⚙️ Ingestion Script\nsrc/ingest.py]
-    Embed[🔠 Encoder Model\nall-MiniLM-L6-v2]
+    Ingest["⚙️ Ingestion Script<br/>(src/ingest.py)"]
+    Embed["🔠 Encoder Model<br/>(all-MiniLM-L6-v2)"]
     
     %% Storage
-    VDB[(🗄️ Vector Store\nFAISS Local Index)]
-    Cloud[☁️ Cloud Storage\n(S3 / Artifacts)]
+    VDB[("🗄️ Vector Store<br/>(FAISS Local Index)")]
+    Cloud["☁️ Cloud Storage<br/>(S3 / Artifacts)"]
     
     %% Connections
     CSV & JSON -->|Read Raw Data| Ingest
