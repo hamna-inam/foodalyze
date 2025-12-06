@@ -47,24 +47,24 @@ This diagram illustrates the retrieval, augmentation, and generation flow for th
 graph TD
     %% Nodes
     User([👤 User])
-    UI[🖥️ Frontend\nStreamlit App]
-    API[⚙️ Backend API\nFastAPI]
-    VDB[(🗄️ Vector DB\nFAISS Index)]
-    LLM[🧠 LLM Model\nDeepSeek-7B-Chat]
+    UI[🖥️ Frontend Streamlit App]
+    API[⚙️ Backend API FastAPI]
+    VDB[(🗄️ Vector DB FAISS Index)]
+    LLM[🧠 LLM Model DeepSeek-7B-Chat]
     
     %% Flow
-    User -->|1. Asks: Is Samosa healthy?| UI
-    UI -->|2. Sends JSON Request| API
+    User -->|"1. Asks: Is Samosa healthy?"| UI
+    UI -->|"2. Sends JSON Request"| API
     
     subgraph "RAG Pipeline"
-        API -->|3. Query Embeddings| VDB
-        VDB -->|4. Retrieve Context\n(Nutrition Data)| API
-        API -->|5. Construct Prompt\n(Context + Query)| LLM
-        LLM -->|6. Generate Answer| API
+        API -->|"3. Query Embeddings"| VDB
+        VDB -->|"4. Retrieve Context (Nutrition Data)"| API
+        API -->|"5. Construct Prompt (Context + Query)"| LLM
+        LLM -->|"6. Generate Answer"| API
     end
     
-    API -->|7. JSON Response| UI
-    UI -->|8. Display Answer| User
+    API -->|"7. JSON Response"| UI
+    UI -->|"8. Display Answer"| User
 
     %% Styling
     style VDB fill:#f9f,stroke:#333,stroke-width:2px
