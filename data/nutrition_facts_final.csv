@@ -1,0 +1,81 @@
+food,category,portion_desc,portion_g,energy_kcal_per_100g,calories_per_portion,fat_g_per_100g,saturates_g_per_100g,carbs_g_per_100g,sugar_g_per_100g,fiber_g_per_100g,protein_g_per_100g,salt_g_per_100g
+adhirasam,sweet,1 piece,35,337,117.95,12,6,35,28,0.5,4,0.375
+aloo_gobi,veg_curry,1 bowl,150,80,120,7,2.1,10,3,3,4,0.875
+aloo_matar,veg_curry,1 bowl,150,135,202.5,7,2.1,10,3,3,4,0.875
+aloo_methi,veg_curry,1 bowl,150,151,226.5,7,2.1,10,3,3,4,0.875
+aloo_shimla_mirch,veg_curry,1 bowl,150,138,207,7,2.1,10,3,3,4,0.875
+aloo_tikki,fried_snack,1 piece,55,200,110,15,7.5,25,2,2,5,1.25
+anarsa,sweet,1 piece,25,360,90,12,6,35,28,0.5,4,0.375
+ariselu,sweet,1 piece,44,300,132,12,6,35,28,0.5,4,0.375
+bandar_laddu,sweet,1 piece,35,356,124.6,12,6,35,28,0.5,4,0.375
+basundi,sweet_pudding,1 bowl,150,152,228,8,3.2,20,18,0,4,0.3
+bhatura,fried_snack,1 piece,50,400,200,15,7.5,25,2,2,5,1.25
+bhindi_masala,veg_curry,1 bowl,150,107,160.5,7,2.1,10,3,3,4,0.875
+biryani,rice_dish,1 plate,300,131,393,4,1.2,22,1,1.5,3,1.125
+boondi,fried_snack,1 small bowl (savory),30,584,175.2,6,3,15,5,2,4,0.75
+butter_chicken,nonveg_curry,1 bowl,240,129,309.6,8,3.2,6,1,1,8,1
+chak_hao_kheer,sweet_pudding,1 bowl,200,148,296,8,3.2,20,18,0,4,0.3
+cham_cham,sweet,1 piece,50,240,120,6,3,15,5,2,4,0.75
+chana_masala,veg_curry,1 bowl,240,145,348,7,2.1,10,3,3,4,0.875
+chapati,bread,1 chapati,40,300,120,4,1.2,40,2,3,7,1
+chhena_kheeri,sweet_pudding,1 bowl,150,231,346.5,6,2.4,15,5,2,4,0.75
+chicken_razala,nonveg_curry,1 bowl,235,140,329,8,3.2,6,1,1,8,1
+chicken_tikka,nonveg_snack,1 serving (6 pieces),150,179,268.5,6,2.4,15,5,2,4,0.75
+chicken_tikka_masala,nonveg_curry,1 bowl,240,191,458.4,8,3.2,6,1,1,8,1
+chikki,sweet,1 small bar,20,520,104,6,3,15,5,2,4,0.75
+daal_baati_churma,mixed_meal,1 serving (1 baati, 1 cup dal),250,203,6,1.8,15,5,2,4,0.75
+daal_puri,fried_snack,1 puri,45,270,121.5,15,7.5,25,2,2,5,1.25
+dal_makhani,lentil_curry,1 bowl,250,111,277.5,3,0.9,15,1,5,6,0.625
+dal_tadka,lentil_curry,1 bowl,250,179,447.5,3,0.9,15,1,5,6,0.625
+dharwad_pedha,sweet,1 piece,26,446,115.96,12,6,35,28,0.5,4,0.375
+doodhpak,sweet_pudding,1 bowl,200,212,424,8,3.2,20,18,0,4,0.3
+double_ka_meetha,sweet,1 piece,75,385,288.75,12,6,35,28,0.5,4,0.375
+dum_aloo,veg_curry,1 bowl,240,170,408,7,2.1,10,3,3,4,0.875
+gajar_ka_halwa,sweet,1 bowl,100,345,345,12,6,35,28,0.5,4,0.375
+gavvalu,sweet,1 serving,30,422,126.6,12,6,35,28,0.5,4,0.375
+ghevar,sweet,1 piece,150,445,667.5,12,6,35,28,0.5,4,0.375
+gulab_jamun,sweet,1 piece,45,286,128.7,12,6,35,28,0.5,4,0.375
+imarti,sweet,1 piece,25,356,89,12,6,35,28,0.5,4,0.375
+jalebi,sweet,1 piece,40,450,180,12,6,35,28,0.5,4,0.375
+kachori,fried_snack,1 piece,55,513,282.15,15,7.5,25,2,2,5,1.25
+kadai_paneer,veg_curry,1 bowl,240,130,312,7,2.1,10,3,3,4,0.875
+kadhi_pakoda,veg_curry,1 bowl,250,79,197.5,6,1.8,15,5,2,4,0.75
+kajjikaya,sweet,1 piece (karanji),70,350,245,6,3,15,5,2,4,0.75
+kakinada_khaja,sweet,1 piece,34,297,100.98,12,6,35,28,0.5,4,0.375
+kalakand,sweet,1 piece,44,386,169.84,12,6,35,28,0.5,4,0.375
+karela_bharta,veg_curry,1 serving,150,218,327,7,2.1,10,3,3,4,0.875
+kofta,veg_curry,1 bowl (malai kofta),250,148,370,6,1.8,15,5,2,4,0.75
+kuzhi_paniyaram,fried_snack,1 piece,30,207,62.1,15,7.5,25,2,2,5,1.25
+lassi,beverage,1 glass,180,113,203.4,4,1.2,12,12,0,3,0.15
+ledikeni,sweet,1 piece,40,350,140,12,6,35,28,0.5,4,0.375
+litti_chokha,mixed_meal,1 serving (2 litti, 1 bowl chokha),240,138,6,1.8,15,5,2,4,0.75
+lyangcha,sweet,1 piece,40,350,140,12,6,35,28,0.5,4,0.375
+maach_jhol,nonveg_curry,1 bowl,250,85,212.5,8,3.2,6,1,1,8,1
+makki_di_roti_sarson_da_saag,bread_plus_curry,1 roti,1 bowl saag,200,150,7,2.1,18,2,3,5,1.125
+malapua,sweet,1 piece,50,350,175,12,6,35,28,0.5,4,0.375
+misi_roti,bread,1 roti,60,306,183.6,4,1.2,40,2,3,7,1
+misti_doi,sweet_pudding,1 small cup,100,190,190,8,3.2,20,18,0,4,0.3
+modak,sweet,1 piece,40,288,115.2,12,6,35,28,0.5,4,0.375
+mysore_pak,sweet,1 piece,40,618,247.2,12,6,35,28,0.5,4,0.375
+naan,bread,1 naan,100,336,336,4,1.2,40,2,3,7,1
+navrattan_korma,veg_curry,1 bowl,240,154,369.6,7,2.1,10,3,3,4,0.875
+palak_paneer,veg_curry,1 bowl,240,198,475.2,7,2.1,10,3,3,4,0.875
+paneer_butter_masala,veg_curry,1 bowl,240,150,360,7,2.1,10,3,3,4,0.875
+phirni,sweet_pudding,1 small cup,100,243,243,8,3.2,20,18,0,4,0.3
+pithe,sweet,1 piece (patishapta),60,233,139.8,12,6,35,28,0.5,4,0.375
+poha,snack,1 bowl,150,180,270,6,1.8,15,5,2,4,0.75
+poornalu,fried_snack,1 piece,30,350,105,15,7.5,25,2,2,5,1.25
+pootharekulu,sweet,1 piece,40,438,175.2,6,3,15,5,2,4,0.75
+qubani_ka_meetha,sweet,1 small cup,100,324,324,12,6,35,28,0.5,4,0.375
+rabri,sweet_pudding,1 serving,100,275,275,8,3.2,20,18,0,4,0.3
+ras_malai,sweet,1 small cup (2 pieces),100,163,163,12,6,35,28,0.5,4,0.375
+rasgulla,sweet,1 piece,50,186,93,12,6,35,28,0.5,4,0.375
+sandesh,sweet,1 piece,50,250,125,12,6,35,28,0.5,4,0.375
+shankarpali,sweet,1 serving,30,422,126.6,12,6,35,28,0.5,4,0.375
+sheer_korma,sweet_pudding,1 small cup,100,288,288,8,3.2,20,18,0,4,0.3
+sheera,sweet,1 bowl (suji halwa),100,360,360,12,6,35,28,0.5,4,0.375
+shrikhand,sweet_pudding,1 small cup,100,234,234,8,3.2,20,18,0,4,0.3
+sohan_halwa,sweet,1 piece,30,445,133.5,12,6,35,28,0.5,4,0.375
+sohan_papdi,sweet,1 piece,21,476,99.96,12,6,35,28,0.5,4,0.375
+sutar_feni,sweet,1 serving,50,476,238,12,6,35,28,0.5,4,0.375
+unni_appam,sweet,1 piece,55,345,189.75,12,6,35,28,0.5,4,0.375
