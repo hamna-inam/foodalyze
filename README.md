@@ -1,43 +1,83 @@
 # Foodalyze
 
-
 ## Your pocket nutritionist, powered by AI.
-A *YOLOv8-powered API* for detecting Indian food dishes and estimating their calorie content.
+A dual-engine system: **YOLOv8** for food detection and **DeepSeek-LLM** for nutritional RAG analysis.
 
 -----
 
-## Architecture
+## 🏗️ System Architecture
 
+This project consists of two main pipelines: Computer Vision (CV) for detection and Large Language Models (LLM) for RAG-based Q&A.
+
+### 1. Computer Vision & MLOps Pipeline (YOLOv8)
 This diagram shows the complete MLOps workflow — from model training to a monitored API endpoint.
 
 ```mermaid
-  graph TD
-      subgraph "MLOps & Monitoring (D5)"
-          D[best.pt Model] -- registers --> M(MLflow Model Registry)
-          E(FastAPI App) -- scrapes --> P(Prometheus)
-          P -- datasource --> G(Grafana Dashboard)
-          T(Training Data) --> EV(Evidently Report)
-          V(Validation Data) --> EV
-      end
-  
-      subgraph "CI/CD Pipeline (D4)"
-          A[Git Push/PR] --> B(GitHub Actions)
-          B -- runs --> L(Lint)
-          B -- runs --> TST(Test)
-          TST -- on pass --> BLD(Build Docker Image)
-          BLD -- push --> R(GHCR Registry)
-          R --> DPL(Canary Deploy)
-          DPL --> AT(Acceptance Tests)
-      end
-  
-      subgraph "Inference API (D3, D7)"
-          U[User Upload] --> E
-          E -- loads model from --> D
-          E --> J(JSON Response)
-      end
+graph TD
+    subgraph "MLOps & Monitoring (D5)"
+        D[best.pt Model] -- registers --> M(MLflow Model Registry)
+        E(FastAPI App) -- scrapes --> P(Prometheus)
+        P -- datasource --> G(Grafana Dashboard)
+        T(Training Data) --> EV(Evidently Report)
+        V(Validation Data) --> EV
+    end
+  
+    subgraph "CI/CD Pipeline (D4)"
+        A[Git Push/PR] --> B(GitHub Actions)
+        B -- runs --> L(Lint)
+        B -- runs --> TST(Test)
+        TST -- on pass --> BLD(Build Docker Image)
+        BLD -- push --> R(GHCR Registry)
+        R --> DPL(Canary Deploy)
+        DPL --> AT(Acceptance Tests)
+    end
+  
+    subgraph "Inference API (D3, D7)"
+        U[User Upload] --> E
+        E -- loads model from --> D
+        E --> J(JSON Response)
+    end
+````
+
+### 2\. LLM RAG Pipeline (Milestone 2)
+
+This diagram illustrates the retrieval, augmentation, and generation flow for the AI Nutritionist chatbot.
+
+```mermaid
+graph TD
+    %% Nodes
+    User([👤 User])
+    UI[🖥️ Frontend\nStreamlit App]
+    API[⚙️ Backend API\nFastAPI]
+    VDB[(🗄️ Vector DB\nFAISS Index)]
+    LLM[🧠 LLM Model\nDeepSeek-7B-Chat]
+    
+    %% Flow
+    User -->|1. Asks: Is Samosa healthy?| UI
+    UI -->|2. Sends JSON Request| API
+    
+    subgraph "RAG Pipeline"
+        API -->|3. Query Embeddings| VDB
+        VDB -->|4. Retrieve Context\n(Nutrition Data)| API
+        API -->|5. Construct Prompt\n(Context + Query)| LLM
+        LLM -->|6. Generate Answer| API
+    end
+    
+    API -->|7. JSON Response| UI
+    UI -->|8. Display Answer| User
+
+    %% Styling
+    style VDB fill:#f9f,stroke:#333,stroke-width:2px
+    style LLM fill:#bbf,stroke:#333,stroke-width:2px
+    style API fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
-## Dataset: [https://drive.google.com/file/d/1SOqkv7GBLbs\_f6AISFvczdh1rRS29\_AP/view?usp=sharing](https://drive.google.com/file/d/1SOqkv7GBLbs_f6AISFvczdh1rRS29_AP/view?usp=sharing)
+## Dataset
+
+**Access the Dataset Here:** [Google Drive Link](https://drive.google.com/file/d/1SOqkv7GBLbs_f6AISFvczdh1rRS29_AP/view?usp=sharing)
+
+```
+```
 
 ## Quick Start
 
