@@ -78,6 +78,37 @@ graph TD
 
 ```
 ```
+### 3.Data Flow & Ingestion (Milestone 2)
+How raw nutrition data is processed and stored for retrieval.
+
+Code snippet
+
+flowchart LR
+    %% Data Sources
+    CSV[📄 nutrition.csv]
+    JSON[📄 swaps.json]
+    
+    %% Processes
+    Ingest[⚙️ Ingestion Script\nsrc/ingest.py]
+    Embed[🔠 Encoder Model\nall-MiniLM-L6-v2]
+    
+    %% Storage
+    VDB[(🗄️ Vector Store\nFAISS Local Index)]
+    Cloud[☁️ Cloud Storage\n(S3 / Artifacts)]
+    
+    %% Connections
+    CSV & JSON -->|Read Raw Data| Ingest
+    Ingest -->|Clean & Chunk Text| Embed
+    Embed -->|Generate Vectors| VDB
+    
+    %% Cloud Sync (D7 Requirement)
+    VDB -.->|Backup/Sync| Cloud
+    
+    %% Styling
+    style Ingest fill:#ff9,stroke:#333
+    style VDB fill:#f9f,stroke:#333
+    style Cloud fill:#eee,stroke:#333,stroke-dasharray: 5 5
+    
 
 ## Quick Start
 
