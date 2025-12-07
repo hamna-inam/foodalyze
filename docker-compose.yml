@@ -11,15 +11,12 @@ services:
     container_name: foodalyze_app
     ports:
       - "8000:8000"
-    volumes:
-      - ./src:/app/src
-      - ./models:/app/models
-      - ./class_mapping.json:/app/class_mapping.json
-      - ./faiss_index:/app/faiss_index
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
       - EXPERIMENT_NAME=YOLOv8_Indian_Food_Detection
       - REGISTERED_MODEL_NAME=Foodalyze_YOLOv8_Detector
+      - TRANSFORMERS_CACHE=/tmp/hf_cache
+      - HF_HOME=/tmp/hf_home
     networks:
       - foodalyze
     depends_on:
@@ -40,8 +37,6 @@ services:
     container_name: foodalyze_ui
     ports:
       - "8501:8501"
-    volumes:
-      - ./ui.py:/app/ui.py:ro
     environment:
       - API_BASE_URL=http://app:8000
     networks:

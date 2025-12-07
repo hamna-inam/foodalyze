@@ -501,7 +501,7 @@ st.markdown("""
 # ============================================================================
 # CONFIGURATION
 # ============================================================================
-API_BASE_URL = "http://localhost:8000"
+API_BASE_URL = "http://13.61.104.51:8000"
 PREDICT_ENDPOINT = f"{API_BASE_URL}/predict"
 ASK_ENDPOINT = f"{API_BASE_URL}/ask"
 HEALTH_ENDPOINT = f"{API_BASE_URL}/health"

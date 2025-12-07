@@ -5,8 +5,8 @@ WORKDIR /app
 # Install Streamlit
 RUN pip install -q streamlit requests pillow
 
-# Copy UI
-COPY ui.py .
+# Copy ONLY the UI file from src/
+COPY src/ui.py ./ui.py
 
 # Expose Streamlit port
 EXPOSE 8501

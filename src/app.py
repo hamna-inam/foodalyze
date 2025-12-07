@@ -13,7 +13,9 @@ import json
 import logging
 import time
 from datetime import datetime
+import os
 from ultralytics import YOLO
+import boto3  # <<< ADDED FOR S3
 
 # --- MONITORING ---
 try:
@@ -23,6 +25,22 @@ try:
     print('Monitoring enabled.')
 except ImportError:
     MONITORING_ENABLED = False
+
+# Global S3 client
+s3 = boto3.client("s3")
+S3_BUCKET = os.getenv("S3_BUCKET_NAME", "foodalyze-artifacts-v2")   # <<< CHANGE THIS OR SET IN EC2 ENV
+
+
+# ============================================================
+# S3 DOWNLOAD HELPER
+# ============================================================
+
+def force_download_from_s3(local_path, s3_key):
+    os.makedirs(os.path.dirname(local_path), exist_ok=True)
+    print(f"⬇️ Downloading from S3 → {local_path}")
+
+    s3.download_file(S3_BUCKET, s3_key, local_path)
+    print(f"   ✔ Downloaded {s3_key}")
 
 # ============================================================================
 # PROMETHEUS METRICS 
@@ -105,13 +123,19 @@ logger = logging.getLogger(__name__)
 # ============================================================================
 # CONFIGURATION
 # ============================================================================
-MODEL_PATH = "./models/best.pt"
-CLASS_MAPPING_PATH = "./class_mapping.json"
-FAISS_INDEX_PATH = "./faiss_index"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+S3_YOLO_MODEL_KEY = "best.pt"
+S3_CLASS_MAPPING_KEY = "class_mapping.json"
+S3_FAISS_FAISS_KEY = "index.faiss"
+S3_FAISS_PKL_KEY = "index.pkl"
+
+LOCAL_YOLO_MODEL = "./tmp/models/best.pt"
+LOCAL_CLASS_MAPPING = "./tmp/class_mapping.json"
+LOCAL_FAISS_FAISS = "./tmp/faiss/index.faiss"
+LOCAL_FAISS_PKL = "./tmp/faiss/index.pkl"
 
 # --- LLM CONFIGURATION ---
-LLM_MODEL_ID = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+LLM_MODEL_ID = "Qwen/Qwen2-0.5B-Instruct"
 USE_4BIT = False
 
 # ============================================================================
@@ -233,17 +257,23 @@ resources = {}
 async def lifespan(app: FastAPI):
     logger.info("🚀 Starting Foodalyze (YOLO + HuggingFace LLM)...")
 
+    # S3 → Local syncing
+    print("\n📦 Fetching artifacts from S3...\n")    
+    force_download_from_s3(LOCAL_YOLO_MODEL, S3_YOLO_MODEL_KEY)
+    force_download_from_s3(LOCAL_CLASS_MAPPING, S3_CLASS_MAPPING_KEY)
+    force_download_from_s3(LOCAL_FAISS_FAISS, S3_FAISS_FAISS_KEY)
+    force_download_from_s3(LOCAL_FAISS_PKL, S3_FAISS_PKL_KEY)
     # --- Load YOLO Model ---
     try:
-        resources["yolo_model"] = YOLO(MODEL_PATH)
-        logger.info(f"✅ YOLO model loaded: {MODEL_PATH}")
+        resources["yolo_model"] = YOLO(LOCAL_YOLO_MODEL)
+        logger.info(f"✅ YOLO model loaded: {LOCAL_YOLO_MODEL}")
     except Exception as e:
         logger.error(f"❌ Failed to load YOLO: {e}")
         resources["yolo_model"] = None
 
     # --- Load Class Mapping ---
     try:
-        with open(CLASS_MAPPING_PATH, 'r') as f:
+        with open(LOCAL_CLASS_MAPPING, 'r') as f:
             class_mapping = json.load(f)
             resources["class_to_id"] = class_mapping["class_to_id"]
             resources["id_to_class"] = {int(k): v for k, v in class_mapping["id_to_class"].items()}
@@ -256,9 +286,9 @@ async def lifespan(app: FastAPI):
     try:
         embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
         resources["vector_db"] = FAISS.load_local(
-            FAISS_INDEX_PATH, embeddings, allow_dangerous_deserialization=True
+            "./tmp/faiss", embeddings, allow_dangerous_deserialization=True
         )
-        logger.info(f"✅ Vector DB loaded: {FAISS_INDEX_PATH}")
+        logger.info(f"✅ Vector DB loaded from S3 artifacts (./tmp/faiss)")
     except Exception as e:
         logger.warning(f"⚠️ Vector DB not available: {e}")
         resources["vector_db"] = None
@@ -384,7 +414,7 @@ def root():
 @app.get("/model_info", tags=["Info"])
 def model_info():
     return {
-        "yolo_model": MODEL_PATH,
+        "yolo_model": LOCAL_YOLO_MODEL,
         "num_classes": len(resources.get("id_to_class", {})),
         "classes": resources.get("id_to_class", {}),
         "llm_model": LLM_MODEL_ID if resources.get("llm_model") else "Not loaded",
