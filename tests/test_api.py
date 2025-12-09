@@ -42,7 +42,6 @@ def test_health_check():
     assert "rag_loaded" in json_data
 
 
-
 def test_root_endpoint():
     response = client.get("/")
     assert response.status_code == 200
@@ -134,4 +133,3 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
-
