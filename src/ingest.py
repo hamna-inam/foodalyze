@@ -16,7 +16,8 @@ try:
         shutil.copy("/kaggle/input/foodalyse/nutrition_facts_final.csv", "data/nutrition_facts_final.csv")
         shutil.copy("/kaggle/input/foodalyse/healthy_swaps.json", "data/healthy_swaps.json")
         print("📂 Data Copied.")
-except:
+except Exception:
+
     print("⚠️ Check input paths if files are missing.")
 
 # 3. Build Vector DB
@@ -50,3 +51,4 @@ else:
 if __name__ == "__main__":
 
     pass
+
