@@ -1,7 +1,69 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 713448b (Milestone 2 Integrated)
 __pycache__/
 *.pt
 runs/
 data/*
 !data/*.dvc
 !data/.gitignore
+<<<<<<< HEAD
 mlruns/
+=======
+mlruns/
+=======
+
+# === Data ===
+IndianFoodDatasetFinalFiltered/
+*.jpg
+Final Data.zip
+data/
+*.csv
+*.npy
+*.npz
+food data
+
+# === DVC cache ===
+.dvc/
+*.dvc
+.cache/
+.cache/*
+*.pkl
+
+# === Model weights ===
+*.pt
+*.onnx
+*.tflite
+*.h5
+
+# === Reports and outputs ===
+*.log
+*.txt
+*.out
+*.pdf
+
+# === Python cache ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# === Environment and OS files ===
+.env
+*.DS_Store
+*.ipynb_checkpoints/
+venv/
+.env/
+.venv/
+
+# === Prometheus and Grafana data ===
+prometheus_data/
+grafana_data/
+
+# === Misc ===
+*.tar
+*.zip
+>>>>>>> 7234c4d (Save local changes before rebase)
+MLFLOW.code-workspace 
+>>>>>>> 713448b (Milestone 2 Integrated)

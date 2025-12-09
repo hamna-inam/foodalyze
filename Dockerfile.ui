@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install Streamlit
+RUN pip install -q streamlit requests pillow
+
+# Copy ONLY the UI file from src/
+COPY src/ui.py ./ui.py
+
+# Expose Streamlit port
+EXPOSE 8501
+
+# Run Streamlit
+CMD ["streamlit", "run", "ui.py", "--server.address=0.0.0.0"]

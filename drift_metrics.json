@@ -1,0 +1,7 @@
+{
+  "drift_score": 0.0,
+  "drift_threshold": 0.1,
+  "drift_detected": false,
+  "num_documents": 80,
+  "timestamp": "2025-12-06T15:33:40.170830"
+}

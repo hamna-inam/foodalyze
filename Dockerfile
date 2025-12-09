@@ -1,56 +1,63 @@
-# Stage 1: Builder - Install dependencies securely
-FROM python:3.11-slim as builder
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
-# Create a non-root user for security
-RUN groupadd --system app && useradd --system --gid app app
-
-# Install system build tools for packages like box2d-py and twofish
+# Install system dependencies needed for OpenCV + builds
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    swig \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    gcc \
+    libgl1 \
+    libglib2.0-0 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Copy requirements and install
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
+# -----------------------------------------------------------------------------
 
-# Stage 2: Final Image - Copy only what's needed
 FROM python:3.11-slim
 
-# Install only runtime libraries needed by OpenCV and curl (for healthcheck)
+WORKDIR /app
+
+# Install OpenCV runtime requirements
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1 \
     libglib2.0-0 \
     curl \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+# ---- FIX: Create non-root user in this stage ----
+RUN groupadd --system app && useradd --system --gid app app
 
-# Copy non-root user from builder
-COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /etc/group /etc/group
-
-# Copy only Python dependencies (skip /usr/local/bin to save space)
-COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
-COPY --from=builder /usr/local/bin/ /usr/local/bin/
+# Copy Python deps
+COPY --from=builder /install /usr/local
 
 # Copy application files
-COPY app.py .
 COPY class_mapping.json .
 COPY models/ models/
+COPY src/ src/
 
-# Change ownership and run as non-root user
+# ---- FIX: chown works now because user exists ----
 RUN chown -R app:app /app
+
+RUN mkdir -p /home/app/.cache/huggingface
+RUN chown -R app:app /home/app/.cache/huggingface
+
+# Switch to app user
 USER app
 
-# Healthcheck (D3)
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+ENV YOLO_CONFIG_DIR=/tmp
+ENV TRANSFORMERS_CACHE=/tmp
+ENV MPLCONFIGDIR=/tmp
+ENV HF_HOME=/tmp/huggingface
+ENV TRANSFORMERS_CACHE=/tmp/huggingface
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:8000/health || exit 1
 
-# Expose port and run application
 EXPOSE 8000
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+
+CMD ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]

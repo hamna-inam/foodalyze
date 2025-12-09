@@ -1,4 +1,3 @@
-
 import torch
 import json
 import pandas as pd
@@ -6,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from rouge_score import rouge_scorer
+
 # Import from the file we just created in the same folder
 from experiments_strategies import zero_shot, few_shot, chain_of_thought
 
@@ -22,14 +22,16 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_use_double_quant=True,
 )
 tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained(MODEL_ID, quantization_config=bnb_config, device_map="auto", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_ID, quantization_config=bnb_config, device_map="auto", trust_remote_code=True
+)
 
 # --- 2. Setup Evaluation ---
-scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
+scorer = rouge_scorer.RougeScorer(["rouge1", "rougeL"], use_stemmer=True)
 strategies = {
     "Zero-Shot": zero_shot,
     "Few-Shot": few_shot,
-    "Chain-of-Thought": chain_of_thought
+    "Chain-of-Thought": chain_of_thought,
 }
 
 # Load Eval Data
@@ -44,28 +46,34 @@ print(f"🧪 Running Experiments on {len(test_set)} food items...")
 for item in test_set:
     food = item["food"]
     truth = item["ground_truth"]
-    
+
     for strat_name, strat_func in strategies.items():
         print(f"   👉 Testing {strat_name} on '{food}'...")
-        
+
         # Generate
         prompt = strat_func(food)
         inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-        outputs = model.generate(**inputs, max_new_tokens=150, do_sample=True, temperature=0.6)
-        prediction = tokenizer.decode(outputs[0][inputs["input_ids"].shape[-1]:], skip_special_tokens=True).strip()
-        
+        outputs = model.generate(
+            **inputs, max_new_tokens=150, do_sample=True, temperature=0.6
+        )
+        prediction = tokenizer.decode(
+            outputs[0][inputs["input_ids"].shape[-1] :], skip_special_tokens=True
+        ).strip()
+
         # Calculate ROUGE (Quantitative)
         scores = scorer.score(truth, prediction)
-        
+
         # Log Data
-        results.append({
-            "Food": food,
-            "Strategy": strat_name,
-            "Ground Truth": truth,
-            "AI Prediction": prediction,
-            "ROUGE-L": round(scores['rougeL'].fmeasure, 3),
-            "Human_Score_1_to_5": "" 
-        })
+        results.append(
+            {
+                "Food": food,
+                "Strategy": strat_name,
+                "Ground Truth": truth,
+                "AI Prediction": prediction,
+                "ROUGE-L": round(scores["rougeL"].fmeasure, 3),
+                "Human_Score_1_to_5": "",
+            }
+        )
 
 # --- 4. Save Results ---
 df = pd.DataFrame(results)
