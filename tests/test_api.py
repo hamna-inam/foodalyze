@@ -1,18 +1,21 @@
 from fastapi.testclient import TestClient
-import os
-import sys
 from unittest.mock import patch, MagicMock
 import numpy as np
 import inspect  # <-- moved to top to satisfy Ruff E402
+import os
+import sys
 
-# Ensure project root is importable
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 
 from src.app import app  # noqa: E402
 
-# Diagnostic print (ALLOWED, Ruff does not block prints)
-print("ACTUALLY IMPORTED APP MODULE:", inspect.getfile(app))  # noqa: E402
+# --- Diagnostics (safe, no inspect) ---
+print("APP TYPE:", type(app))        # noqa: E402
+print("APP MODULE:", getattr(app, "__module__", None))  # noqa: E402
+print("APP ATTRS SAMPLE:", list(dir(app))[:20])  # noqa: E402
+
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 
@@ -125,3 +128,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
