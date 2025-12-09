@@ -3,18 +3,19 @@ import os
 import sys
 from unittest.mock import patch, MagicMock
 import numpy as np
+import inspect  # <-- moved to top to satisfy Ruff E402
 
 # Ensure project root is importable
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, PROJECT_ROOT)
 
-# Import FastAPI app
 from src.app import app  # noqa: E402
-import inspect
-print("ACTUALLY IMPORTED APP MODULE:", inspect.getfile(app))
 
+# Diagnostic print (ALLOWED, Ruff does not block prints)
+print("ACTUALLY IMPORTED APP MODULE:", inspect.getfile(app))  # noqa: E402
 
 client = TestClient(app)
+
 
 # Path to test image
 TEST_IMAGE_PATH = os.path.join(os.path.dirname(__file__), "sample_food.jpg")
@@ -124,4 +125,5 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
 
