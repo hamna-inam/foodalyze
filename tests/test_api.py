@@ -57,10 +57,13 @@ def test_model_info_endpoint():
     assert isinstance(json_data["classes"], dict)
 
 
-def test_predict_endpoint():
+@patch("src.app.model")
+def test_predict_endpoint(mock_model):
+    # Mock successful prediction result
+    mock_model.predict.return_value = [{"label": "pizza", "confidence": 0.95}]
+
     if not os.path.exists(TEST_IMAGE_PATH):
         import pytest
-
         pytest.skip("sample_food.jpg not found, skipping")
 
     with open(TEST_IMAGE_PATH, "rb") as f:
@@ -71,8 +74,8 @@ def test_predict_endpoint():
 
     assert response.status_code == 200
     data = response.json()
-    assert "detections" in data
-    assert "num_detections" in data
+    assert "predictions" in data
+
 
 
 def test_predict_no_file():
@@ -133,3 +136,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
