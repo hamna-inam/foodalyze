@@ -16,6 +16,17 @@ from datetime import datetime
 import os
 from ultralytics import YOLO
 import boto3  # <<< ADDED FOR S3
+# --- RAG & LLM IMPORTS ---
+import torch
+import gc
+from contextlib import asynccontextmanager
+from langchain_community.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+import logging
+logger = logging.getLogger(_name_)
+
+
 
 # --- MONITORING ---
 try:
@@ -95,13 +106,7 @@ if MONITORING_ENABLED:
         logger.warning(f"Could not initialize metrics: {e}")
         MONITORING_ENABLED = False
 
-# --- RAG & LLM IMPORTS ---
-import torch
-import gc
-from contextlib import asynccontextmanager
-from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+
 
 # --- GUARDRAILS ---
 try:
