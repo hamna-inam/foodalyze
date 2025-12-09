@@ -1,7 +1,6 @@
 # mlflow_yolo_params.py
 
 from ultralytics import YOLO
-import torch
 import mlflow
 import mlflow.pytorch
 import matplotlib.pyplot as plt
