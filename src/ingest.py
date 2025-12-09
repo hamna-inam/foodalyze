@@ -1,4 +1,3 @@
-%%writefile src/ingest.py
 import os
 import shutil
 import pandas as pd
@@ -49,4 +48,5 @@ else:
     print("❌ Error: Data files missing.")
 
 if __name__ == "__main__":
+
     pass
