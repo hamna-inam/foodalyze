@@ -22,9 +22,10 @@ import gc
 from contextlib import asynccontextmanager
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-import logging
-logger = logging.getLogger(_name_)
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -70,7 +71,8 @@ if MONITORING_ENABLED:
             try:
                 if name in REGISTRY._names_to_collectors:
                     REGISTRY.unregister(REGISTRY._names_to_collectors[name])
-            except:
+            except Exception:
+
                 pass
 
         LLM_TOKENS = Counter(
@@ -156,7 +158,8 @@ for name in metric_names:
     if name in REGISTRY._names_to_collectors:
         try:
             REGISTRY.unregister(REGISTRY._names_to_collectors[name])
-        except:
+        except Exception:
+
             pass
 
 LLM_TOKENS = Counter("llm_token_usage_total", "Total LLM tokens used", ["type"])
@@ -450,7 +453,8 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
             try:
                 YOLO_LATENCY.observe(duration)
                 print("YOLO inference time recorded.")
-            except:
+            except Exception:
+
                 pass
 
         result = results[0]
@@ -505,7 +509,8 @@ def ask(q: QueryRequest):
         try:
             print("Logging guardrail violation...")
             GUARDRAIL_VIOLATIONS.inc()
-        except:
+        except Exception:
+
             print("Failed to log guardrail violation.")
             pass
 
@@ -618,7 +623,8 @@ def ask(q: QueryRequest):
             try:
                 print("Logging guardrail violation...")
                 GUARDRAIL_VIOLATIONS.inc()
-            except:
+            except Exception:
+
                 print("Failed to log guardrail violation.")
         answer = "[Safety Filter] Response blocked due to safety policy."
 
