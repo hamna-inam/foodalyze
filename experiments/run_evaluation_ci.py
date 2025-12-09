@@ -3,8 +3,6 @@ Lightweight CI evaluation placeholder
 (does NOT load the 7B model — avoids OOM)
 """
 
-import json
-
 def main():
     try:
         with open("data/eval.jsonl") as f:
