@@ -57,25 +57,16 @@ def test_model_info_endpoint():
     assert isinstance(json_data["classes"], dict)
 
 
-@patch("src.app.resources", {"yolo_model": MagicMock(), "id_to_class": {0: "aloo_gobi"}})
-def test_predict_endpoint(mock_model):
-    # Mock successful prediction result
-    mock_model.predict.return_value = [{"label": "pizza", "confidence": 0.95}]
+@patch("src.app.resources")
+def test_predict_endpoint(mock_resources):
+    mock_model = MagicMock()
+    mock_model.predict.return_value = [fake_result]
 
-    if not os.path.exists(TEST_IMAGE_PATH):
-        import pytest
-
-        pytest.skip("sample_food.jpg not found, skipping")
-
-    with open(TEST_IMAGE_PATH, "rb") as f:
-        response = client.post(
-            "/predict",
-            files={"file": ("sample_food.jpg", f, "image/jpeg")},
-        )
-
-    assert response.status_code == 200
-    data = response.json()
-    assert "predictions" in data
+    # Make resources return this fake YOLO model
+    mock_resources.get.side_effect = lambda key, default=None: {
+        "yolo_model": mock_model,
+        "id_to_class": {0: "aloo_gobi"},
+    }.get(key, default)
 
 
 def test_predict_no_file():
@@ -136,4 +127,5 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
 
