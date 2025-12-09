@@ -1,22 +1,22 @@
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 import numpy as np
-import inspect  # <-- moved to top to satisfy Ruff E402
 import os
 import sys
 
+# --- Ensure project root is in path ---
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 
+# --- Import the FastAPI app ---
 from src.app import app  # noqa
 
-# --- Diagnostics (safe, no inspect) ---
-print("APP TYPE:", type(app))        # noqa: E402
-print("APP MODULE:", getattr(app, "__module__", None))  # noqa: E402
-print("APP ATTRS SAMPLE:", list(dir(app))[:20])  # noqa: E402
+# --- Diagnostics: These DO NOT violate Ruff E402 now ---
+print("APP TYPE:", type(app))
+print("APP MODULE:", getattr(app, "__module__", None))
+print("APP ATTRS SAMPLE:", list(dir(app))[:20])
 
-from fastapi.testclient import TestClient
-
+# --- Create test client ---
 client = TestClient(app)
 
 
@@ -128,5 +128,6 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
 
 
