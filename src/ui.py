@@ -16,7 +16,7 @@ st.set_page_config(
     page_title="Foodalyze - AI Nutrition Tracker",
     page_icon="🍎",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 # Initialize session state FIRST before anything else
@@ -36,7 +36,8 @@ if "daily_stats" not in st.session_state:
 # ============================================================================
 # MODERN STYLING - CALORIEMAMA INSPIRED (FIXES APPLIED HERE)
 # ============================================================================
-st.markdown("""
+st.markdown(
+    """
 <style>
     * {
         margin: 0;
@@ -495,7 +496,9 @@ st.markdown("""
         border-bottom-color: #667eea !important;
     }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # ============================================================================
 # CONFIGURATION
@@ -522,54 +525,77 @@ if "daily_stats" not in st.session_state:
 # ============================================================================
 with st.sidebar:
     st.markdown('<div class="sidebar-title">🍎 Foodalyze</div>', unsafe_allow_html=True)
-    
-    pages = ["🏠 Home", "📸 Scanner", "📊 Dashboard", "💬 Nutrition AI", "📚 Food Database", "⚙️ Settings"]
-    
+
+    pages = [
+        "🏠 Home",
+        "📸 Scanner",
+        "📊 Dashboard",
+        "💬 Nutrition AI",
+        "📚 Food Database",
+        "⚙️ Settings",
+    ]
+
     for page in pages:
         if st.button(page, use_container_width=True, key=f"nav_{page}"):
             st.session_state.page = page
-    
+
     st.divider()
-    
+
     with st.expander("📊 Today's Summary"):
         today_cal = st.session_state.daily_stats["calories"]
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem;">
             <p style="margin: 0; font-size: 13px; color: #666;">Total Calories</p>
             <p style="margin: 0; font-size: 20px; font-weight: 700; color: #003d99;">{today_cal:.0f} cal</p>
         </div>
-        """, unsafe_allow_html=True)
-        st.markdown(f"""
+        """,
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f"""
         <div style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem;">
             <p style="margin: 0; font-size: 13px; color: #666;">Protein</p>
             <p style="margin: 0; font-size: 20px; font-weight: 700; color: #003d99;">{st.session_state.daily_stats['protein']:.0f}g</p>
         </div>
-        """, unsafe_allow_html=True)
-        st.markdown(f"""
+        """,
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f"""
         <div style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem;">
             <p style="margin: 0; font-size: 13px; color: #666;">Carbs</p>
             <p style="margin: 0; font-size: 20px; font-weight: 700; color: #003d99;">{st.session_state.daily_stats['carbs']:.0f}g</p>
         </div>
-        """, unsafe_allow_html=True)
-        st.markdown(f"""
+        """,
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f"""
         <div style="background: white; padding: 1rem; border-radius: 8px;">
             <p style="margin: 0; font-size: 13px; color: #666;">Fat</p>
             <p style="margin: 0; font-size: 20px; font-weight: 700; color: #003d99;">{st.session_state.daily_stats['fat']:.0f}g</p>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
 # ============================================================================
 # PAGE: HOME
 # ============================================================================
 if st.session_state.page == "🏠 Home":
-    st.markdown("""
+    st.markdown(
+        """
     <div class="home-hero">
         <h1>🍎 Foodalyze</h1>
         <p>Your AI-Powered Nutrition & Food Analysis Companion</p>
     </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
+    """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
     <div class="feature-grid">
         <div class="feature-card">
             <div class="feature-icon">📸</div>
@@ -592,8 +618,10 @@ if st.session_state.page == "🏠 Home":
             <p>Browse thousands of foods with complete nutritional information at your fingertips</p>
         </div>
     </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("")
@@ -603,12 +631,13 @@ if st.session_state.page == "🏠 Home":
             st.rerun()
     with col3:
         st.markdown("")
-    
+
     st.markdown("<br><br>", unsafe_allow_html=True)
-    
+
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("""
+        st.markdown(
+            """
         <div class="card">
             <h2 class="card-title">Why Foodalyze?</h2>
             <p><strong> Instant Analysis</strong> - Get nutrition facts in seconds</p>
@@ -616,10 +645,13 @@ if st.session_state.page == "🏠 Home":
             <p><strong> Easy to Use</strong> - Simple, intuitive interface</p>
             <p><strong> Comprehensive</strong> - Track calories, macros, and micronutrients</p>
         </div>
-        """, unsafe_allow_html=True)
-    
+        """,
+            unsafe_allow_html=True,
+        )
+
     with col2:
-        st.markdown("""
+        st.markdown(
+            """
         <div class="card">
             <h2 class="card-title">How It Works</h2>
             <p><strong>1. Capture</strong> - Take a photo of your meal</p>
@@ -627,107 +659,149 @@ if st.session_state.page == "🏠 Home":
             <p><strong>3. Track</strong> - Log to your daily nutrition</p>
             <p><strong>4. Learn</strong> - Get insights and recommendations</p>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
 # ============================================================================
 # PAGE: SCANNER
 # ============================================================================
 elif st.session_state.page == "📸 Scanner":
-    st.markdown("""
+    st.markdown(
+        """
     <div class="header-gradient">
         <h1 class="header-title">📸 Meal Scanner</h1>
         <p class="header-subtitle">Point your camera at food and instantly analyze its nutrition</p>
     </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
     col1, col2 = st.columns([1.2, 1], gap="large")
-    
+
     with col1:
-        
-        st.markdown('<h2 class="card-title">Upload Your Meal</h2>', unsafe_allow_html=True)
-        
+
+        st.markdown(
+            '<h2 class="card-title">Upload Your Meal</h2>', unsafe_allow_html=True
+        )
+
         uploaded_file = st.file_uploader(
             "Select a photo",
             type=["jpg", "jpeg", "png", "webp"],
             label_visibility="collapsed",
-            key="meal_upload"
+            key="meal_upload",
         )
-        
+
         if uploaded_file:
             image = Image.open(uploaded_file)
             # Deprecation fix: Changed use_column_width to use_container_width
             st.image(image, use_container_width=True, caption="Your meal")
-            
+
             if st.button("🔍 Analyze Meal", use_container_width=True, key="analyze"):
                 with st.spinner("🔄 Analyzing your meal..."):
                     try:
                         response = requests.post(
                             PREDICT_ENDPOINT,
                             files={"file": ("image.jpg", uploaded_file.getvalue())},
-                            timeout=60 # Increased timeout for robustness
+                            timeout=60,  # Increased timeout for robustness
                         )
                         if response.status_code == 200:
                             st.session_state.detection_result = response.json()
                             st.success("✅ Analysis complete!")
                         else:
-                            st.error(f"❌ Analysis failed. Status code: {response.status_code}. Response: {response.text}")
+                            st.error(
+                                f"❌ Analysis failed. Status code: {response.status_code}. Response: {response.text}"
+                            )
                     except requests.exceptions.ConnectionError:
-                        st.error("❌ Connection Error: Could not connect to the analysis backend. Please ensure the service is running at http://localhost:8000.")
+                        st.error(
+                            "❌ Connection Error: Could not connect to the analysis backend. Please ensure the service is running at http://localhost:8000."
+                        )
                     except Exception as e:
                         st.error(f"Error: {str(e)}")
         else:
-            st.markdown("""
+            st.markdown(
+                """
             <div class="upload-box">
                 <div class="upload-icon">📷</div>
                 <div class="upload-text">Select an image file above</div>
                 <div class="upload-subtext">JPG, PNG, or WebP • Supports multiple foods</div>
             </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-    
+            """,
+                unsafe_allow_html=True,
+            )
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
     with col2:
         if st.session_state.detection_result:
             result = st.session_state.detection_result
-            
+
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown('<h2 class="card-title">Results</h2>', unsafe_allow_html=True)
-            
+
             # Metrics
             col_m1, col_m2, col_m3 = st.columns(3)
-            total_cal = sum([d.get("calories_estimate", 0) or 0 for d in result.get("detections", [])])
-            
+            total_cal = sum(
+                [
+                    d.get("calories_estimate", 0) or 0
+                    for d in result.get("detections", [])
+                ]
+            )
+
             with col_m1:
-                st.markdown(f"""
+                st.markdown(
+                    f"""
                 <div class="metric">
                     <div class="metric-value">{result.get('num_detections', 0)}</div>
                     <div class="metric-label">Items</div>
                 </div>
-                """, unsafe_allow_html=True)
-            
+                """,
+                    unsafe_allow_html=True,
+                )
+
             with col_m2:
-                st.markdown(f"""
+                st.markdown(
+                    f"""
                 <div class="metric">
                     <div class="metric-value">{total_cal:.0f}</div>
                     <div class="metric-label">Calories</div>
                 </div>
-                """, unsafe_allow_html=True)
-            
+                """,
+                    unsafe_allow_html=True,
+                )
+
             with col_m3:
-                avg_conf = (sum([d.get('confidence', 0) for d in result.get('detections', [])])/max(len(result.get('detections', [])), 1)*100) if result.get('detections') else 0
-                st.markdown(f"""
+                avg_conf = (
+                    (
+                        sum(
+                            [
+                                d.get("confidence", 0)
+                                for d in result.get("detections", [])
+                            ]
+                        )
+                        / max(len(result.get("detections", [])), 1)
+                        * 100
+                    )
+                    if result.get("detections")
+                    else 0
+                )
+                st.markdown(
+                    f"""
                 <div class="metric">
                     <div class="metric-value">{avg_conf:.0f}%</div>
                     <div class="metric-label">Confidence</div>
                 </div>
-                """, unsafe_allow_html=True)
-            
+                """,
+                    unsafe_allow_html=True,
+                )
+
             st.markdown("<br>", unsafe_allow_html=True)
-            
+
             # Detections
             st.markdown("**Detected Foods:**")
             for detection in result.get("detections", []):
-                st.markdown(f"""
+                st.markdown(
+                    f"""
                 <div class="detection-card">
                     <div class="food-name">✓ {detection.get('class_name', 'Unknown').replace('_', ' ')}</div>
                     <div class="food-info">
@@ -736,175 +810,220 @@ elif st.session_state.page == "📸 Scanner":
                         <div style="display: inline-block;"><span class="confidence-badge">{detection.get('confidence', 0)*100:.1f}% match</span></div>
                     </div>
                 </div>
-                """, unsafe_allow_html=True)
-            
+                """,
+                    unsafe_allow_html=True,
+                )
+
             if st.button("➕ Add to Daily Log", use_container_width=True):
                 st.session_state.daily_stats["calories"] += total_cal
-                st.session_state.meal_history.append({
-                    "time": datetime.now().strftime("%H:%M"),
-                    "items": result.get("detections", []),
-                    "total_cal": total_cal
-                })
-                st.success("Added to your daily log! (Note: Macro tracking is a placeholder.)")
-            
-            st.markdown('</div>', unsafe_allow_html=True)
+                st.session_state.meal_history.append(
+                    {
+                        "time": datetime.now().strftime("%H:%M"),
+                        "items": result.get("detections", []),
+                        "total_cal": total_cal,
+                    }
+                )
+                st.success(
+                    "Added to your daily log! (Note: Macro tracking is a placeholder.)"
+                )
+
+            st.markdown("</div>", unsafe_allow_html=True)
         else:
-            st.markdown("""
+            st.markdown(
+                """
         
-            """, unsafe_allow_html=True)
+            """,
+                unsafe_allow_html=True,
+            )
 
 # ============================================================================
 # PAGE: DASHBOARD
 # ============================================================================
 elif st.session_state.page == "📊 Dashboard":
-    st.markdown("""
+    st.markdown(
+        """
     <div class="header-gradient">
         <h1 class="header-title">📊 Nutrition Dashboard</h1>
         <p class="header-subtitle">Track your daily nutrition goals and progress</p>
     </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div class="metric">
             <div class="metric-value">{st.session_state.daily_stats['calories']:.0f}</div>
             <div class="metric-label">Calories</div>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
     with col2:
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div class="metric">
             <div class="metric-value">{st.session_state.daily_stats['protein']:.0f}g</div>
             <div class="metric-label">Protein</div>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
     with col3:
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div class="metric">
             <div class="metric-value">{st.session_state.daily_stats['carbs']:.0f}g</div>
             <div class="metric-label">Carbs</div>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
     with col4:
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div class="metric">
             <div class="metric-value">{st.session_state.daily_stats['fat']:.0f}g</div>
             <div class="metric-label">Fat</div>
         </div>
-        """, unsafe_allow_html=True)
-    
+        """,
+            unsafe_allow_html=True,
+        )
+
     st.markdown("<br>", unsafe_allow_html=True)
-    
+
     col1, col2 = st.columns([1.5, 1])
     with col2:
         if st.session_state.meal_history:
             for meal in reversed(st.session_state.meal_history):
-                st.markdown(f"""
+                st.markdown(
+                    f"""
                 <div class="stats-box">
                     <div class="stat-row">
                         <span class="stat-label">{meal['time']}</span>
                         <span class="stat-value">{meal['total_cal']:.0f} cal</span>
                     </div>
                 </div>
-                """, unsafe_allow_html=True)
+                """,
+                    unsafe_allow_html=True,
+                )
         else:
             st.info("No meals logged yet. Start by scanning a meal!")
-        st.markdown('</div>', unsafe_allow_html=True)
-    
+        st.markdown("</div>", unsafe_allow_html=True)
+
     with col1:
         st.markdown('<h2 class="card-title">🎯 Goals</h2>', unsafe_allow_html=True)
         st.metric("Daily Goal", "2000 cal")
-        st.metric("Progress", f"{min(100, st.session_state.daily_stats['calories']/2000*100):.0f}%")
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.metric(
+            "Progress",
+            f"{min(100, st.session_state.daily_stats['calories']/2000*100):.0f}%",
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================================
 # PAGE: NUTRITION AI
 # ============================================================================
 elif st.session_state.page == "💬 Nutrition AI":
-    st.markdown("""
+    st.markdown(
+        """
     <div class="header-gradient">
         <h1 class="header-title">💬 Ask Your Nutritionist</h1>
         <p class="header-subtitle">Get personalized nutrition advice powered by AI</p>
     </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
     col1, col2 = st.columns([1, 1.3], gap="large")
-    
+
     with col1:
-        st.markdown('<h2 class="card-title">💡 Sample Questions</h2>', unsafe_allow_html=True)
-        
+        st.markdown(
+            '<h2 class="card-title">💡 Sample Questions</h2>', unsafe_allow_html=True
+        )
+
         samples = [
             "How many calories in butter chicken?",
             "Is paneer healthy for weight loss?",
             "Best high-protein Indian dishes?",
             "Healthy swaps for samosa?",
             "Nutritional benefits of dal?",
-            "How to eat biryani healthily?"
+            "How to eat biryani healthily?",
         ]
-        
+
         for sample in samples:
             if st.button(sample, use_container_width=True, key=f"sample_{sample}"):
                 st.session_state.current_question = sample
                 st.rerun()
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-    
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
     with col2:
         st.markdown('<h2 class="card-title">Your Question</h2>', unsafe_allow_html=True)
-        
+
         user_question = st.text_area(
             "Ask anything about nutrition",
-            value=st.session_state.current_question, 
+            value=st.session_state.current_question,
             height=120,
             placeholder="What's your nutrition question?",
-            label_visibility="collapsed"
+            label_visibility="collapsed",
         )
-        
+
         if st.button("🚀 Get Answer", use_container_width=True):
             if user_question.strip():
                 with st.spinner("Consulting AI nutritionist..."):
                     try:
                         response = requests.post(
-                            ASK_ENDPOINT,
-                            json={"text": user_question},
-                            timeout=120
+                            ASK_ENDPOINT, json={"text": user_question}, timeout=120
                         )
                         if response.status_code == 200:
                             result = response.json()
                             st.session_state.qa_result = result
                             st.session_state.current_question = ""
                         else:
-                            st.error(f"Try again. Status code: {response.status_code}. Response: {response.text}")
+                            st.error(
+                                f"Try again. Status code: {response.status_code}. Response: {response.text}"
+                            )
                     except requests.exceptions.ConnectionError:
-                        st.error("❌ Connection Error: Could not connect to the AI backend. Please ensure the service is running at http://localhost:8000.")
+                        st.error(
+                            "❌ Connection Error: Could not connect to the AI backend. Please ensure the service is running at http://localhost:8000."
+                        )
                     except Exception as e:
                         st.error(f"Error: {str(e)}")
             else:
                 st.warning("Please ask a question")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-    
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
     if "qa_result" in st.session_state and st.session_state.qa_result is not None:
         result = st.session_state.qa_result
         st.markdown('<h2 class="card-title">✨ Response</h2>', unsafe_allow_html=True)
-        st.markdown(f'<div class="qa-answer">{result.get("answer", "No response")}</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="qa-answer">{result.get("answer", "No response")}</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================================
 # PAGE: FOOD DATABASE
 # ============================================================================
 elif st.session_state.page == "📚 Food Database":
-    st.markdown("""
+    st.markdown(
+        """
     <div class="header-gradient">
         <h1 class="header-title">📚 Food Database</h1>
         <p class="header-subtitle">Browse and search common foods with nutrition info</p>
     </div>
-    """, unsafe_allow_html=True)
-    
-    search_term = st.text_input("🔍 Search foods", placeholder="e.g., chicken, rice, apple...")
-    st.markdown('</div>', unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
+    search_term = st.text_input(
+        "🔍 Search foods", placeholder="e.g., chicken, rice, apple..."
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
+
     # Sample database
     food_db = {
         "Chicken Breast": {"calories": 165, "protein": 31, "carbs": 0, "fat": 3.6},
@@ -913,15 +1032,16 @@ elif st.session_state.page == "📚 Food Database":
         "Butter": {"calories": 717, "protein": 0.9, "carbs": 0, "fat": 81},
         "Milk": {"calories": 61, "protein": 3.2, "carbs": 4.8, "fat": 3.3},
     }
-    
+
     if search_term:
         results = {k: v for k, v in food_db.items() if search_term.lower() in k.lower()}
     else:
         results = food_db
-    
+
     if results:
         for food_name, nutrition in results.items():
-            st.markdown(f"""
+            st.markdown(
+                f"""
             <div class="detection-card">
                 <div class="food-name">{food_name}</div>
                 <div class="food-info">
@@ -931,21 +1051,26 @@ elif st.session_state.page == "📚 Food Database":
                     <div class="info-badge">🧈 {nutrition['fat']}g fat</div>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            """,
+                unsafe_allow_html=True,
+            )
 
 # ============================================================================
 # PAGE: SETTINGS
 # ============================================================================
 elif st.session_state.page == "⚙️ Settings":
-    st.markdown("""
+    st.markdown(
+        """
     <div class="header-gradient">
         <h1 class="header-title">⚙️ Settings</h1>
         <p class="header-subtitle">Customize your Foodalyze experience</p>
     </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
     st.markdown('<h2 class="card-title">👤 Profile</h2>', unsafe_allow_html=True)
-    
+
     col1, col2 = st.columns(2)
     with col1:
         st.text_input("Full Name", "")
@@ -955,9 +1080,9 @@ elif st.session_state.page == "⚙️ Settings":
         st.number_input("Height (cm)", 140, 220)
         st.number_input("Weight (kg)", 40, 200)
         st.selectbox("Activity Level", ["Sedentary", "Light", "Moderate", "Active"])
-        
+
     st.markdown('<h2 class="card-title">🎯 Daily Goals</h2>', unsafe_allow_html=True)
-    
+
     col1, col2 = st.columns(2)
     with col1:
         st.number_input("Daily Calorie Goal", 1500, 3500, 2000)
@@ -965,6 +1090,6 @@ elif st.session_state.page == "⚙️ Settings":
     with col2:
         st.number_input("Carbs Goal (g)", 100, 500, 250)
         st.number_input("Fat Goal (g)", 30, 150, 65)
-        
+
     if st.button("💾 Save Settings", use_container_width=True):
         st.success("Settings saved successfully!")

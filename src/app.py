@@ -16,6 +16,7 @@ from datetime import datetime
 import os
 from ultralytics import YOLO
 import boto3  # <<< ADDED FOR S3
+
 # --- RAG & LLM IMPORTS ---
 import torch
 import gc
@@ -28,24 +29,27 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 logger = logging.getLogger(__name__)
 
 
-
 # --- MONITORING ---
 try:
     from starlette_prometheus import PrometheusMiddleware, metrics
     from prometheus_client import Counter, Histogram, REGISTRY
+
     MONITORING_ENABLED = True
-    print('Monitoring enabled.')
+    print("Monitoring enabled.")
 except ImportError:
     MONITORING_ENABLED = False
 
 # Global S3 client
 s3 = boto3.client("s3")
-S3_BUCKET = os.getenv("S3_BUCKET_NAME", "foodalyze-artifacts-v2")   # <<< CHANGE THIS OR SET IN EC2 ENV
+S3_BUCKET = os.getenv(
+    "S3_BUCKET_NAME", "foodalyze-artifacts-v2"
+)  # <<< CHANGE THIS OR SET IN EC2 ENV
 
 
 # ============================================================
 # S3 DOWNLOAD HELPER
 # ============================================================
+
 
 def force_download_from_s3(local_path, s3_key):
     os.makedirs(os.path.dirname(local_path), exist_ok=True)
@@ -54,8 +58,9 @@ def force_download_from_s3(local_path, s3_key):
     s3.download_file(S3_BUCKET, s3_key, local_path)
     print(f"   ✔ Downloaded {s3_key}")
 
+
 # ============================================================================
-# PROMETHEUS METRICS 
+# PROMETHEUS METRICS
 # ============================================================================
 if MONITORING_ENABLED:
     try:
@@ -78,47 +83,48 @@ if MONITORING_ENABLED:
         LLM_TOKENS = Counter(
             "llm_token_usage_total",
             "Total LLM tokens used",
-            ["type"]  # type = input or output
+            ["type"],  # type = input or output
         )
-        
+
         GUARDRAIL_VIOLATIONS = Counter(
-            "guardrail_violations_total",
-            "Total guardrail violations"
+            "guardrail_violations_total", "Total guardrail violations"
         )
-        
+
         LLM_LATENCY = Histogram(
             "llm_request_duration_seconds",
             "LLM request latency in seconds",
-            buckets=[0.1, 0.5, 1.0, 2.0, 5.0, 10.0]
+            buckets=[0.1, 0.5, 1.0, 2.0, 5.0, 10.0],
         )
-        
+
         YOLO_LATENCY = Histogram(
             "yolo_inference_duration_seconds",
             "YOLO inference latency in seconds",
-            buckets=[0.01, 0.05, 0.1, 0.2, 0.5, 1.0]
+            buckets=[0.01, 0.05, 0.1, 0.2, 0.5, 1.0],
         )
-        
+
         LLM_COST = Counter(
             "llm_cost_usd_total",
             "Total LLM cost in USD",
-            ["token_type"]  # token_type = input or output
+            ["token_type"],  # token_type = input or output
         )
-        
+
     except Exception as e:
         logger.warning(f"Could not initialize metrics: {e}")
         MONITORING_ENABLED = False
-
 
 
 # --- GUARDRAILS ---
 try:
     from src.guardrails import guard
 except ImportError:
+
     class DummyGuard:
         def validate_input(self, text):
             return True, "Safe"
+
         def validate_output(self, text):
             return True, "Safe"
+
     guard = DummyGuard()
 
 # ============================================================================
@@ -171,92 +177,413 @@ YOLO_LATENCY = Histogram("yolo_inference_duration_seconds", "YOLO inference late
 # FOOD DATA (Trimmed for brevity, keep your full list)
 # ============================================================================
 FOOD_DATA = {
-   "adhirasam": {"standard_portion_desc": "1 piece", "standard_portion_g": 35, "calories_per_100g": 337},
-"aloo_gobi": {"standard_portion_desc": "1 bowl", "standard_portion_g": 150, "calories_per_100g": 80},
-"aloo_matar": {"standard_portion_desc": "1 bowl", "standard_portion_g": 150, "calories_per_100g": 135},
-"aloo_methi": {"standard_portion_desc": "1 bowl", "standard_portion_g": 150, "calories_per_100g": 151},
-"aloo_shimla_mirch": {"standard_portion_desc": "1 bowl", "standard_portion_g": 150, "calories_per_100g": 138},
-"aloo_tikki": {"standard_portion_desc": "1 piece", "standard_portion_g": 55, "calories_per_100g": 200},
-"anarsa": {"standard_portion_desc": "1 piece", "standard_portion_g": 25, "calories_per_100g": 360},
-"ariselu": {"standard_portion_desc": "1 piece", "standard_portion_g": 44, "calories_per_100g": 300},
-"bandar_laddu": {"standard_portion_desc": "1 piece", "standard_portion_g": 35, "calories_per_100g": 356},
-"basundi": {"standard_portion_desc": "1 bowl", "standard_portion_g": 150, "calories_per_100g": 152},
-"bhatura": {"standard_portion_desc": "1 piece", "standard_portion_g": 50, "calories_per_100g": 400},
-"bhindi_masala": {"standard_portion_desc": "1 bowl", "standard_portion_g": 150, "calories_per_100g": 107},
-"biryani": {"standard_portion_desc": "1 plate", "standard_portion_g": 300, "calories_per_100g": 131},
-"boondi": {"standard_portion_desc": "1 small bowl (savory)", "standard_portion_g": 30, "calories_per_100g": 584},
-"butter_chicken": {"standard_portion_desc": "1 bowl", "standard_portion_g": 240, "calories_per_100g": 129},
-"chak_hao_kheer": {"standard_portion_desc": "1 bowl", "standard_portion_g": 200, "calories_per_100g": 148},
-"cham_cham": {"standard_portion_desc": "1 piece", "standard_portion_g": 50, "calories_per_100g": 240},
-"chana_masala": {"standard_portion_desc": "1 bowl", "standard_portion_g": 240, "calories_per_100g": 145},
-"chapati": {"standard_portion_desc": "1 chapati", "standard_portion_g": 40, "calories_per_100g": 300},
-"chhena_kheeri": {"standard_portion_desc": "1 bowl", "standard_portion_g": 150, "calories_per_100g": 231},
-"chicken_razala": {"standard_portion_desc": "1 bowl", "standard_portion_g": 235, "calories_per_100g": 140},
-"chicken_tikka": {"standard_portion_desc": "1 serving (6 pieces)", "standard_portion_g": 150, "calories_per_100g": 179},
-"chicken_tikka_masala": {"standard_portion_desc": "1 bowl", "standard_portion_g": 240, "calories_per_100g": 191},
-"chikki": {"standard_portion_desc": "1 small bar", "standard_portion_g": 20, "calories_per_100g": 520},
-"daal_baati_churma": {"standard_portion_desc": "1 serving (1 baati, 1 cup dal)", "standard_portion_g": 250, "calories_per_100g": 203},
-"daal_puri": {"standard_portion_desc": "1 puri", "standard_portion_g": 45, "calories_per_100g": 270},
-"dal_makhani": {"standard_portion_desc": "1 bowl", "standard_portion_g": 250, "calories_per_100g": 111},
-"dal_tadka": {"standard_portion_desc": "1 bowl", "standard_portion_g": 250, "calories_per_100g": 179},
-"dharwad_pedha": {"standard_portion_desc": "1 piece", "standard_portion_g": 26, "calories_per_100g": 446},
-"doodhpak": {"standard_portion_desc": "1 bowl", "standard_portion_g": 200, "calories_per_100g": 212},
-"double_ka_meetha": {"standard_portion_desc": "1 piece", "standard_portion_g": 75, "calories_per_100g": 385},
-"dum_aloo": {"standard_portion_desc": "1 bowl", "standard_portion_g": 240, "calories_per_100g": 170},
-"gajar_ka_halwa": {"standard_portion_desc": "1 bowl", "standard_portion_g": 100, "calories_per_100g": 345},
-"gavvalu": {"standard_portion_desc": "1 serving", "standard_portion_g": 30, "calories_per_100g": 422},
-"ghevar": {"standard_portion_desc": "1 piece", "standard_portion_g": 150, "calories_per_100g": 445},
-"gulab_jamun": {"standard_portion_desc": "1 piece", "standard_portion_g": 45, "calories_per_100g": 286},
-"imarti": {"standard_portion_desc": "1 piece", "standard_portion_g": 25, "calories_per_100g": 356},
-"jalebi": {"standard_portion_desc": "1 piece", "standard_portion_g": 40, "calories_per_100g": 450},
-"kachori": {"standard_portion_desc": "1 piece", "standard_portion_g": 55, "calories_per_100g": 513},
-"kadai_paneer": {"standard_portion_desc": "1 bowl", "standard_portion_g": 240, "calories_per_100g": 130},
-"kadhi_pakoda": {"standard_portion_desc": "1 bowl", "standard_portion_g": 250, "calories_per_100g": 79},
-"kajjikaya": {"standard_portion_desc": "1 piece (karanji)", "standard_portion_g": 70, "calories_per_100g": 350},
-"kakinada_khaja": {"standard_portion_desc": "1 piece", "standard_portion_g": 34, "calories_per_100g": 297},
-"kalakand": {"standard_portion_desc": "1 piece", "standard_portion_g": 44, "calories_per_100g": 386},
-"karela_bharta": {"standard_portion_desc": "1 serving", "standard_portion_g": 150, "calories_per_100g": 218},
-"kofta": {"standard_portion_desc": "1 bowl (malai kofta)", "standard_portion_g": 250, "calories_per_100g": 148},
-"kuzhi_paniyaram": {"standard_portion_desc": "1 piece", "standard_portion_g": 30, "calories_per_100g": 207},
-"lassi": {"standard_portion_desc": "1 glass", "standard_portion_g": 180, "calories_per_100g": 113},
-"ledikeni": {"standard_portion_desc": "1 piece", "standard_portion_g": 40, "calories_per_100g": 350},
-"litti_chokha": {"standard_portion_desc": "1 serving (2 litti, 1 bowl chokha)", "standard_portion_g": 240, "calories_per_100g": 138},
-"lyangcha": {"standard_portion_desc": "1 piece", "standard_portion_g": 40, "calories_per_100g": 350},
-"maach_jhol": {"standard_portion_desc": "1 bowl", "standard_portion_g": 250, "calories_per_100g": 85},
-"makki_di_roti_sarson_da_saag": {"standard_portion_desc": "1 roti, 1 bowl saag", "standard_portion_g": 200, "calories_per_100g": 150},
-"malapua": {"standard_portion_desc": "1 piece", "standard_portion_g": 50, "calories_per_100g": 350},
-"misi_roti": {"standard_portion_desc": "1 roti", "standard_portion_g": 60, "calories_per_100g": 306},
-"misti_doi": {"standard_portion_desc": "1 small cup", "standard_portion_g": 100, "calories_per_100g": 190},
-"modak": {"standard_portion_desc": "1 piece", "standard_portion_g": 40, "calories_per_100g": 288},
-"mysore_pak": {"standard_portion_desc": "1 piece", "standard_portion_g": 40, "calories_per_100g": 618},
-"naan": {"standard_portion_desc": "1 naan", "standard_portion_g": 100, "calories_per_100g": 336},
-"navrattan_korma": {"standard_portion_desc": "1 bowl", "standard_portion_g": 240, "calories_per_100g": 154},
-"palak_paneer": {"standard_portion_desc": "1 bowl", "standard_portion_g": 240, "calories_per_100g": 198},
-"paneer_butter_masala": {"standard_portion_desc": "1 bowl", "standard_portion_g": 240, "calories_per_100g": 150},
-"phirni": {"standard_portion_desc": "1 small cup", "standard_portion_g": 100, "calories_per_100g": 243},
-"pithe": {"standard_portion_desc": "1 piece (patishapta)", "standard_portion_g": 60, "calories_per_100g": 233},
-"poha": {"standard_portion_desc": "1 bowl", "standard_portion_g": 150, "calories_per_100g": 180},
-"poornalu": {"standard_portion_desc": "1 piece", "standard_portion_g": 30, "calories_per_100g": 350},
-"pootharekulu": {"standard_portion_desc": "1 piece", "standard_portion_g": 40, "calories_per_100g": 438},
-"qubani_ka_meetha": {"standard_portion_desc": "1 small cup", "standard_portion_g": 100, "calories_per_100g": 324},
-"rabri": {"standard_portion_desc": "1 serving", "standard_portion_g": 100, "calories_per_100g": 275},
-"ras_malai": {"standard_portion_desc": "1 small cup (2 pieces)", "standard_portion_g": 100, "calories_per_100g": 163},
-"rasgulla": {"standard_portion_desc": "1 piece", "standard_portion_g": 50, "calories_per_100g": 186},
-"sandesh": {"standard_portion_desc": "1 piece", "standard_portion_g": 50, "calories_per_100g": 250},
-"shankarpali": {"standard_portion_desc": "1 serving", "standard_portion_g": 30, "calories_per_100g": 422},
-"sheer_korma": {"standard_portion_desc": "1 small cup", "standard_portion_g": 100, "calories_per_100g": 288},
-"sheera": {"standard_portion_desc": "1 bowl (suji halwa)", "standard_portion_g": 100, "calories_per_100g": 360},
-"shrikhand": {"standard_portion_desc": "1 small cup", "standard_portion_g": 100, "calories_per_100g": 234},
-"sohan_halwa": {"standard_portion_desc": "1 piece", "standard_portion_g": 30, "calories_per_100g": 445},
-"sohan_papdi": {"standard_portion_desc": "1 piece", "standard_portion_g": 21, "calories_per_100g": 476},
-"sutar_feni": {"standard_portion_desc": "1 serving", "standard_portion_g": 50, "calories_per_100g": 476},
-"unni_appam": {"standard_portion_desc": "1 piece", "standard_portion_g": 55, "calories_per_100g": 345}
+    "adhirasam": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 35,
+        "calories_per_100g": 337,
+    },
+    "aloo_gobi": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 150,
+        "calories_per_100g": 80,
+    },
+    "aloo_matar": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 150,
+        "calories_per_100g": 135,
+    },
+    "aloo_methi": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 150,
+        "calories_per_100g": 151,
+    },
+    "aloo_shimla_mirch": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 150,
+        "calories_per_100g": 138,
+    },
+    "aloo_tikki": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 55,
+        "calories_per_100g": 200,
+    },
+    "anarsa": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 25,
+        "calories_per_100g": 360,
+    },
+    "ariselu": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 44,
+        "calories_per_100g": 300,
+    },
+    "bandar_laddu": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 35,
+        "calories_per_100g": 356,
+    },
+    "basundi": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 150,
+        "calories_per_100g": 152,
+    },
+    "bhatura": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 50,
+        "calories_per_100g": 400,
+    },
+    "bhindi_masala": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 150,
+        "calories_per_100g": 107,
+    },
+    "biryani": {
+        "standard_portion_desc": "1 plate",
+        "standard_portion_g": 300,
+        "calories_per_100g": 131,
+    },
+    "boondi": {
+        "standard_portion_desc": "1 small bowl (savory)",
+        "standard_portion_g": 30,
+        "calories_per_100g": 584,
+    },
+    "butter_chicken": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 240,
+        "calories_per_100g": 129,
+    },
+    "chak_hao_kheer": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 200,
+        "calories_per_100g": 148,
+    },
+    "cham_cham": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 50,
+        "calories_per_100g": 240,
+    },
+    "chana_masala": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 240,
+        "calories_per_100g": 145,
+    },
+    "chapati": {
+        "standard_portion_desc": "1 chapati",
+        "standard_portion_g": 40,
+        "calories_per_100g": 300,
+    },
+    "chhena_kheeri": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 150,
+        "calories_per_100g": 231,
+    },
+    "chicken_razala": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 235,
+        "calories_per_100g": 140,
+    },
+    "chicken_tikka": {
+        "standard_portion_desc": "1 serving (6 pieces)",
+        "standard_portion_g": 150,
+        "calories_per_100g": 179,
+    },
+    "chicken_tikka_masala": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 240,
+        "calories_per_100g": 191,
+    },
+    "chikki": {
+        "standard_portion_desc": "1 small bar",
+        "standard_portion_g": 20,
+        "calories_per_100g": 520,
+    },
+    "daal_baati_churma": {
+        "standard_portion_desc": "1 serving (1 baati, 1 cup dal)",
+        "standard_portion_g": 250,
+        "calories_per_100g": 203,
+    },
+    "daal_puri": {
+        "standard_portion_desc": "1 puri",
+        "standard_portion_g": 45,
+        "calories_per_100g": 270,
+    },
+    "dal_makhani": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 250,
+        "calories_per_100g": 111,
+    },
+    "dal_tadka": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 250,
+        "calories_per_100g": 179,
+    },
+    "dharwad_pedha": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 26,
+        "calories_per_100g": 446,
+    },
+    "doodhpak": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 200,
+        "calories_per_100g": 212,
+    },
+    "double_ka_meetha": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 75,
+        "calories_per_100g": 385,
+    },
+    "dum_aloo": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 240,
+        "calories_per_100g": 170,
+    },
+    "gajar_ka_halwa": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 100,
+        "calories_per_100g": 345,
+    },
+    "gavvalu": {
+        "standard_portion_desc": "1 serving",
+        "standard_portion_g": 30,
+        "calories_per_100g": 422,
+    },
+    "ghevar": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 150,
+        "calories_per_100g": 445,
+    },
+    "gulab_jamun": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 45,
+        "calories_per_100g": 286,
+    },
+    "imarti": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 25,
+        "calories_per_100g": 356,
+    },
+    "jalebi": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 40,
+        "calories_per_100g": 450,
+    },
+    "kachori": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 55,
+        "calories_per_100g": 513,
+    },
+    "kadai_paneer": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 240,
+        "calories_per_100g": 130,
+    },
+    "kadhi_pakoda": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 250,
+        "calories_per_100g": 79,
+    },
+    "kajjikaya": {
+        "standard_portion_desc": "1 piece (karanji)",
+        "standard_portion_g": 70,
+        "calories_per_100g": 350,
+    },
+    "kakinada_khaja": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 34,
+        "calories_per_100g": 297,
+    },
+    "kalakand": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 44,
+        "calories_per_100g": 386,
+    },
+    "karela_bharta": {
+        "standard_portion_desc": "1 serving",
+        "standard_portion_g": 150,
+        "calories_per_100g": 218,
+    },
+    "kofta": {
+        "standard_portion_desc": "1 bowl (malai kofta)",
+        "standard_portion_g": 250,
+        "calories_per_100g": 148,
+    },
+    "kuzhi_paniyaram": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 30,
+        "calories_per_100g": 207,
+    },
+    "lassi": {
+        "standard_portion_desc": "1 glass",
+        "standard_portion_g": 180,
+        "calories_per_100g": 113,
+    },
+    "ledikeni": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 40,
+        "calories_per_100g": 350,
+    },
+    "litti_chokha": {
+        "standard_portion_desc": "1 serving (2 litti, 1 bowl chokha)",
+        "standard_portion_g": 240,
+        "calories_per_100g": 138,
+    },
+    "lyangcha": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 40,
+        "calories_per_100g": 350,
+    },
+    "maach_jhol": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 250,
+        "calories_per_100g": 85,
+    },
+    "makki_di_roti_sarson_da_saag": {
+        "standard_portion_desc": "1 roti, 1 bowl saag",
+        "standard_portion_g": 200,
+        "calories_per_100g": 150,
+    },
+    "malapua": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 50,
+        "calories_per_100g": 350,
+    },
+    "misi_roti": {
+        "standard_portion_desc": "1 roti",
+        "standard_portion_g": 60,
+        "calories_per_100g": 306,
+    },
+    "misti_doi": {
+        "standard_portion_desc": "1 small cup",
+        "standard_portion_g": 100,
+        "calories_per_100g": 190,
+    },
+    "modak": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 40,
+        "calories_per_100g": 288,
+    },
+    "mysore_pak": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 40,
+        "calories_per_100g": 618,
+    },
+    "naan": {
+        "standard_portion_desc": "1 naan",
+        "standard_portion_g": 100,
+        "calories_per_100g": 336,
+    },
+    "navrattan_korma": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 240,
+        "calories_per_100g": 154,
+    },
+    "palak_paneer": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 240,
+        "calories_per_100g": 198,
+    },
+    "paneer_butter_masala": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 240,
+        "calories_per_100g": 150,
+    },
+    "phirni": {
+        "standard_portion_desc": "1 small cup",
+        "standard_portion_g": 100,
+        "calories_per_100g": 243,
+    },
+    "pithe": {
+        "standard_portion_desc": "1 piece (patishapta)",
+        "standard_portion_g": 60,
+        "calories_per_100g": 233,
+    },
+    "poha": {
+        "standard_portion_desc": "1 bowl",
+        "standard_portion_g": 150,
+        "calories_per_100g": 180,
+    },
+    "poornalu": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 30,
+        "calories_per_100g": 350,
+    },
+    "pootharekulu": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 40,
+        "calories_per_100g": 438,
+    },
+    "qubani_ka_meetha": {
+        "standard_portion_desc": "1 small cup",
+        "standard_portion_g": 100,
+        "calories_per_100g": 324,
+    },
+    "rabri": {
+        "standard_portion_desc": "1 serving",
+        "standard_portion_g": 100,
+        "calories_per_100g": 275,
+    },
+    "ras_malai": {
+        "standard_portion_desc": "1 small cup (2 pieces)",
+        "standard_portion_g": 100,
+        "calories_per_100g": 163,
+    },
+    "rasgulla": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 50,
+        "calories_per_100g": 186,
+    },
+    "sandesh": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 50,
+        "calories_per_100g": 250,
+    },
+    "shankarpali": {
+        "standard_portion_desc": "1 serving",
+        "standard_portion_g": 30,
+        "calories_per_100g": 422,
+    },
+    "sheer_korma": {
+        "standard_portion_desc": "1 small cup",
+        "standard_portion_g": 100,
+        "calories_per_100g": 288,
+    },
+    "sheera": {
+        "standard_portion_desc": "1 bowl (suji halwa)",
+        "standard_portion_g": 100,
+        "calories_per_100g": 360,
+    },
+    "shrikhand": {
+        "standard_portion_desc": "1 small cup",
+        "standard_portion_g": 100,
+        "calories_per_100g": 234,
+    },
+    "sohan_halwa": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 30,
+        "calories_per_100g": 445,
+    },
+    "sohan_papdi": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 21,
+        "calories_per_100g": 476,
+    },
+    "sutar_feni": {
+        "standard_portion_desc": "1 serving",
+        "standard_portion_g": 50,
+        "calories_per_100g": 476,
+    },
+    "unni_appam": {
+        "standard_portion_desc": "1 piece",
+        "standard_portion_g": 55,
+        "calories_per_100g": 345,
+    },
 }
 
 # ============================================================================
 # GLOBAL RESOURCES
 # ============================================================================
 resources = {}
+
 
 # ============================================================================
 # LIFESPAN: Load models on startup (FIX APPLIED HERE)
@@ -266,7 +593,7 @@ async def lifespan(app: FastAPI):
     logger.info("🚀 Starting Foodalyze (YOLO + HuggingFace LLM)...")
 
     # S3 → Local syncing
-    print("\n📦 Fetching artifacts from S3...\n")    
+    print("\n📦 Fetching artifacts from S3...\n")
     force_download_from_s3(LOCAL_YOLO_MODEL, S3_YOLO_MODEL_KEY)
     force_download_from_s3(LOCAL_CLASS_MAPPING, S3_CLASS_MAPPING_KEY)
     force_download_from_s3(LOCAL_FAISS_FAISS, S3_FAISS_FAISS_KEY)
@@ -281,11 +608,15 @@ async def lifespan(app: FastAPI):
 
     # --- Load Class Mapping ---
     try:
-        with open(LOCAL_CLASS_MAPPING, 'r') as f:
+        with open(LOCAL_CLASS_MAPPING, "r") as f:
             class_mapping = json.load(f)
             resources["class_to_id"] = class_mapping["class_to_id"]
-            resources["id_to_class"] = {int(k): v for k, v in class_mapping["id_to_class"].items()}
-        logger.info(f"✅ Class mapping loaded ({len(resources['id_to_class'])} classes)")
+            resources["id_to_class"] = {
+                int(k): v for k, v in class_mapping["id_to_class"].items()
+            }
+        logger.info(
+            f"✅ Class mapping loaded ({len(resources['id_to_class'])} classes)"
+        )
     except Exception as e:
         logger.error(f"❌ Failed to load class mapping: {e}")
         resources["id_to_class"] = {}
@@ -304,7 +635,7 @@ async def lifespan(app: FastAPI):
     # --- Load LLM (HuggingFace) ---
     try:
         gc.collect()
-        
+
         # Determine the correct device (FIX: Explicitly check and set device)
         if torch.backends.mps.is_available():
             device = torch.device("mps")
@@ -312,22 +643,21 @@ async def lifespan(app: FastAPI):
             device = torch.device("cuda")
         else:
             device = torch.device("cpu")
-            
-        logger.info(f"Using device: {device}")
-        
-        # Explicitly clear cache if using a GPU device
-        if device.type != 'cpu':
-            if device.type == 'mps':
-                 torch.mps.empty_cache()
-            else:
-                 torch.cuda.empty_cache()
 
+        logger.info(f"Using device: {device}")
+
+        # Explicitly clear cache if using a GPU device
+        if device.type != "cpu":
+            if device.type == "mps":
+                torch.mps.empty_cache()
+            else:
+                torch.cuda.empty_cache()
 
         logger.info(f"Loading {LLM_MODEL_ID}...")
-        
+
         # Load tokenizer
         tokenizer = AutoTokenizer.from_pretrained(LLM_MODEL_ID, trust_remote_code=True)
-        
+
         # Load model without quantization
         model = AutoModelForCausalLM.from_pretrained(
             LLM_MODEL_ID,
@@ -335,20 +665,20 @@ async def lifespan(app: FastAPI):
             trust_remote_code=True,
             # CRITICAL: We remove device_map="auto" to explicitly move the model ourselves
         )
-        
+
         # 🔥 CRITICAL FIX: Explicitly move the model to the determined device
         # This resolves the "device meta" error by ensuring all components are on mps:0
         model.to(device)
 
         resources["llm_tokenizer"] = tokenizer
         resources["llm_model"] = model
-        resources["llm_device"] = device # Store the device for later use
+        resources["llm_device"] = device  # Store the device for later use
         logger.info(f"✅ LLM loaded successfully on {device}: {LLM_MODEL_ID}")
     except Exception as e:
         logger.error(f"❌ Failed to load LLM: {e}")
         resources["llm_model"] = None
         resources["llm_tokenizer"] = None
-        resources["llm_device"] = torch.device("cpu") # Default if loading fails
+        resources["llm_device"] = torch.device("cpu")  # Default if loading fails
 
     yield
 
@@ -358,12 +688,13 @@ async def lifespan(app: FastAPI):
     gc.collect()
     try:
         # Use device-aware cleanup
-        if resources.get("llm_device", torch.device("cpu")).type == 'mps':
+        if resources.get("llm_device", torch.device("cpu")).type == "mps":
             torch.mps.empty_cache()
-        elif resources.get("llm_device", torch.device("cpu")).type == 'cuda':
+        elif resources.get("llm_device", torch.device("cpu")).type == "cuda":
             torch.cuda.empty_cache()
     except Exception as e:
         logger.warning(f"Cleanup error: {e}")
+
 
 # ============================================================================
 # CREATE FASTAPI APP
@@ -378,11 +709,13 @@ app = FastAPI(
 app.add_middleware(PrometheusMiddleware)
 app.add_route("/metrics", metrics)
 
+
 # ============================================================================
 # PYDANTIC MODELS
 # ============================================================================
 class QueryRequest(BaseModel):
     text: str
+
 
 class HealthResponse(BaseModel):
     status: str
@@ -390,6 +723,7 @@ class HealthResponse(BaseModel):
     rag_loaded: bool
     llm_loaded: bool
     timestamp: str
+
 
 # ============================================================================
 # ENDPOINTS
@@ -403,6 +737,7 @@ def health_check() -> HealthResponse:
         llm_loaded=resources.get("llm_model") is not None,
         timestamp=datetime.now().isoformat(),
     )
+
 
 @app.get("/", tags=["Info"])
 def root():
@@ -419,6 +754,7 @@ def root():
         },
     }
 
+
 @app.get("/model_info", tags=["Info"])
 def model_info():
     return {
@@ -428,6 +764,7 @@ def model_info():
         "llm_model": LLM_MODEL_ID if resources.get("llm_model") else "Not loaded",
         "vector_db": "FAISS" if resources.get("vector_db") else "Not loaded",
     }
+
 
 @app.post("/predict", tags=["Food Detection"])
 async def predict(file: UploadFile = File(...), conf: float = 0.5):
@@ -476,15 +813,17 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
                 portion_g = None
                 calories = None
 
-            detections.append({
-                "class_id": class_id,
-                "class_name": class_name,
-                "confidence": round(confidence, 4),
-                "bbox": {"x1": x1, "y1": y1, "x2": x2, "y2": y2},
-                "portion_desc": portion,
-                "portion_g": portion_g,
-                "calories_estimate": calories,
-            })
+            detections.append(
+                {
+                    "class_id": class_id,
+                    "class_name": class_name,
+                    "confidence": round(confidence, 4),
+                    "bbox": {"x1": x1, "y1": y1, "x2": x2, "y2": y2},
+                    "portion_desc": portion,
+                    "portion_g": portion_g,
+                    "calories_estimate": calories,
+                }
+            )
 
         return {
             "image": file.filename,
@@ -497,6 +836,7 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
     except Exception as e:
         logger.error(f"Prediction error: {e}")
         raise HTTPException(status_code=400, detail=f"Prediction failed: {str(e)}")
+
 
 @app.post("/ask", tags=["RAG Q&A"])
 def ask(q: QueryRequest):
@@ -534,18 +874,21 @@ def ask(q: QueryRequest):
     start_time = time.time()
     try:
         messages = [
-            {"role": "system", "content": (
-                "You are a hyper-efficient, expert nutritionist specializing in Indian cuisine. "
-                "Your sole purpose is to provide direct, factual, and concise answers."
-                "\n\n### FORMATTING RULES ###"
-                "\n1. **OUTPUT MUST BE ONE SINGLE PARAGRAPH.**"
-                "\n2. DO NOT use introductory phrases (e.g., 'Sure, here is...', 'The following tips...'). START IMMEDIATELY with the answer content."
-                "\n3. NEVER use list formatting (e.g., numbered lists or bullet points)."
-                "\n4. DO NOT use concluding remarks or summaries."
-                "\n5. NEVER let your answer end abruptly; finish sentences completely."
-                "\n6. Never mention that you are an AI model or refer to yourself in any way."
-                "\n\nRespond ONLY to the question using the constraints above."
-            )},
+            {
+                "role": "system",
+                "content": (
+                    "You are a hyper-efficient, expert nutritionist specializing in Indian cuisine. "
+                    "Your sole purpose is to provide direct, factual, and concise answers."
+                    "\n\n### FORMATTING RULES ###"
+                    "\n1. **OUTPUT MUST BE ONE SINGLE PARAGRAPH.**"
+                    "\n2. DO NOT use introductory phrases (e.g., 'Sure, here is...', 'The following tips...'). START IMMEDIATELY with the answer content."
+                    "\n3. NEVER use list formatting (e.g., numbered lists or bullet points)."
+                    "\n4. DO NOT use concluding remarks or summaries."
+                    "\n5. NEVER let your answer end abruptly; finish sentences completely."
+                    "\n6. Never mention that you are an AI model or refer to yourself in any way."
+                    "\n\nRespond ONLY to the question using the constraints above."
+                ),
+            },
             {"role": "user", "content": f"Context:\n{context}\n\nQuestion: {q.text}"},
         ]
 
@@ -556,7 +899,9 @@ def ask(q: QueryRequest):
             tokenize=True,
             return_dict=True,
             return_tensors="pt",
-        ).to(llm_model.device) # Ensures input tensors are on the correct device (mps:0)
+        ).to(
+            llm_model.device
+        )  # Ensures input tensors are on the correct device (mps:0)
 
         outputs = llm_model.generate(
             **inputs,
@@ -564,13 +909,12 @@ def ask(q: QueryRequest):
             do_sample=True,
             temperature=0.5,
             top_p=0.9,
-            pad_token_id=llm_tokenizer.eos_token_id, 
+            pad_token_id=llm_tokenizer.eos_token_id,
             eos_token_id=llm_tokenizer.eos_token_id,
-     
         )
 
         answer = llm_tokenizer.decode(
-            outputs[0][inputs["input_ids"].shape[-1]:], skip_special_tokens=True
+            outputs[0][inputs["input_ids"].shape[-1] :], skip_special_tokens=True
         ).strip()
         # --- Track tokens and cost ---
         if MONITORING_ENABLED:
@@ -578,16 +922,16 @@ def ask(q: QueryRequest):
                 print("Tracking tokens and cost...")
                 input_tokens = inputs["input_ids"].shape[-1]
                 output_tokens = outputs.shape[-1] - input_tokens
-                
+
                 LLM_TOKENS.labels(type="input").inc(input_tokens)
                 LLM_TOKENS.labels(type="output").inc(output_tokens)
-                
+
                 # Cost tracking (TinyLlama is free, but we track it anyway)
                 COST_PER_INPUT_1K = 0.0
                 COST_PER_OUTPUT_1K = 0.0
                 input_cost = (input_tokens / 1000.0) * COST_PER_INPUT_1K
                 output_cost = (output_tokens / 1000.0) * COST_PER_OUTPUT_1K
-                
+
                 if input_cost > 0:
                     LLM_COST.labels(token_type="input").inc(input_cost)
                 if output_cost > 0:
@@ -615,7 +959,6 @@ def ask(q: QueryRequest):
             pass
 
     # --- Output validation (Guardrails) ---
- 
 
     is_safe, msg = guard.validate_output(answer)
     if not is_safe:
@@ -636,12 +979,14 @@ def ask(q: QueryRequest):
         "timestamp": datetime.now().isoformat(),
     }
 
+
 @app.get("/debug/guardrail_stats", tags=["Debug"])
 def guardrail_stats():
     """Get current guardrail metrics."""
     return {
         "guardrail_violations": GUARDRAIL_VIOLATIONS._value.get(),
     }
+
 
 # ============================================================================
 # MAIN

@@ -1,6 +1,6 @@
-
 def zero_shot(food):
     return f"User: Is {food} healthy? Answer in 2 sentences.\nAssistant:"
+
 
 def few_shot(food):
     return f"""User: Is palak_paneer healthy?
@@ -11,6 +11,7 @@ Assistant: No, it is deep-fried milk solids soaked in sugar syrup, making it ver
 
 User: Is {food} healthy? Answer in 2 sentences.
 Assistant:"""
+
 
 def chain_of_thought(food):
     return f"""System: You are a nutritionist. Follow these steps to answer:
