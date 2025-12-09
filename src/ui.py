@@ -7,7 +7,6 @@ Modern, Polished Design with Multiple Pages
 import streamlit as st
 import requests
 from PIL import Image
-import json
 from datetime import datetime
 
 # ============================================================================
