@@ -36,7 +36,7 @@ class SafetyGuard:
         # Check PII
         for pattern in self.pii_patterns:
             if re.search(pattern, text):
-                return False, f"⚠️ Request blocked: Contains sensitive data (PII)."
+                return False, "⚠️ Request blocked: Contains sensitive data (PII)."
 
         # Check Injection
         for pattern in self.injection_patterns:
