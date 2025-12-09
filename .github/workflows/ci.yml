@@ -40,6 +40,10 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
           pip install ultralytics pytest pytest-cov httpx
+      - name: Show directory tree before running tests
+        run: |
+          echo "=== PROJECT DIRECTORY STRUCTURE ==="
+          ls -R
       - name: Run tests with coverage
         env:
           PYTHONPATH: ${{ github.workspace }}
