@@ -6,7 +6,7 @@ import numpy as np
 
 # Ensure project root (Foodalyze) is in sys.path
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from app import app
+from src.app import app
 
 client = TestClient(app)
 
@@ -137,3 +137,4 @@ def test_predict_model_not_loaded():
     finally:
         # Restore model after test
         app_module.model = original_model
+
