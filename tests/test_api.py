@@ -30,11 +30,17 @@ TEST_IMAGE_PATH = os.path.join(os.path.dirname(__file__), "sample_food.jpg")
 
 
 def test_health_check():
+    """Tests if the /health endpoint is working."""
     response = client.get("/health")
     assert response.status_code == 200
+
     json_data = response.json()
+
     assert json_data["status"] == "OK"
-    assert "model_loaded" in json_data
+    assert "timestamp" in json_data
+    assert "llm_loaded" in json_data
+    assert "rag_loaded" in json_data
+
 
 
 def test_root_endpoint():
@@ -128,3 +134,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
