@@ -8,7 +8,7 @@ import sys
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 
-from src.app import app  # noqa: E402
+from src.app import app  # noqa
 
 # --- Diagnostics (safe, no inspect) ---
 print("APP TYPE:", type(app))        # noqa: E402
@@ -128,4 +128,5 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
 
