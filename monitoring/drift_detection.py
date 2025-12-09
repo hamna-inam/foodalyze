@@ -114,7 +114,7 @@ def generate_evidently_report():
         curr_df = pd.DataFrame(curr_embeddings)
         curr_df.columns = [f"dim_{i}" for i in range(curr_embeddings.shape[1])]
         
-        logger.info(f"📊 Generating Evidently report...")
+        logger.info("📊 Generating Evidently report...")
         logger.info(f"  Reference: {num_reference} documents")
         logger.info(f"  Current: {num_current} documents")
         
@@ -185,7 +185,7 @@ def generate_report():
         drift_metrics = detect_drift()
         with open(DRIFT_METRICS_PATH, 'w') as f:
             json.dump(drift_metrics, f, indent=2)
-        logger.info(f"✅ Drift metrics saved")
+        logger.info("✅ Drift metrics saved")
     
     return result
 
