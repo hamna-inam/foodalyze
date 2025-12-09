@@ -4,29 +4,24 @@ import sys
 from unittest.mock import patch, MagicMock
 import numpy as np
 
-# ---------------------------------------------------------------------------
-# FIX: Ensure repo root is added to sys.path (so src.app loads correctly)
-# ---------------------------------------------------------------------------
-
-CURRENT_DIR = os.path.dirname(__file__)  # Foodalyze/tests
-PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, ".."))  # Foodalyze/
+# Ensure project root is importable
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, PROJECT_ROOT)
 
+# Import FastAPI app
 from src.app import app  # noqa: E402
 
 client = TestClient(app)
 
-# --- Define the path to your test image ---
-TEST_IMAGE_PATH = os.path.join(CURRENT_DIR, "sample_food.jpg")
+# Path to test image
+TEST_IMAGE_PATH = os.path.join(os.path.dirname(__file__), "sample_food.jpg")
 
 
 # ---------------------------------------------------------------------------
 # BASE TESTS
 # ---------------------------------------------------------------------------
 
-
 def test_health_check():
-    """Tests if the /health endpoint is working."""
     response = client.get("/health")
     assert response.status_code == 200
     json_data = response.json()
@@ -35,14 +30,12 @@ def test_health_check():
 
 
 def test_root_endpoint():
-    """Tests the main / endpoint."""
     response = client.get("/")
     assert response.status_code == 200
     assert "name" in response.json()
 
 
 def test_model_info_endpoint():
-    """Tests the /model_info endpoint."""
     response = client.get("/model_info")
     assert response.status_code == 200
     json_data = response.json()
@@ -52,11 +45,9 @@ def test_model_info_endpoint():
 
 
 def test_predict_endpoint():
-    """Tests the /predict endpoint with a real image file (if available)."""
     if not os.path.exists(TEST_IMAGE_PATH):
         import pytest
-
-        pytest.skip("sample_food.jpg not found, skipping real prediction test")
+        pytest.skip("sample_food.jpg not found, skipping")
 
     with open(TEST_IMAGE_PATH, "rb") as f:
         response = client.post(
@@ -67,29 +58,21 @@ def test_predict_endpoint():
     assert response.status_code == 200
     data = response.json()
     assert "detections" in data
+    assert "num_detections" in data
 
 
 def test_predict_no_file():
-    """Tests sending a request to /predict without a file."""
     response = client.post("/predict")
     assert response.status_code == 422
 
 
 # ---------------------------------------------------------------------------
-# HIGHER COVERAGE TESTS — FIXED PATCH PATHS
+# MOCKED TESTS (correct module paths!)
 # ---------------------------------------------------------------------------
-# IMPORTANT:
-# Your app is at src/app.py → Python module = src.app
-# Therefore patch targets must be:
-#   "src.app.model"
-#   "src.app.cv2.imdecode"
-# ---------------------------------------------------------------------------
-
 
 @patch("src.app.cv2.imdecode", return_value=np.zeros((100, 100, 3), dtype=np.uint8))
 @patch("src.app.model")
 def test_predict_with_mocked_yolo(mock_model, mock_imdecode):
-    """Covers YOLO prediction and calorie lookup logic."""
     mock_box = MagicMock()
     mock_box.xyxy = [[100, 100, 200, 200]]
     mock_box.conf = [0.95]
@@ -112,7 +95,6 @@ def test_predict_with_mocked_yolo(mock_model, mock_imdecode):
 
 @patch("src.app.cv2.imdecode", side_effect=Exception("Decode failed"))
 def test_predict_error_branch(mock_imdecode):
-    """Covers the exception-handling block in /predict."""
     response = client.post(
         "/predict",
         files={"file": ("fake.jpg", b"data", "image/jpeg")},
@@ -122,7 +104,6 @@ def test_predict_error_branch(mock_imdecode):
 
 
 def test_predict_model_not_loaded():
-    """Covers the 'model is None' branch."""
     import src.app as app_module
 
     original_model = app_module.model
