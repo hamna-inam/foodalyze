@@ -611,7 +611,7 @@ def ask(q: QueryRequest):
         try:
             print("Logging LLM latency...")
             LLM_LATENCY.observe(duration)
-        except:
+        except Exception:
             pass
 
     # --- Output validation (Guardrails) ---
