@@ -44,7 +44,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
         # We check coverage for 'app.py' (module name 'app')
-        run: pytest -v --maxfail=1 --disable-warnings --cov=app --cov-fail-under=80
+        run: pytest -v --maxfail=1 --disable-warnings --cov=src.app --cov-fail-under=80
       - name: Debug test environment
         run: |
           echo "Listing project files for verification..."
@@ -140,7 +140,7 @@ jobs:
           # Ping the /health endpoint. -f makes it fail if status is not 200
           curl -f http://localhost:8000/health
 
-   # D4e: Acceptance testing job
+  # D4e: Acceptance testing job
   acceptance-tests:
     runs-on: ubuntu-latest
     needs: canary-deploy # Runs after the canary is deployed
