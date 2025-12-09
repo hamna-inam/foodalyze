@@ -21,6 +21,7 @@ TEST_IMAGE_PATH = os.path.join(os.path.dirname(__file__), "sample_food.jpg")
 # BASE TESTS
 # ---------------------------------------------------------------------------
 
+
 def test_health_check():
     response = client.get("/health")
     assert response.status_code == 200
@@ -47,6 +48,7 @@ def test_model_info_endpoint():
 def test_predict_endpoint():
     if not os.path.exists(TEST_IMAGE_PATH):
         import pytest
+
         pytest.skip("sample_food.jpg not found, skipping")
 
     with open(TEST_IMAGE_PATH, "rb") as f:
@@ -69,6 +71,7 @@ def test_predict_no_file():
 # ---------------------------------------------------------------------------
 # MOCKED TESTS (correct module paths!)
 # ---------------------------------------------------------------------------
+
 
 @patch("src.app.cv2.imdecode", return_value=np.zeros((100, 100, 3), dtype=np.uint8))
 @patch("src.app.model")
