@@ -64,6 +64,7 @@ def test_predict_endpoint(mock_model):
 
     if not os.path.exists(TEST_IMAGE_PATH):
         import pytest
+
         pytest.skip("sample_food.jpg not found, skipping")
 
     with open(TEST_IMAGE_PATH, "rb") as f:
@@ -75,7 +76,6 @@ def test_predict_endpoint(mock_model):
     assert response.status_code == 200
     data = response.json()
     assert "predictions" in data
-
 
 
 def test_predict_no_file():
@@ -136,4 +136,3 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
-
