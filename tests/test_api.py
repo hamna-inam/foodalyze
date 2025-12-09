@@ -8,11 +8,11 @@ import numpy as np
 # FIX: Ensure repo root is added to sys.path (so src.app loads correctly)
 # ---------------------------------------------------------------------------
 
-CURRENT_DIR = os.path.dirname(__file__)               # Foodalyze/tests
+CURRENT_DIR = os.path.dirname(__file__)  # Foodalyze/tests
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, ".."))  # Foodalyze/
 sys.path.insert(0, PROJECT_ROOT)
 
-from src.app import app # noqa: E402
+from src.app import app  # noqa: E402
 
 client = TestClient(app)
 
@@ -55,6 +55,7 @@ def test_predict_endpoint():
     """Tests the /predict endpoint with a real image file (if available)."""
     if not os.path.exists(TEST_IMAGE_PATH):
         import pytest
+
         pytest.skip("sample_food.jpg not found, skipping real prediction test")
 
     with open(TEST_IMAGE_PATH, "rb") as f:
@@ -136,4 +137,3 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
-
