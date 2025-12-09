@@ -57,7 +57,7 @@ def test_model_info_endpoint():
     assert isinstance(json_data["classes"], dict)
 
 
-@patch("src.app.model")
+@patch("src.app.resources", {"yolo_model": MagicMock(), "id_to_class": {0: "aloo_gobi"}})
 def test_predict_endpoint(mock_model):
     # Mock successful prediction result
     mock_model.predict.return_value = [{"label": "pizza", "confidence": 0.95}]
@@ -136,3 +136,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
