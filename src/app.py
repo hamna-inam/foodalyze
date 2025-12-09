@@ -296,7 +296,7 @@ async def lifespan(app: FastAPI):
         resources["vector_db"] = FAISS.load_local(
             "./tmp/faiss", embeddings, allow_dangerous_deserialization=True
         )
-        logger.info(f"✅ Vector DB loaded from S3 artifacts (./tmp/faiss)")
+        logger.info("✅ Vector DB loaded from S3 artifacts (./tmp/faiss)")
     except Exception as e:
         logger.warning(f"⚠️ Vector DB not available: {e}")
         resources["vector_db"] = None
