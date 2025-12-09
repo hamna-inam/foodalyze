@@ -138,4 +138,3 @@ def test_predict_model_not_loaded():
     finally:
         # Restore model after test
         app_module.model = original_model
-
