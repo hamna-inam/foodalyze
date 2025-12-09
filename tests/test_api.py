@@ -83,8 +83,7 @@ def test_predict_endpoint(mock_resources):
 
     # ---- Call API ----
     response = client.post(
-        "/predict",
-        files={"file": ("sample_food.jpg", b"fakebytes", "image/jpeg")}
+        "/predict", files={"file": ("sample_food.jpg", b"fakebytes", "image/jpeg")}
     )
 
     assert response.status_code == 200
@@ -92,7 +91,6 @@ def test_predict_endpoint(mock_resources):
     assert data["num_detections"] == 1
     assert data["detections"][0]["class_name"] == "aloo_gobi"
     assert data["detections"][0]["confidence"] == 0.9
-
 
 
 def test_predict_no_file():
@@ -153,4 +151,3 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
-
