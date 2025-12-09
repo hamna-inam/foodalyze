@@ -59,14 +59,40 @@ def test_model_info_endpoint():
 
 @patch("src.app.resources")
 def test_predict_endpoint(mock_resources):
+    # ---- Create FAKE YOLO detection result ----
+    fake_box = MagicMock()
+    fake_box.xyxy = [[100, 100, 200, 200]]
+    fake_box.conf = [0.9]
+    fake_box.cls = [0]
+
+    fake_result = MagicMock()
+    fake_result.boxes = [fake_box]
+
+    # ---- Fake YOLO model ----
     mock_model = MagicMock()
     mock_model.predict.return_value = [fake_result]
 
-    # Make resources return this fake YOLO model
+    # ---- Mock resources.get() ----
     mock_resources.get.side_effect = lambda key, default=None: {
         "yolo_model": mock_model,
         "id_to_class": {0: "aloo_gobi"},
+        "vector_db": None,
+        "llm_model": None,
+        "llm_tokenizer": None,
     }.get(key, default)
+
+    # ---- Call API ----
+    response = client.post(
+        "/predict",
+        files={"file": ("sample_food.jpg", b"fakebytes", "image/jpeg")}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["num_detections"] == 1
+    assert data["detections"][0]["class_name"] == "aloo_gobi"
+    assert data["detections"][0]["confidence"] == 0.9
+
 
 
 def test_predict_no_file():
@@ -127,3 +153,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
