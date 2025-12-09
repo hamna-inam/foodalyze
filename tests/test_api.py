@@ -10,6 +10,9 @@ sys.path.insert(0, PROJECT_ROOT)
 
 # Import FastAPI app
 from src.app import app  # noqa: E402
+import inspect
+print("ACTUALLY IMPORTED APP MODULE:", inspect.getfile(app))
+
 
 client = TestClient(app)
 
@@ -121,3 +124,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
