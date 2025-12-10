@@ -288,6 +288,8 @@ Grafana visualizes:
 
 The graph displays the 95th percentile (P95) latency for LLM requests in the foodalyze-api service, which has consistently remained below 10 seconds over the last 7 days, indicating excellent performance and a responsive worst-case user experience for 95% of users.
 
+<img width="1466" height="960" alt="image" src="https://github.com/user-attachments/assets/bc25f10e-5871-4e19-9480-278501a4736f" />
+The graph shows the total cumulative count of guardrail violations in the foodalyze-api service has been flat and stuck at a high value (around 17-18) over the last two days, which is consistent with the report that no new violations have occurred in that time period.
 
 
 ## Tech Stack
