@@ -768,7 +768,6 @@ def model_info():
 
 @app.post("/predict", tags=["Food Detection"])
 async def predict(file: UploadFile = File(...), conf: float = 0.5):
-    """Upload an image to detect Indian food items."""
     yolo_model = resources.get("yolo_model")
     id_to_class = resources.get("id_to_class", {})
 
@@ -790,7 +789,7 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
         if image is None:
             raise HTTPException(status_code=400, detail="Invalid image file")
 
-        # --- YOLO inference ---
+        # YOLO inference
         start = time.time()
         results = yolo_model.predict(source=image, conf=conf, verbose=False)
         duration = time.time() - start
@@ -840,9 +839,12 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
             "timestamp": datetime.now().isoformat(),
         }
 
+    except HTTPException:
+        raise  # rethrow cleanly (keeps 400 status)
+
     except Exception as e:
         logger.error(f"Prediction error: {e}")
-        raise HTTPException(status_code=400, detail=f"Prediction failed: {str(e)}")
+        raise HTTPException(status_code=400, detail="Prediction failed")
 
 
 @app.post("/ask", tags=["RAG Q&A"])
