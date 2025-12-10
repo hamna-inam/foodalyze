@@ -18,22 +18,23 @@ def test_yolo_load_failure():
 
 def test_class_mapping_load_failure():
     with patch("builtins.open", side_effect=Exception("file error")):
-        with TestClient(app):  # removed unused variable
-            assert resources.get("id_to_class") == {}
-
+        with patch("src.app.force_download_from_s3", return_value=None):
+            with TestClient(app):
+                assert resources.get("id_to_class") == {}
+                
 
 def test_faiss_load_failure():
     with patch("src.app.FAISS.load_local", side_effect=Exception("FAISS error")):
-        with TestClient(app):  # removed unused variable
-            assert resources.get("vector_db") is None
+        with patch("src.app.force_download_from_s3", return_value=None):
+            with TestClient(app):
+                assert resources.get("vector_db") is None
 
 
 def test_llm_load_failure():
-    with patch(
-        "src.app.AutoTokenizer.from_pretrained", side_effect=Exception("LLM error")
-    ):
-        with TestClient(app):  # removed unused variable
-            assert resources.get("llm_model") is None
+    with patch("src.app.AutoTokenizer.from_pretrained", side_effect=Exception("LLM error")):
+        with patch("src.app.force_download_from_s3", return_value=None):
+            with TestClient(app):
+                assert resources.get("llm_model") is None
 
 
 def test_ask_llm_not_loaded():
