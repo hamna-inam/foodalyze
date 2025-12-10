@@ -287,6 +287,72 @@ Grafana visualizes:
 
 -----
 ## Grafana(Milestone 2)
+<img width="1297" height="524" alt="image" src="https://github.com/user-attachments/assets/dae69928-d05a-4e3e-8a8c-e4736fa19ed0" />
+##  *1. LLM Request Latency (P95)*
+
+This graph shows the *95th percentile latency* of all LLM inference requests over time.
+
+* Uses: histogram_quantile(0.95, rate(llm_request_duration_seconds_bucket[$__rate_interval]))
+* Purpose: Tracks how long the slowest 5% of requests take.
+* Interpretation:
+
+  * Stable, low values indicate good LLM performance.
+  * Spikes may mean CPU overload, large prompts, or model cold starts.
+
+
+ <img width="1314" height="558" alt="image" src="https://github.com/user-attachments/assets/5af8e83b-6b8a-4b75-849b-28de38efc91b" />
+
+## *2. Guardrail Violations*
+
+Displays the total count of *blocked or flagged responses* by the system’s safety guardrails.
+
+* Metric: guardrail_violations_total
+* Purpose: Measures how often the model produces unsafe/toxic/unsupported outputs.
+* Interpretation:
+
+  * A rising trend suggests more harmful inputs or weaker filters.
+  * Helps verify safety systems are working correctly.
+ 
+
+ <img width="1309" height="531" alt="image" src="https://github.com/user-attachments/assets/5349d4a8-028b-4091-8060-9edc7d61874e" />
+
+    
+## 🔡 *3. LLM Token Usage*
+
+Tracks total *input* and *output* tokens processed by the model over time.
+
+* Metric: llm_token_usage_total{type="input"}
+* Metric: llm_token_usage_total{type="output"}
+* Purpose: Understand model load, cost, and usage patterns.
+* Interpretation:
+
+  * Growth in input tokens means larger user queries.
+  * Growth in output tokens indicates longer/generated answers.
+ 
+<img width="1317" height="569" alt="image" src="https://github.com/user-attachments/assets/87f3c2ff-c1f5-4e1c-a84c-b12cba4e1b1b" />
+## 🖼️ *4. YOLO Prediction Count*
+
+Shows how many YOLO detections were processed by the API.
+
+* Metric: yolo_inference_duration_seconds_count
+* Purpose: Monitor computer vision workload.
+* Interpretation:
+
+  * Spikes = increased image uploads.
+  * Constant low activity means fewer classification requests.
+ 
+  <img width="1321" height="567" alt="image" src="https://github.com/user-attachments/assets/2178e8b0-873d-4409-8b85-e4e7f8c1d974" />
+## *5. YOLO Inference Latency (P95)*
+
+Shows the *95th percentile latency* of YOLO detections.
+
+* Uses: histogram_quantile(0.95, rate(yolo_inference_duration_seconds_bucket[$__rate_interval]))
+* Purpose: Measure performance of image inference.
+* Interpretation:
+
+  * Usually low because YOLO is fast.
+  * Spikes indicate CPU saturation or large images.
+  
 <img width="1444" height="1272" alt="image" src="https://github.com/user-attachments/assets/468bad9b-aa37-4798-a9bd-08c23607b7d5" />
 
 The graph displays the 95th percentile (P95) latency for LLM requests in the foodalyze-api service, which has consistently remained below 10 seconds over the last 7 days, indicating excellent performance and a responsive worst-case user experience for 95% of users.
