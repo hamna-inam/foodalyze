@@ -330,6 +330,7 @@ Tracks total *input* and *output* tokens processed by the model over time.
   * Growth in output tokens indicates longer/generated answers.
  
 <img width="1317" height="569" alt="image" src="https://github.com/user-attachments/assets/87f3c2ff-c1f5-4e1c-a84c-b12cba4e1b1b" />
+
 ## 🖼️ *4. YOLO Prediction Count*
 
 Shows how many YOLO detections were processed by the API.
