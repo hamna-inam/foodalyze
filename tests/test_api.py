@@ -57,6 +57,18 @@ def test_model_info_endpoint():
     assert "classes" in json_data
     assert isinstance(json_data["classes"], dict)
 
+def safe_decode_image(contents: bytes):
+    """Decode image or raise HTTP 400 cleanly."""
+    try:
+        nparr = np.frombuffer(contents, np.uint8)
+        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid image file")
+
+    if image is None:
+        raise HTTPException(status_code=400, detail="Invalid image file")
+
+    return image
 
 @patch("src.app.resources")
 def test_predict_endpoint(mock_resources):
@@ -175,3 +187,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
