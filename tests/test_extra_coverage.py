@@ -21,7 +21,7 @@ def test_class_mapping_load_failure():
         with patch("src.app.force_download_from_s3", return_value=None):
             with TestClient(app):
                 assert resources.get("id_to_class") == {}
-                
+
 
 def test_faiss_load_failure():
     with patch("src.app.FAISS.load_local", side_effect=Exception("FAISS error")):
@@ -31,7 +31,9 @@ def test_faiss_load_failure():
 
 
 def test_llm_load_failure():
-    with patch("src.app.AutoTokenizer.from_pretrained", side_effect=Exception("LLM error")):
+    with patch(
+        "src.app.AutoTokenizer.from_pretrained", side_effect=Exception("LLM error")
+    ):
         with patch("src.app.force_download_from_s3", return_value=None):
             with TestClient(app):
                 assert resources.get("llm_model") is None
