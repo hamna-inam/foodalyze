@@ -109,27 +109,44 @@ def test_predict_no_file():
 # ---------------------------------------------------------------------------
 
 
-@patch("src.app.cv2.imdecode", return_value=np.zeros((100, 100, 3), dtype=np.uint8))
-@patch("src.app.model")
-def test_predict_with_mocked_yolo(mock_model, mock_imdecode):
-    mock_box = MagicMock()
-    mock_box.xyxy = [[100, 100, 200, 200]]
-    mock_box.conf = [0.95]
-    mock_box.cls = [0]
+@patch("src.app.resources")
+def test_predict_with_mocked_yolo(mock_resources):
+    import base64
+    VALID_JPEG_BYTES = base64.b64decode(
+        b"/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////2wBDAf//////////////////////////////////////////////////////////////////////////////////////wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAEDAQE/Af/EABQRAQAAAAAAAAAAAAAAAAAAAAH/2gAIAQIBAT8B/9k="
+    )
 
-    mock_result = MagicMock()
-    mock_result.boxes = [mock_box]
+    # Fake YOLO box
+    fake_box = MagicMock()
+    fake_box.xyxy = [[100, 100, 200, 200]]
+    fake_box.conf = [0.95]
+    fake_box.cls = [0]
 
-    mock_model.predict.return_value = [mock_result]
+    fake_result = MagicMock()
+    fake_result.boxes = [fake_box]
+
+    mock_yolo = MagicMock()
+    mock_yolo.predict.return_value = [fake_result]
+
+    # Mock resources.get()
+    mock_resources.get.side_effect = lambda key, default=None: {
+        "yolo_model": mock_yolo,
+        "id_to_class": {0: "aloo_gobi"},
+        "vector_db": None,
+        "llm_model": None,
+        "llm_tokenizer": None,
+    }.get(key, default)
 
     response = client.post(
         "/predict",
-        files={"file": ("fake.jpg", b"fakebytes", "image/jpeg")},
+        files={"file": ("img.jpg", VALID_JPEG_BYTES, "image/jpeg")},
     )
 
     assert response.status_code == 200
     data = response.json()
-    assert "detections" in data
+    assert data["num_detections"] == 1
+    assert data["detections"][0]["class_name"] == "aloo_gobi"
+
 
 
 @patch("src.app.cv2.imdecode", side_effect=Exception("Decode failed"))
@@ -157,3 +174,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
