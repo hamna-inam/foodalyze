@@ -88,6 +88,9 @@ graph TD
     style API fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
+<img width="1289" height="435" alt="image" src="https://github.com/user-attachments/assets/cd28f5d1-ada4-4e93-a313-ac4737d4dd0e" />
+
+
 ## Dataset
 
 **Access the Dataset Here:** [Google Drive Link](https://drive.google.com/file/d/1SOqkv7GBLbs_f6AISFvczdh1rRS29_AP/view?usp=sharing)
@@ -291,7 +294,7 @@ The graph displays the 95th percentile (P95) latency for LLM requests in the foo
 <img width="1466" height="960" alt="image" src="https://github.com/user-attachments/assets/bc25f10e-5871-4e19-9480-278501a4736f" />
 The graph shows the total cumulative count of guardrail violations in the foodalyze-api service has been flat and stuck at a high value (around 17-18) over the last two days, which is consistent with the report that no new violations have occurred in that time period.
 
-
+Link: http://13.61.104.51:3000/dashboards
 ## Tech Stack
 
   * *Backend:* FastAPI
