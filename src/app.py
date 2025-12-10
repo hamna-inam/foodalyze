@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Foodalyze - Milestone 2 with HuggingFace LLM
+Foodalyze - Milestone 2 with HuggingFace LLMs
 YOLO Food Detection + RAG Nutrition Q&A using lightweight LLM
 """
 
