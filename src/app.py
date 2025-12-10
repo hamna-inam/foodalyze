@@ -764,6 +764,8 @@ def model_info():
         "llm_model": LLM_MODEL_ID if resources.get("llm_model") else "Not loaded",
         "vector_db": "FAISS" if resources.get("vector_db") else "Not loaded",
     }
+
+
 def safe_decode_image(contents: bytes):
     """Decode image or raise HTTP 400 cleanly."""
     try:
@@ -776,6 +778,7 @@ def safe_decode_image(contents: bytes):
         raise HTTPException(status_code=400, detail="Invalid image file")
 
     return image
+
 
 @app.post("/predict", tags=["Food Detection"])
 async def predict(file: UploadFile = File(...), conf: float = 0.5):

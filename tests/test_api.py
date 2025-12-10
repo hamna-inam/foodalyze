@@ -57,6 +57,7 @@ def test_model_info_endpoint():
     assert "classes" in json_data
     assert isinstance(json_data["classes"], dict)
 
+
 @patch("src.app.resources")
 def test_predict_endpoint(mock_resources):
     # ---- Valid minimal JPEG ----
@@ -174,5 +175,3 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
-
-
