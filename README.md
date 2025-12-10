@@ -190,6 +190,9 @@ We performed an automated stress test against 12 different attack vectors (inclu
 
 <img width="552" height="810" alt="image" src="https://github.com/user-attachments/assets/17b95f6f-17e1-431b-8b4f-39dfb951f4df" />
 
+![WhatsApp Image 2025-12-07 at 9 22 34 PM](https://github.com/user-attachments/assets/0b561b09-12f6-4437-a08d-9789cc6b57ed)
+
+
 
 ## API Documentation (D7)
 
@@ -209,6 +212,8 @@ Verifies API status and model load.
 ### ✅ Predict Endpoint (POST /predict)
 
 Upload an image → receive \*detections, \*\*bounding boxes, and \**calorie estimates*.
+<img width="1280" height="638" alt="image" src="https://github.com/user-attachments/assets/297a06bf-4ad4-4e17-be6e-328d81a5ea86" />
+
 
 #### Example cURL
 
@@ -247,6 +252,9 @@ curl -X 'POST' \
 
 ### ✅ MLflow (Model Registry)
 
+Tracked YOLO runs locally in Milestone 1 then moved the runs (only) to the server in Milestone 2.
+Endpoint: 
+
 Tracks and versions all trained YOLO models.
 
 Tracking URI: file:///Users/bstar/Documents/Fall25/MLOps/MLFlow/mlruns
@@ -255,39 +263,54 @@ Experiment Name: *YOLOv8\_Indian\_Food\_Detection*
 Registered Model: *Foodalyze\_YOLOv8\_Detector*
 
 Trained for 30 epochs
-Image size: 640×640
 
-\<img width="2876" height="1434" alt="image" src="[https://github.com/user-attachments/assets/d09536d2-0d24-46f4-993c-ceaf6246b23e](https://github.com/user-attachments/assets/d09536d2-0d24-46f4-993c-ceaf6246b23e)" /\>
+<img width="1280" height="638" alt="image" src="https://github.com/user-attachments/assets/34076a1f-47c7-4fcf-a35f-35dd1b25d8b7" />
 
-\<img width="1600" height="427" alt="image" src="[https://github.com/user-attachments/assets/92bda33a-2263-40c5-a082-cb47b7cafae3](https://github.com/user-attachments/assets/92bda33a-2263-40c5-a082-cb47b7cafae3)" /\>
+<img width="1280" height="638" alt="image" src="https://github.com/user-attachments/assets/607c9e6c-fc5d-409c-b97f-20c52d5a1fa9" />
 
-\<img width="1600" height="472" alt="image" src="[https://github.com/user-attachments/assets/47dd52a2-8437-469a-9c35-a202b8c2abd3](https://github.com/user-attachments/assets/47dd52a2-8437-469a-9c35-a202b8c2abd3)" /\>
+<img width="1600" height="427" alt="image" src="https://github.com/user-attachments/assets/55e16571-cf29-4041-bcab-1a0c045bb69d" />
+
+<img width="1600" height="472" alt="image" src="https://github.com/user-attachments/assets/9f032fd8-e5d2-4eab-933e-18672e3840f8" />
+
+
+
 
 -----
 
 ### ✅ Evidently (Data Drift)
 
-\<img width="1600" alt="image" src="[https://github.com/user-attachments/assets/ac783da0-6113-4441-9952-0458e560fc72](https://github.com/user-attachments/assets/ac783da0-6113-4441-9952-0458e560fc72)" /\>
+YOLO Drift (Milestone 1):
+
+<img width="1280" height="606" alt="image" src="https://github.com/user-attachments/assets/5116ae98-6d4e-4c8d-a333-fe0ce4c79398" />
+<img width="1280" height="643" alt="image" src="https://github.com/user-attachments/assets/34c674c5-3367-43c6-bb61-f754790e0daf" />
+
+
 \<img width="1600" alt="image" src="[https://github.com/user-attachments/assets/0e8299ac-8370-46df-9fe3-8b3e8ea6e1d0](https://github.com/user-attachments/assets/0e8299ac-8370-46df-9fe3-8b3e8ea6e1d0)" /\>
 
 -----
 
-### ✅ Prometheus + Grafana (API Metrics)
+### ✅ Prometheus + Grafana (API Metrics) - Milestone 1
+
+Link to Dashboards:
+http://13.61.104.51:3000/dashboards
+
 
 Prometheus scrapes live API metrics.
 Grafana visualizes:
 
   * CPU usage
-  * Memory usage
-  * CPU temperature (simulated)
+    <img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/94e326b3-36f1-46ed-a5c9-3b30d231ea8c" />
 
-\<img width="1141" height="612" src="[https://github.com/user-attachments/assets/4448f63f-d787-466d-8cab-91468091bc84](https://github.com/user-attachments/assets/4448f63f-d787-466d-8cab-91468091bc84)" /\>
-\<img width="1155" height="318" src="[https://github.com/user-attachments/assets/9d99bd73-b713-45e5-9665-8c12d3aa4031](https://github.com/user-attachments/assets/9d99bd73-b713-45e5-9665-8c12d3aa4031)" /\>
-\<img width="1159" height="613" src="[https://github.com/user-attachments/assets/08bf807f-0f56-4850-b4cb-5276f2987d63](https://github.com/user-attachments/assets/08bf807f-0f56-4850-b4cb-5276f2987d63)" /\>
+  * Memory usage
+
+    <img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/ad4ea9b1-f115-4bea-9c6d-7687cd4a1856" />
+
+  * CPU temperature (simulated)
+    <img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/3e822a2b-f2a0-48dc-9974-c33950ce79ca" />
 
 -----
-## Grafana(Milestone 2)
-<img width="1297" height="524" alt="image" src="https://github.com/user-attachments/assets/dae69928-d05a-4e3e-8a8c-e4736fa19ed0" />
+## Prometheus + Grafana (API Metrics) - Milestone 2
+
 ##  *1. LLM Request Latency (P95)*
 
 This graph shows the *95th percentile latency* of all LLM inference requests over time.
@@ -299,8 +322,8 @@ This graph shows the *95th percentile latency* of all LLM inference requests ove
   * Stable, low values indicate good LLM performance.
   * Spikes may mean CPU overload, large prompts, or model cold starts.
 
+<img width="1297" height="524" alt="image" src="https://github.com/user-attachments/assets/dae69928-d05a-4e3e-8a8c-e4736fa19ed0" />
 
- <img width="1314" height="558" alt="image" src="https://github.com/user-attachments/assets/5af8e83b-6b8a-4b75-849b-28de38efc91b" />
 
 ## *2. Guardrail Violations*
 
@@ -312,9 +335,11 @@ Displays the total count of *blocked or flagged responses* by the system’s saf
 
   * A rising trend suggests more harmful inputs or weaker filters.
   * Helps verify safety systems are working correctly.
- 
+  <img width="1314" height="558" alt="image" src="https://github.com/user-attachments/assets/5af8e83b-6b8a-4b75-849b-28de38efc91b" />
 
- <img width="1309" height="531" alt="image" src="https://github.com/user-attachments/assets/5349d4a8-028b-4091-8060-9edc7d61874e" />
+
+
+
 
     
 ## 🔡 *3. LLM Token Usage*
@@ -329,7 +354,9 @@ Tracks total *input* and *output* tokens processed by the model over time.
   * Growth in input tokens means larger user queries.
   * Growth in output tokens indicates longer/generated answers.
  
-<img width="1317" height="569" alt="image" src="https://github.com/user-attachments/assets/87f3c2ff-c1f5-4e1c-a84c-b12cba4e1b1b" />
+     <img width="1309" height="531" alt="image" src="https://github.com/user-attachments/assets/5349d4a8-028b-4091-8060-9edc7d61874e" />
+
+ 
 
 ## 🖼️ *4. YOLO Prediction Count*
 
@@ -341,8 +368,9 @@ Shows how many YOLO detections were processed by the API.
 
   * Spikes = increased image uploads.
   * Constant low activity means fewer classification requests.
- 
-  <img width="1321" height="567" alt="image" src="https://github.com/user-attachments/assets/2178e8b0-873d-4409-8b85-e4e7f8c1d974" />
+
+<img width="1317" height="569" alt="image" src="https://github.com/user-attachments/assets/87f3c2ff-c1f5-4e1c-a84c-b12cba4e1b1b" />
+
 ## *5. YOLO Inference Latency (P95)*
 
 Shows the *95th percentile latency* of YOLO detections.
@@ -353,15 +381,9 @@ Shows the *95th percentile latency* of YOLO detections.
 
   * Usually low because YOLO is fast.
   * Spikes indicate CPU saturation or large images.
-  
-<img width="1444" height="1272" alt="image" src="https://github.com/user-attachments/assets/468bad9b-aa37-4798-a9bd-08c23607b7d5" />
+<img width="1672" height="838" alt="image" src="https://github.com/user-attachments/assets/be1f4249-bf4c-4811-bd8e-9ba4ec32a82a" />
 
-The graph displays the 95th percentile (P95) latency for LLM requests in the foodalyze-api service, which has consistently remained below 10 seconds over the last 7 days, indicating excellent performance and a responsive worst-case user experience for 95% of users.
 
-<img width="1466" height="960" alt="image" src="https://github.com/user-attachments/assets/bc25f10e-5871-4e19-9480-278501a4736f" />
-The graph shows the total cumulative count of guardrail violations in the foodalyze-api service has been flat and stuck at a high value (around 17-18) over the last two days, which is consistent with the report that no new violations have occurred in that time period.
-
-Link: http://13.61.104.51:3000/dashboards
 ## Tech Stack
 
   * *Backend:* FastAPI
@@ -372,139 +394,79 @@ Link: http://13.61.104.51:3000/dashboards
 
 -----
 
-## ✅ Cloud Deployment (D9 Cloud Integration)
-
-This project uses *two AWS cloud services*:
-
-✅ *EC2* — hosts the inference API
-✅ *CloudWatch* — monitors logs and system metrics
-
+## 
 -----
 
-## 1\. AWS Services Used
+## ☁️ Cloud Integration
 
-### ✅ 1.1 EC2 – Hosting the API
+For Milestone 2, we integrated **two AWS cloud services**:  
+**Amazon EC2** for hosting the inference API and **Amazon S3** for storing model artifacts and FAISS indexes.  
+CloudWatch was also used for monitoring API and system metrics.
 
-Runs Dockerized FastAPI YOLO inference server.
+---
 
-\<img width="705" height="146" src="[https://github.com/user-attachments/assets/43267c18-9a60-440b-b058-bf4aec6d6547](https://github.com/user-attachments/assets/43267c18-9a60-440b-b058-bf4aec6d6547)" /\>
+### 🔹 **1. Amazon S3 — Artifact & Vector Store Storage**
 
------
+We use S3 to store:
 
-### ✅ 1.2 CloudWatch – System Monitoring
+- `best.pt` (YOLO model weights)  
+- `class_mapping.json`  
+- `index.faiss` (RAG vector index)  
+- `index.pkl` (metadata)
 
-Collects:
+These artifacts are automatically loaded by the ingestion pipeline when deploying the RAG system.
 
-  * CPU utilization
-  * Memory usage
-  * Disk usage
-  * Logs
+<img width="1338" height="428" alt="image" src="https://github.com/user-attachments/assets/cca3c344-602c-42d7-b0e3-fcca737f3551" />
 
------
+---
 
-## 2\. Deployment Architecture
+### 🔹 **2. Amazon EC2 — Hosting the Foodalyze API**
 
-\<img width="626" height="426" src="[https://github.com/user-attachments/assets/eef957d7-50c6-4ba5-ba52-8a05876d3be4](https://github.com/user-attachments/assets/eef957d7-50c6-4ba5-ba52-8a05876d3be4)" /\>
+The API (FastAPI + YOLOv8 + RAG) is deployed as a Docker container on AWS EC2.
 
------
+- Public IP: `13.61.104.51`
+- Open ports: 8000 (API), 3000 (Grafana), 8501 (UI)
+- Deployed via Docker:
+  `sudo docker run -d -p 8000:8000 foodalyze-api`
 
-## 3\. Reproducing the Setup
-
-### ✅ 3.1 Launch EC2
-
-1.  Ubuntu 22.04/24.04
-2.  Open port *8000*
-
------
-
-### ✅ 3.2 Install Docker
-
-```bash
-sudo apt update
-sudo apt install -y docker.io
-sudo systemctl enable docker
-sudo systemctl start docker
-```
-
------
-
-### ✅ 3.3 Clone Repo
-
-```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd Foodalyze
-```
-
------
-
-### ✅ 3.4 Build & Run Docker Container
-
-```bash
-sudo docker build -t foodalyze-api .
-sudo docker run -d -p 8000:8000 foodalyze-api
-sudo docker ps
-```
-
------
-
-### ✅ 3.5 Access API
-
-Open:
-http://\<EC2-PUBLIC-IP\>:8000/docs
-
-\<img width="1250" height="667" src="[https://github.com/user-attachments/assets/4c34b4fe-4d1d-4d3b-9914-72bb55d157a7](https://github.com/user-attachments/assets/4c34b4fe-4d1d-4d3b-9914-72bb55d157a7)" /\>
-
------
-
-### ✅ 3.6 Install & Configure CloudWatch Agent
-
-```bash
-# Download
-wget https://s3.amazonaws.com/amazoncloudwatchagent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
-
-# Install
-sudo dpkg -i amazon-cloudwatch-agent.deb
-
-# Run config wizard
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
-
-# Start agent
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
-    -a fetch-config -m ec2 \
-    -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
-
-# Check status
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
-```
-
-\<img width="882" height="116" src="[https://github.com/user-attachments/assets/b71adf69-1342-45bc-82c9-e7b43a7e568e](https://github.com/user-attachments/assets/b71adf69-1342-45bc-82c9-e7b43a7e568e)" /\>
-
-\<img width="1362" height="568" src="[https://github.com/user-attachments/assets/4a70efc4-258d-4d83-898c-a5e97a916108](https://github.com/user-attachments/assets/4a70efc4-258d-4d83-898c-a5e97a916108)" /\>
-
------
-
-## ✅ 4. ML Workflow Interaction With Cloud Services
-
-### ✅ 4.1 Model Storage
-
-The YOLO model (best.pt) is stored and loaded from inside the Docker container.
-
------
-
-### ✅ 4.2 Inference on EC2
-
-1.  User uploads image
-2.  FastAPI decodes using cv2
-3.  YOLO model performs detection
-4.  Calories added using lookup
-5.  JSON returned
------
+<img width="498" height="291" alt="image" src="https://github.com/user-attachments/assets/2fe86e62-0a01-49b0-8afe-8691e1f17d44" />
 
 
+---
 
-## License
+### 🔹 **3. Amazon CloudWatch — Monitoring the EC2 Instance**
 
-This project is licensed under the *MIT License*.
-See the [LICENSE](https://www.google.com/search?q=LICENSE) file for more details.
+CloudWatch tracks:
+
+- CPU utilization (shows inference load)
+- System-level metrics  
+- Docker-level activity when CPU spikes occur during model inference
+
+
+<img width="1362" height="568" alt="image" src="https://github.com/user-attachments/assets/652ea5ae-619c-463a-91a8-2525eadafa77" />
+
+
+---
+
+### 🔹 **How These Cloud Services Support the ML/LLM Workflow**
+
+| Cloud Service | Purpose in Our System |
+|---------------|-----------------------|
+| **S3** | Stores vector DB, model weights, and ingestion artifacts used by RAG + CV pipelines |
+| **EC2** | Hosts the inference API (YOLO + RAG) and serves real-time predictions |
+| **CloudWatch** | Monitors inference latency indirectly (CPU spikes), system metrics, and health |
+| **Grafana (on EC2)** | Visualizes Prometheus metrics including LLM latency + guardrail violations |
+
+---
+
+### 🔹 **Architecture Summary (Cloud Edition)**
+
+```mermaid
+flowchart LR
+    User --> UI
+    UI --> API[FastAPI on EC2]
+    API --> S3[(S3 Bucket<br/>Artifacts + FAISS Index)]
+    API --> CloudWatch[(]()
+
 
 -----
