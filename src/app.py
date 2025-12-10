@@ -775,32 +775,30 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
     if yolo_model is None:
         raise HTTPException(status_code=500, detail="YOLO model not loaded")
 
-try:
-    contents = await file.read()
-    nparr = np.frombuffer(contents, np.uint8)
-
     try:
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    except Exception as e:
-        logger.error(f"Image decode failed: {e}")
-    raise HTTPException(status_code=400, detail="Invalid image file")
+        # Read file bytes
+        contents = await file.read()
+        nparr = np.frombuffer(contents, np.uint8)
 
-    if image is None:
-        raise HTTPException(status_code=400, detail="Invalid image file")
-except Exception as e:
-    logger.error(f"Prediction error: {e}")
-    raise HTTPException(status_code=400, detail=f"Prediction failed: {str(e)}")
+        # Decode image safely
+        try:
+            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        except Exception as e:
+            logger.error(f"Image decode failed: {e}")
+            raise HTTPException(status_code=400, detail="Invalid image file")
 
+        if image is None:
+            raise HTTPException(status_code=400, detail="Invalid image file")
 
+        # --- YOLO inference ---
         start = time.time()
         results = yolo_model.predict(source=image, conf=conf, verbose=False)
         duration = time.time() - start
+
         if MONITORING_ENABLED:
             try:
                 YOLO_LATENCY.observe(duration)
-                print("YOLO inference time recorded.")
             except Exception:
-
                 pass
 
         result = results[0]
