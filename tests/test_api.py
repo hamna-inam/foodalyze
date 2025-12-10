@@ -61,6 +61,7 @@ def test_model_info_endpoint():
 def test_predict_endpoint(mock_resources):
     # ---- Valid minimal JPEG ----
     import base64
+
     VALID_JPEG_BYTES = base64.b64decode(
         b"/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////2wBDAf//////////////////////////////////////////////////////////////////////////////////////wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAEDAQE/Af/EABQRAQAAAAAAAAAAAAAAAAAAAAH/2gAIAQIBAT8B/9k="
     )
@@ -96,7 +97,6 @@ def test_predict_endpoint(mock_resources):
     body = response.json()
     assert body["num_detections"] == 1
     assert body["detections"][0]["class_name"] == "aloo_gobi"
-
 
 
 def test_predict_no_file():
@@ -157,4 +157,3 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
-
