@@ -2,7 +2,6 @@ from unittest.mock import patch, MagicMock
 from fastapi.testclient import TestClient
 from src.app import app, resources
 
-
 client = TestClient(app)
 
 
@@ -65,7 +64,6 @@ def test_ask_generation_failure(mock_res, _):
             apply_chat_template=MagicMock(return_value=MagicMock(to=lambda x: x))
         ),
     }.get(key)
-
     resp = client.post("/ask", json={"text": "nutrition?"})
     assert resp.status_code == 200
     assert "Error:" in resp.json()["answer"]
@@ -73,7 +71,6 @@ def test_ask_generation_failure(mock_res, _):
 
 @patch("src.app.guard.validate_input", return_value=(True, "OK"))
 def test_ask_success(_):
-
     # Fake tensor with .shape (for tokenizer output)
     class FakeTensor(list):
         @property
@@ -82,7 +79,7 @@ def test_ask_success(_):
 
     # Fake input mapping
     class FakeInputs(dict):
-        def __init__(self):
+        def __init__(self):  # Fixed: double underscores
             super().__init__({"input_ids": FakeTensor([1, 2, 3])})
 
         def to(self, device):
@@ -107,6 +104,5 @@ def test_ask_success(_):
     resources["vector_db"] = None
 
     resp = client.post("/ask", json={"text": "Is biryani healthy?"})
-
     assert resp.status_code == 200
     assert "healthy" in resp.json()["answer"]
