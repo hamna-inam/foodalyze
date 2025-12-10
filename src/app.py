@@ -775,30 +775,24 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
         raise HTTPException(status_code=500, detail="YOLO model not loaded")
 
     try:
-        # Read file bytes
+        # --- Read File ---
         contents = await file.read()
         nparr = np.frombuffer(contents, np.uint8)
 
-        # Decode image safely
+        # --- Decode Image ---
         try:
             image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         except Exception as e:
-            logger.error(f"Image decode failed: {e}")
+            logger.error(f"Decode exception: {e}")
             raise HTTPException(status_code=400, detail="Invalid image file")
 
         if image is None:
             raise HTTPException(status_code=400, detail="Invalid image file")
 
-        # YOLO inference
+        # --- YOLO Inference ---
         start = time.time()
         results = yolo_model.predict(source=image, conf=conf, verbose=False)
         duration = time.time() - start
-
-        if MONITORING_ENABLED:
-            try:
-                YOLO_LATENCY.observe(duration)
-            except Exception:
-                pass
 
         result = results[0]
         detections = []
@@ -819,17 +813,15 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
                 portion_g = None
                 calories = None
 
-            detections.append(
-                {
-                    "class_id": class_id,
-                    "class_name": class_name,
-                    "confidence": round(confidence, 4),
-                    "bbox": {"x1": x1, "y1": y1, "x2": x2, "y2": y2},
-                    "portion_desc": portion,
-                    "portion_g": portion_g,
-                    "calories_estimate": calories,
-                }
-            )
+            detections.append({
+                "class_id": class_id,
+                "class_name": class_name,
+                "confidence": round(confidence, 4),
+                "bbox": {"x1": x1, "y1": y1, "x2": x2, "y2": y2},
+                "portion_desc": portion,
+                "portion_g": portion_g,
+                "calories_estimate": calories,
+            })
 
         return {
             "image": file.filename,
@@ -840,12 +832,11 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
         }
 
     except HTTPException:
-        raise  # rethrow cleanly (keeps 400 status)
+        raise  # keep 400/500 clean
 
     except Exception as e:
-        logger.error(f"Prediction error: {e}")
+        logger.error(f"Prediction unexpected error: {e}")
         raise HTTPException(status_code=400, detail="Prediction failed")
-
 
 @app.post("/ask", tags=["RAG Q&A"])
 def ask(q: QueryRequest):
