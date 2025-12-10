@@ -75,20 +75,20 @@ def test_ask_success(_):
     class FakeTensor:
         def __init__(self, data):
             self._data = list(data)
-            
+
         @property
         def shape(self):
             return (len(self._data),)
-        
+
         def __len__(self):
             return len(self._data)
-        
+
         def __getitem__(self, idx):
             # Support both integer indexing and slicing
             if isinstance(idx, slice):
                 return FakeTensor(self._data[idx])
             return self._data[idx]
-        
+
         def __iter__(self):
             return iter(self._data)
 
@@ -105,19 +105,19 @@ def test_ask_success(_):
     class FakeOutput:
         def __init__(self, data):
             self._data = FakeTensor(data)
-        
+
         @property
         def shape(self):
             # Return (batch_size, sequence_length)
             return (1, len(self._data))
-        
+
         def __len__(self):
             return 1  # batch size
-        
+
         def __getitem__(self, idx):
             # outputs[0] should return the FakeTensor that supports slicing
             return self._data
-        
+
         def __iter__(self):
             return iter([self._data])
 
