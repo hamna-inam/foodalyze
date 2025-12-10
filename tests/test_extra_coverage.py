@@ -73,15 +73,15 @@ def test_ask_generation_failure(mock_res, _):
 
 @patch("src.app.guard.validate_input", return_value=(True, "OK"))
 def test_ask_success(_):
-    # Fake tokenizer
     tokenizer = MagicMock()
-    tokenizer.apply_chat_template.return_value = MagicMock(to=lambda d: d)
+    tokenizer.apply_chat_template.return_value = MagicMock(
+        to=lambda _: {"input_ids": [1, 2, 3]}
+    )
     tokenizer.decode.return_value = "healthy food"
 
-    # Fake model
     model = MagicMock()
     model.device = "cpu"
-    model.generate.return_value = [[1, 2, 3, 4]]
+    model.generate.return_value = [[10, 11, 12]]
 
     resources["llm_model"] = model
     resources["llm_tokenizer"] = tokenizer
