@@ -1,8 +1,7 @@
-# 🍛 Healthy Indian Food AI (LLMOps Milestone 2)
 
 ## Project Overview
-This is a RAG (Retrieval-Augmented Generation) system that acts as an AI Nutritionist for Indian Cuisine. 
-It uses **DeepSeek-7B** (or Phi-3) to answer questions based on a curated dataset of nutrition facts and healthy swaps.
+This is a Food Prediction + RAG (Retrieval-Augmented Generation) system that acts as an AI Nutritionist for Indian Cuisine. 
+It uses **Qwen/Qwen2-0.5B-Instruct** to answer questions based on a curated dataset of nutrition facts and healthy swaps.
 
 ## 📂 Structure
 - `src/`: Source code for the API (`app.py`), Ingestion (`ingest.py`), and Frontend (`ui.py`).
@@ -17,7 +16,7 @@ It uses **DeepSeek-7B** (or Phi-3) to answer questions based on a curated datase
 # Foodalyze
 
 ## Your pocket nutritionist, powered by AI.
-A dual-engine system: **YOLOv8** for food detection and **DeepSeek-LLM** for nutritional RAG analysis.
+A dual-engine system: **YOLOv8** for food detection and **Qwen/Qwen2-0.5B-Instruct** for nutritional RAG analysis.
 
 -----
 
@@ -87,9 +86,6 @@ graph TD
     style LLM fill:#bbf,stroke:#333,stroke-width:2px
     style API fill:#dfd,stroke:#333,stroke-width:2px
 ```
-
-<img width="1289" height="435" alt="image" src="https://github.com/user-attachments/assets/cd28f5d1-ada4-4e93-a313-ac4737d4dd0e" />
-
 
 ## Dataset
 
@@ -169,7 +165,7 @@ Then open:
 | make monitor-down | Stops monitoring stack. |
 
 -----
-🛡️ Guardrails & Safety (Milestone 2 - D3) 
+## Guardrails & Safety (Milestone 2 - D3)
 We utilize a custom Policy Engine (src/guardrails.py) to enforce Responsible AI guidelines. This ensures the system remains safe, secure, and helpful.
 
 Protection Layers
@@ -224,38 +220,6 @@ Run RAG
 Shows context being retrieved
 
 <img width="1289" height="435" alt="image" src="https://github.com/user-attachments/assets/81197de0-8d02-49ff-9ae6-fcdfcc10f594" />
-
-
-#### Example cURL
-
-```bash
-curl -X 'POST' \
-  'http://localhost:8000/predict?conf=0.4' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'file=@/path/to/image.jpg'
-```
-
-#### Example Response
-
-```json
-{
-  "image": "your_image.jpg",
-  "num_detections": 1,
-  "detections": [
-    {
-      "class_id": 12,
-      "class_name": "chana_masala",
-      "confidence": 0.9234,
-      "bbox": {"x1": 150, "y1": 210, "x2": 450, "y2": 500},
-      "portion_desc": "1 bowl",
-      "portion_g": 240,
-      "calories_estimate": 348
-    }
-  ],
-  "timestamp": "2025-10-28T13:00:00.000000"
-}
-```
 
 -----
 
