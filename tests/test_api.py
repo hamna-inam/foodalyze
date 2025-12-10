@@ -1,14 +1,16 @@
-from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
+%%writefile tests/test_api.py
 import os
 import sys
+from unittest.mock import patch, MagicMock
+from fastapi.testclient import TestClient
 
 # --- Ensure project root is in path ---
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 
 # --- Import the FastAPI app ---
-from src.app import app
+# We add '# noqa: E402' to tell Ruff this misplaced import is intentional
+from src.app import app  # noqa: E402
 
 # --- Create test client ---
 client = TestClient(app)
@@ -82,8 +84,7 @@ def test_predict_no_file():
     # FastAPI returns 422 for missing required fields
     assert response.status_code == 422 
 
-# --- FIXED ERROR BRANCH TEST ---
-@patch("src.app.resources")  # <--- WE MUST MOCK RESOURCES HERE TOO
+@patch("src.app.resources")
 @patch("src.app.cv2.imdecode", side_effect=Exception("Decode failed"))
 def test_predict_error_branch(mock_imdecode, mock_resources):
     # Setup: Ensure YOLO model appears "loaded" so we bypass the 500 error check
@@ -97,7 +98,7 @@ def test_predict_error_branch(mock_imdecode, mock_resources):
         files={"file": ("fake.jpg", b"data", "image/jpeg")},
     )
     
-    # Now it should hit the imdecode exception and return 400
+    # Expect 400 Bad Request
     assert response.status_code == 400
     assert "Prediction failed" in response.text
 
@@ -110,6 +111,6 @@ def test_predict_model_not_loaded(mock_resources):
         "/predict",
         files={"file": ("fake.jpg", b"data", "image/jpeg")},
     )
-    # Should hit the "YOLO model not loaded" check
+    # Expect 500 Internal Server Error
     assert response.status_code == 500
     assert "YOLO model not loaded" in response.text
