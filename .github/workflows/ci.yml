@@ -116,46 +116,111 @@ jobs:
           push: true
           tags: ghcr.io/alina1114/foodalyze:${{ github.sha }}
 
-  # D4d: Canary deployment job
+  # D4d: Canary deployment job - TEST THE CONTAINER LOCALLY
   canary-deploy:
     runs-on: ubuntu-latest
     needs: build-docker # Runs after the image is built
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # Need this for sample image
+        
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Pull the new image
         run: docker pull ghcr.io/alina1114/foodalyze:${{ github.sha }}
+        
       - name: Run the canary container
         run: |
           docker run \
             -d \
             --name canary \
             -p 8000:8000 \
+            -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+            -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+            -e AWS_DEFAULT_REGION=us-east-1 \
+            -e S3_BUCKET_NAME=foodalyze-artifacts-v2 \
             -e CANARY=true \
             ghcr.io/alina1114/foodalyze:${{ github.sha }}
+            
       - name: Wait for canary to be healthy
         run: |
-          echo "Waiting for canary API to start..."
-          sleep 15 # Give the container 15s to start up
-          # Ping the /health endpoint. -f makes it fail if status is not 200
+          echo "Waiting for canary API to start (this may take 30-60s for model loading)..."
+          
+          # Try for up to 2 minutes (24 attempts * 5 seconds)
+          for i in {1..24}; do
+            echo "Health check attempt $i/24..."
+            
+            # Check if container is still running
+            if ! docker ps | grep -q canary; then
+              echo "❌ Container stopped unexpectedly!"
+              docker logs canary
+              exit 1
+            fi
+            
+            # Try to hit the health endpoint
+            if curl -f http://localhost:8000/health 2>/dev/null; then
+              echo "✅ Canary is healthy!"
+              break
+            fi
+            
+            if [ $i -eq 24 ]; then
+              echo "❌ Canary failed to become healthy after 2 minutes"
+              echo "Container logs:"
+              docker logs canary
+              exit 1
+            fi
+            
+            sleep 5
+          done
+          
+      - name: Run canary smoke tests
+        run: |
+          echo "Running smoke tests against canary container..."
+          
+          echo "Test 1: Health endpoint"
           curl -f http://localhost:8000/health
+          
+          echo "Test 2: Root endpoint"
+          curl -f http://localhost:8000/
+          
+          echo "Test 3: Model info"
+          curl -f http://localhost:8000/model_info
+          
+          echo "Test 4: Predict endpoint"
+          curl -f -X 'POST' \
+            'http://localhost:8000/predict' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: multipart/form-data' \
+            -F 'file=@./tests/sample_food.jpg'
+            
+          echo "✅ All canary smoke tests passed!"
+          
+      - name: Show canary logs on failure
+        if: failure()
+        run: |
+          echo "=== CANARY CONTAINER LOGS ==="
+          docker logs canary
+          echo "=== CONTAINER STATUS ==="
+          docker ps -a
+          echo "=== CONTAINER INSPECT ==="
+          docker inspect canary
 
-  # D4e: Acceptance testing job
+  # D4e: Acceptance testing job - TEST AGAINST EC2
   acceptance-tests:
     runs-on: ubuntu-latest
-    needs: canary-deploy # Runs after the canary is deployed
+    needs: canary-deploy # Runs after the canary is validated
     steps:
       - name: Checkout code
-        # Needed for sample image
         uses: actions/checkout@v4
 
-      - name: Run 5+ acceptance tests
+      - name: Run acceptance tests against EC2
         env:
-          BASE_URL: "http://16.16.192.156:8000"   # <-- Replace with your EC2 IP
+          BASE_URL: "http://16.16.192.156:8000"   # Your EC2 instance
         run: |
           echo "Running acceptance tests against $BASE_URL"
 
@@ -163,7 +228,7 @@ jobs:
           for i in {1..6}; do
             echo "Checking if API is up (attempt $i)..."
             if curl -f "$BASE_URL/health" > /dev/null 2>&1; then
-              echo "API is up!"
+              echo "✅ API is up!"
               break
             fi
             echo "Still waiting..."
@@ -200,4 +265,4 @@ jobs:
           echo "Test 6: / (root)"
           curl -f "$BASE_URL/"
 
-          echo "All 6 acceptance tests passed successfully!"
+          echo "✅ All 6 acceptance tests passed successfully!"
