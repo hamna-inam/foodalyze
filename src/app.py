@@ -765,6 +765,7 @@ def model_info():
         "vector_db": "FAISS" if resources.get("vector_db") else "Not loaded",
     }
 
+
 @app.post("/predict", tags=["Food Detection"])
 async def predict(file: UploadFile = File(...), conf: float = 0.5):
     yolo_model = resources.get("yolo_model")
