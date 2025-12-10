@@ -813,15 +813,17 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
                 portion_g = None
                 calories = None
 
-            detections.append({
-                "class_id": class_id,
-                "class_name": class_name,
-                "confidence": round(confidence, 4),
-                "bbox": {"x1": x1, "y1": y1, "x2": x2, "y2": y2},
-                "portion_desc": portion,
-                "portion_g": portion_g,
-                "calories_estimate": calories,
-            })
+            detections.append(
+                {
+                    "class_id": class_id,
+                    "class_name": class_name,
+                    "confidence": round(confidence, 4),
+                    "bbox": {"x1": x1, "y1": y1, "x2": x2, "y2": y2},
+                    "portion_desc": portion,
+                    "portion_g": portion_g,
+                    "calories_estimate": calories,
+                }
+            )
 
         return {
             "image": file.filename,
@@ -837,6 +839,7 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
     except Exception as e:
         logger.error(f"Prediction unexpected error: {e}")
         raise HTTPException(status_code=400, detail="Prediction failed")
+
 
 @app.post("/ask", tags=["RAG Q&A"])
 def ask(q: QueryRequest):
