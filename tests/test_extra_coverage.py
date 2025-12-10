@@ -18,19 +18,21 @@ def test_yolo_load_failure():
 
 def test_class_mapping_load_failure():
     with patch("builtins.open", side_effect=Exception("file error")):
-        with TestClient(app):   # removed unused variable
+        with TestClient(app):  # removed unused variable
             assert resources.get("id_to_class") == {}
 
 
 def test_faiss_load_failure():
     with patch("src.app.FAISS.load_local", side_effect=Exception("FAISS error")):
-        with TestClient(app):   # removed unused variable
+        with TestClient(app):  # removed unused variable
             assert resources.get("vector_db") is None
 
 
 def test_llm_load_failure():
-    with patch("src.app.AutoTokenizer.from_pretrained", side_effect=Exception("LLM error")):
-        with TestClient(app):   # removed unused variable
+    with patch(
+        "src.app.AutoTokenizer.from_pretrained", side_effect=Exception("LLM error")
+    ):
+        with TestClient(app):  # removed unused variable
             assert resources.get("llm_model") is None
 
 
@@ -52,7 +54,9 @@ def test_ask_guardrail_block(_):
 def test_ask_generation_failure(mock_res, _):
     # mock tokenizer + model
     mock_res.get.side_effect = lambda key: {
-        "vector_db": MagicMock(similarity_search=MagicMock(side_effect=Exception("fail"))),
+        "vector_db": MagicMock(
+            similarity_search=MagicMock(side_effect=Exception("fail"))
+        ),
         "llm_model": MagicMock(generate=MagicMock(side_effect=Exception("gen error"))),
         "llm_tokenizer": MagicMock(
             apply_chat_template=MagicMock(return_value=MagicMock(to=lambda x: x))
