@@ -746,7 +746,7 @@ def root():
         "version": "2.0.0",
         "endpoints": {
             "docs": "/docs",
-            "food_detection": "/predict",
+            "food_detection": "/",
             "nutrition_qa": "/ask",
             "health": "/health",
             "model_info": "/model_info",
@@ -764,7 +764,6 @@ def model_info():
         "llm_model": LLM_MODEL_ID if resources.get("llm_model") else "Not loaded",
         "vector_db": "FAISS" if resources.get("vector_db") else "Not loaded",
     }
-
 
 @app.post("/predict", tags=["Food Detection"])
 async def predict(file: UploadFile = File(...), conf: float = 0.5):
