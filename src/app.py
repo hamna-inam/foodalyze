@@ -778,10 +778,16 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
     try:
         contents = await file.read()
         nparr = np.frombuffer(contents, np.uint8)
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-        if image is None:
-            raise HTTPException(status_code=400, detail="Invalid image file")
+    try:
+       image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    except Exception as e:
+       logger.error(f"Image decode failed: {e}")
+    raise HTTPException(status_code=400, detail="Invalid image file")
+
+    if image is None:
+       raise HTTPException(status_code=400, detail="Invalid image file")
+
 
         start = time.time()
         results = yolo_model.predict(source=image, conf=conf, verbose=False)
