@@ -192,9 +192,7 @@ We performed an automated stress test against 12 different attack vectors (inclu
 
 ![WhatsApp Image 2025-12-07 at 9 22 34 PM](https://github.com/user-attachments/assets/0b561b09-12f6-4437-a08d-9789cc6b57ed)
 
-
-
-## API Documentation (D7)
+## API Documentation
 
 FastAPI automatically generates documentation:
 
@@ -202,6 +200,9 @@ FastAPI automatically generates documentation:
   * *ReDoc:* [http://localhost:8000/redoc](https://www.google.com/search?q=http://localhost:8000/redoc)
 
 -----
+
+<img width="1359" height="722" alt="image" src="https://github.com/user-attachments/assets/6d8cb01f-7b9e-45f9-9aa2-4e3af3fb8b1c" />
+
 
 ### ✅ Health Check (GET /health)
 
@@ -213,6 +214,16 @@ Verifies API status and model load.
 
 Upload an image → receive \*detections, \*\*bounding boxes, and \**calorie estimates*.
 <img width="1280" height="638" alt="image" src="https://github.com/user-attachments/assets/297a06bf-4ad4-4e17-be6e-328d81a5ea86" />
+
+
+### ✅ Ask Endpoint (POST /ask) 
+
+Run RAG
+<img width="942" height="586" alt="image" src="https://github.com/user-attachments/assets/722d7818-628c-40cc-a4e0-06c26e6cbf66" />
+
+Shows context being retrieved
+
+<img width="1289" height="435" alt="image" src="https://github.com/user-attachments/assets/81197de0-8d02-49ff-9ae6-fcdfcc10f594" />
 
 
 #### Example cURL
