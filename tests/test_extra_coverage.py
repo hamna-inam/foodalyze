@@ -77,6 +77,7 @@ def test_ask_success(_):
     class FakeInputs(dict):
         def __init__(self):
             super().__init__({"input_ids": [1, 2, 3]})
+
         def to(self, device):
             return self
 
