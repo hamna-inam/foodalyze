@@ -347,7 +347,7 @@ def test_s3_download_success(mock_boto):
     mock_s3 = MagicMock()
     mock_boto.return_value = mock_s3
     
-    result = force_download_from_s3("test.txt", "/tmp/test.txt")
+    force_download_from_s3("test.txt", "/tmp/test.txt")
     mock_s3.download_file.assert_called_once()
 
 
