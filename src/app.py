@@ -765,6 +765,7 @@ def model_info():
         "vector_db": "FAISS" if resources.get("vector_db") else "Not loaded",
     }
 
+
 @app.post("/predict", tags=["Food Detection"])
 async def predict(file: UploadFile = File(...), conf: float = 0.5):
     yolo_model = resources.get("yolo_model")
@@ -838,6 +839,7 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
     except Exception as e:
         logger.error(f"Prediction unexpected error: {e}")
         raise HTTPException(status_code=400, detail="Prediction failed")
+
 
 @app.post("/ask", tags=["RAG Q&A"])
 def ask(q: QueryRequest):
