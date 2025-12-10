@@ -252,12 +252,12 @@ curl -X 'POST' \
 
 ### ✅ MLflow (Model Registry)
 
-Tracked YOLO runs locally in Milestone 1 then moved the runs (only) to the server in Milestone 2.
+Tracked YOLO runs locally in Milestone 1 then moved the runs **(only)** to the server in Milestone 2.
 Endpoint: 
 
 Tracks and versions all trained YOLO models.
 
-Tracking URI: file:///Users/bstar/Documents/Fall25/MLOps/MLFlow/mlruns
+Tracking URI: http://13.61.104.51:5000/ - mlflow
 
 Experiment Name: *YOLOv8\_Indian\_Food\_Detection*
 Registered Model: *Foodalyze\_YOLOv8\_Detector*
