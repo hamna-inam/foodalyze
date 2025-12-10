@@ -283,6 +283,12 @@ Grafana visualizes:
 \<img width="1159" height="613" src="[https://github.com/user-attachments/assets/08bf807f-0f56-4850-b4cb-5276f2987d63](https://github.com/user-attachments/assets/08bf807f-0f56-4850-b4cb-5276f2987d63)" /\>
 
 -----
+## Grafana(Milestone 2)
+<img width="1444" height="1272" alt="image" src="https://github.com/user-attachments/assets/468bad9b-aa37-4798-a9bd-08c23607b7d5" />
+
+The graph displays the 95th percentile (P95) latency for LLM requests in the foodalyze-api service, which has consistently remained below 10 seconds over the last 7 days, indicating excellent performance and a responsive worst-case user experience for 95% of users.
+
+
 
 ## Tech Stack
 
