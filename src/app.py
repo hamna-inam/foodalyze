@@ -780,13 +780,13 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
         nparr = np.frombuffer(contents, np.uint8)
 
     try:
-       image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     except Exception as e:
-       logger.error(f"Image decode failed: {e}")
+        logger.error(f"Image decode failed: {e}")
     raise HTTPException(status_code=400, detail="Invalid image file")
 
     if image is None:
-       raise HTTPException(status_code=400, detail="Invalid image file")
+        raise HTTPException(status_code=400, detail="Invalid image file")
 
 
         start = time.time()
