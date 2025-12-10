@@ -765,7 +765,6 @@ def model_info():
         "vector_db": "FAISS" if resources.get("vector_db") else "Not loaded",
     }
 
-
 @app.post("/predict", tags=["Food Detection"])
 async def predict(file: UploadFile = File(...), conf: float = 0.5):
     yolo_model = resources.get("yolo_model")
@@ -775,21 +774,20 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
         raise HTTPException(status_code=500, detail="YOLO model not loaded")
 
     try:
-        # --- Read File ---
+        # Read uploaded file
         contents = await file.read()
         nparr = np.frombuffer(contents, np.uint8)
 
-        # --- Decode Image ---
+        # ---- INNER TRY BLOCK (catches decode errors correctly) ----
         try:
             image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        except Exception as e:
-            logger.error(f"Decode exception: {e}")
+            if image is None:
+                raise HTTPException(status_code=400, detail="Invalid image file")
+        except Exception:
+            # Any decode failure (including mock_imdecode) returns 400
             raise HTTPException(status_code=400, detail="Invalid image file")
 
-        if image is None:
-            raise HTTPException(status_code=400, detail="Invalid image file")
-
-        # --- YOLO Inference ---
+        # ---- YOLO INFERENCE ----
         start = time.time()
         results = yolo_model.predict(source=image, conf=conf, verbose=False)
         duration = time.time() - start
@@ -834,12 +832,12 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
         }
 
     except HTTPException:
-        raise  # keep 400/500 clean
+        # Allows 400 errors to pass through unchanged
+        raise
 
     except Exception as e:
         logger.error(f"Prediction unexpected error: {e}")
         raise HTTPException(status_code=400, detail="Prediction failed")
-
 
 @app.post("/ask", tags=["RAG Q&A"])
 def ask(q: QueryRequest):
