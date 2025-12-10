@@ -775,9 +775,9 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
     if yolo_model is None:
         raise HTTPException(status_code=500, detail="YOLO model not loaded")
 
-    try:
-        contents = await file.read()
-        nparr = np.frombuffer(contents, np.uint8)
+try:
+    contents = await file.read()
+    nparr = np.frombuffer(contents, np.uint8)
 
     try:
         image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
@@ -787,6 +787,9 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
 
     if image is None:
         raise HTTPException(status_code=400, detail="Invalid image file")
+except Exception as e:
+    logger.error(f"Prediction error: {e}")
+    raise HTTPException(status_code=400, detail=f"Prediction failed: {str(e)}")
 
 
         start = time.time()
