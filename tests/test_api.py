@@ -1,4 +1,3 @@
-
 import os
 import sys
 from unittest.mock import patch, MagicMock
@@ -15,9 +14,11 @@ from src.app import app  # noqa: E402
 # --- Create test client ---
 client = TestClient(app)
 
+
 # ---------------------------------------------------------------------------
 # BASE TESTS
 # ---------------------------------------------------------------------------
+
 
 def test_health_check():
     """Tests if the /health endpoint is working."""
@@ -26,23 +27,28 @@ def test_health_check():
     json_data = response.json()
     assert json_data["status"] == "OK"
 
+
 def test_root_endpoint():
     response = client.get("/")
     assert response.status_code == 200
     assert "name" in response.json()
+
 
 def test_model_info_endpoint():
     response = client.get("/model_info")
     assert response.status_code == 200
     assert "classes" in response.json()
 
+
 # ---------------------------------------------------------------------------
 # MOCKED PREDICTION TESTS
 # ---------------------------------------------------------------------------
 
+
 @patch("src.app.resources")
 def test_predict_endpoint(mock_resources):
     import base64
+
     # Valid minimal JPEG
     VALID_JPEG_BYTES = base64.b64decode(
         b"/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////2wBDAf//////////////////////////////////////////////////////////////////////////////////////wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAEDAQE/Af/EABQRAQAAAAAAAAAAAAAAAAAAAAH/2gAIAQIBAT8B/9k="
@@ -53,7 +59,7 @@ def test_predict_endpoint(mock_resources):
     fake_box.xyxy = [[100, 100, 200, 200]]
     fake_box.conf = [0.9]
     fake_box.cls = [0]
-    
+
     fake_result = MagicMock()
     fake_result.boxes = [fake_box]
 
@@ -79,28 +85,31 @@ def test_predict_endpoint(mock_resources):
     assert body["num_detections"] == 1
     assert body["detections"][0]["class_name"] == "aloo_gobi"
 
+
 def test_predict_no_file():
     response = client.post("/predict")
     # FastAPI returns 422 for missing required fields
-    assert response.status_code == 422 
+    assert response.status_code == 422
+
 
 @patch("src.app.resources")
 @patch("src.app.cv2.imdecode", side_effect=Exception("Decode failed"))
 def test_predict_error_branch(mock_imdecode, mock_resources):
     # Setup: Ensure YOLO model appears "loaded" so we bypass the 500 error check
     mock_resources.get.side_effect = lambda key, default=None: {
-        "yolo_model": MagicMock(), # Model is present
-        "id_to_class": {}
+        "yolo_model": MagicMock(),  # Model is present
+        "id_to_class": {},
     }.get(key, default)
 
     response = client.post(
         "/predict",
         files={"file": ("fake.jpg", b"data", "image/jpeg")},
     )
-    
+
     # Expect 400 Bad Request
     assert response.status_code == 400
     assert "Prediction failed" in response.text
+
 
 @patch("src.app.resources")
 def test_predict_model_not_loaded(mock_resources):
@@ -114,4 +123,3 @@ def test_predict_model_not_loaded(mock_resources):
     # Expect 500 Internal Server Error
     assert response.status_code == 500
     assert "YOLO model not loaded" in response.text
-
