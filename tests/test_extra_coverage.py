@@ -77,6 +77,7 @@ def test_ask_success(_):
     class FakeTensor:
         def __init__(self, v):
             self.v = v
+
         def to(self, device):
             return self
 
