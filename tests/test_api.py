@@ -112,6 +112,7 @@ def test_predict_no_file():
 @patch("src.app.resources")
 def test_predict_with_mocked_yolo(mock_resources):
     import base64
+
     VALID_JPEG_BYTES = base64.b64decode(
         b"/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////2wBDAf//////////////////////////////////////////////////////////////////////////////////////wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAEDAQE/Af/EABQRAQAAAAAAAAAAAAAAAAAAAAH/2gAIAQIBAT8B/9k="
     )
@@ -148,7 +149,6 @@ def test_predict_with_mocked_yolo(mock_resources):
     assert data["detections"][0]["class_name"] == "aloo_gobi"
 
 
-
 @patch("src.app.cv2.imdecode", side_effect=Exception("Decode failed"))
 def test_predict_error_branch(mock_imdecode):
     response = client.post(
@@ -174,4 +174,3 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
-
