@@ -791,16 +791,8 @@ async def predict(file: UploadFile = File(...), conf: float = 0.5):
     try:
         # Read uploaded file
         contents = await file.read()
-        nparr = np.frombuffer(contents, np.uint8)
 
-        # ---- INNER TRY BLOCK (catches decode errors correctly) ----
-        try:
-            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-            if image is None:
-                raise HTTPException(status_code=400, detail="Invalid image file")
-        except Exception:
-            # Any decode failure (including mock_imdecode) returns 400
-            raise HTTPException(status_code=400, detail="Invalid image file")
+        image = safe_decode_image(contents)
 
         # ---- YOLO INFERENCE ----
         start = time.time()
