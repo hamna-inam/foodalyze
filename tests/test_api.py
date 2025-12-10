@@ -1,4 +1,4 @@
-%%writefile tests/test_api.py
+
 import os
 import sys
 from unittest.mock import patch, MagicMock
@@ -114,3 +114,4 @@ def test_predict_model_not_loaded(mock_resources):
     # Expect 500 Internal Server Error
     assert response.status_code == 500
     assert "YOLO model not loaded" in response.text
+
