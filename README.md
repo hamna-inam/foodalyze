@@ -446,27 +446,3 @@ CloudWatch tracks:
 <img width="1362" height="568" alt="image" src="https://github.com/user-attachments/assets/652ea5ae-619c-463a-91a8-2525eadafa77" />
 
 
----
-
-### 🔹 **How These Cloud Services Support the ML/LLM Workflow**
-
-| Cloud Service | Purpose in Our System |
-|---------------|-----------------------|
-| **S3** | Stores vector DB, model weights, and ingestion artifacts used by RAG + CV pipelines |
-| **EC2** | Hosts the inference API (YOLO + RAG) and serves real-time predictions |
-| **CloudWatch** | Monitors inference latency indirectly (CPU spikes), system metrics, and health |
-| **Grafana (on EC2)** | Visualizes Prometheus metrics including LLM latency + guardrail violations |
-
----
-
-### 🔹 **Architecture Summary (Cloud Edition)**
-
-```mermaid
-flowchart LR
-    User --> UI
-    UI --> API[FastAPI on EC2]
-    API --> S3[(S3 Bucket<br/>Artifacts + FAISS Index)]
-    API --> CloudWatch[(]()
-
-
------
