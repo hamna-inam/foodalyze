@@ -287,6 +287,13 @@ YOLO Drift (Milestone 1):
 
 \<img width="1600" alt="image" src="[https://github.com/user-attachments/assets/0e8299ac-8370-46df-9fe3-8b3e8ea6e1d0](https://github.com/user-attachments/assets/0e8299ac-8370-46df-9fe3-8b3e8ea6e1d0)" /\>
 
+### ✅ Evidently (Retrieval Corpus Drift)
+
+The faiss index is static (indices can't be added incrementally so drift is 0)
+
+<img width="1159" height="590" alt="image" src="https://github.com/user-attachments/assets/c782fa79-152f-4b0e-8488-3a6588351a76" />
+
+
 -----
 
 ### ✅ Prometheus + Grafana (API Metrics) - Milestone 1
