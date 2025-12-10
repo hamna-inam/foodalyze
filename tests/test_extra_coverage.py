@@ -73,13 +73,14 @@ def test_ask_generation_failure(mock_res, _):
 
 @patch("src.app.guard.validate_input", return_value=(True, "OK"))
 def test_ask_success(_):
-    # Fake tensor with .shape and list behavior
+
+    # Fake tensor with .shape (for tokenizer output)
     class FakeTensor(list):
         @property
         def shape(self):
             return (len(self),)
 
-    # Fake Inputs dict returned from tokenizer.apply_chat_template
+    # Fake input mapping
     class FakeInputs(dict):
         def __init__(self):
             super().__init__({"input_ids": FakeTensor([1, 2, 3])})
@@ -87,13 +88,19 @@ def test_ask_success(_):
         def to(self, device):
             return self
 
+    # Fake output for model.generate
+    class FakeOutput(list):
+        @property
+        def shape(self):
+            return (len(self),)
+
     tokenizer = MagicMock()
     tokenizer.apply_chat_template.return_value = FakeInputs()
     tokenizer.decode.return_value = "healthy food"
 
     model = MagicMock()
     model.device = "cpu"
-    model.generate.return_value = [[10, 11, 12]]
+    model.generate.return_value = FakeOutput([10, 11, 12])
 
     resources["llm_model"] = model
     resources["llm_tokenizer"] = tokenizer
