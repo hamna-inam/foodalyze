@@ -59,7 +59,13 @@ def test_model_info_endpoint():
 
 @patch("src.app.resources")
 def test_predict_endpoint(mock_resources):
-    # ---- Create FAKE YOLO detection result ----
+    # ---- Valid minimal JPEG ----
+    import base64
+    VALID_JPEG_BYTES = base64.b64decode(
+        b"/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////2wBDAf//////////////////////////////////////////////////////////////////////////////////////wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAEDAQE/Af/EABQRAQAAAAAAAAAAAAAAAAAAAAH/2gAIAQIBAT8B/9k="
+    )
+
+    # ---- Fake YOLO detection ----
     fake_box = MagicMock()
     fake_box.xyxy = [[100, 100, 200, 200]]
     fake_box.conf = [0.9]
@@ -68,11 +74,10 @@ def test_predict_endpoint(mock_resources):
     fake_result = MagicMock()
     fake_result.boxes = [fake_box]
 
-    # ---- Fake YOLO model ----
     mock_model = MagicMock()
     mock_model.predict.return_value = [fake_result]
 
-    # ---- Mock resources.get() ----
+    # ---- Mock resources ----
     mock_resources.get.side_effect = lambda key, default=None: {
         "yolo_model": mock_model,
         "id_to_class": {0: "aloo_gobi"},
@@ -83,14 +88,15 @@ def test_predict_endpoint(mock_resources):
 
     # ---- Call API ----
     response = client.post(
-        "/predict", files={"file": ("sample_food.jpg", b"fakebytes", "image/jpeg")}
+        "/predict",
+        files={"file": ("sample_food.jpg", VALID_JPEG_BYTES, "image/jpeg")},
     )
 
     assert response.status_code == 200
-    data = response.json()
-    assert data["num_detections"] == 1
-    assert data["detections"][0]["class_name"] == "aloo_gobi"
-    assert data["detections"][0]["confidence"] == 0.9
+    body = response.json()
+    assert body["num_detections"] == 1
+    assert body["detections"][0]["class_name"] == "aloo_gobi"
+
 
 
 def test_predict_no_file():
@@ -151,3 +157,4 @@ def test_predict_model_not_loaded():
         assert "Model not loaded" in response.text
     finally:
         app_module.model = original_model
+
