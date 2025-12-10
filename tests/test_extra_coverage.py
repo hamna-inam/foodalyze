@@ -73,17 +73,16 @@ def test_ask_generation_failure(mock_res, _):
 
 @patch("src.app.guard.validate_input", return_value=(True, "OK"))
 def test_ask_success(_):
-    # Fake tensor with a .to() method (mimics torch.Tensor)
-    class FakeTensor:
-        def __init__(self, v):
-            self.v = v
-
+    # A dict-like object with .to() so the model can unpack it via **
+    class FakeInputs(dict):
+        def __init__(self):
+            super().__init__({"input_ids": [1, 2, 3]})
         def to(self, device):
             return self
 
     # Mock tokenizer
     tokenizer = MagicMock()
-    tokenizer.apply_chat_template.return_value = FakeTensor([1, 2, 3])
+    tokenizer.apply_chat_template.return_value = FakeInputs()
     tokenizer.decode.return_value = "healthy food"
 
     # Mock model
@@ -91,6 +90,7 @@ def test_ask_success(_):
     model.device = "cpu"
     model.generate.return_value = [[10, 11, 12]]
 
+    # Inject mocks into resources
     resources["llm_model"] = model
     resources["llm_tokenizer"] = tokenizer
     resources["vector_db"] = None
