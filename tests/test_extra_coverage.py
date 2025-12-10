@@ -103,4 +103,3 @@ def test_ask_success(_):
 
     assert resp.status_code == 200
     assert "healthy" in resp.json()["answer"]
-
