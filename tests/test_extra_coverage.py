@@ -71,29 +71,60 @@ def test_ask_generation_failure(mock_res, _):
 
 @patch("src.app.guard.validate_input", return_value=(True, "OK"))
 def test_ask_success(_):
-    # Fake tensor with .shape (for tokenizer output)
-    class FakeTensor(list):
+    # Tensor-like object that supports slicing
+    class FakeTensor:
+        def __init__(self, data):
+            self._data = list(data)
+            
         @property
         def shape(self):
-            return (len(self),)
+            return (len(self._data),)
+        
+        def __len__(self):
+            return len(self._data)
+        
+        def __getitem__(self, idx):
+            # Support both integer indexing and slicing
+            if isinstance(idx, slice):
+                return FakeTensor(self._data[idx])
+            return self._data[idx]
+        
+        def __iter__(self):
+            return iter(self._data)
 
-    # Fake input mapping
+    # Fake input mapping that behaves like tokenizer output
     class FakeInputs(dict):
-        def __init__(self):  # Fixed: double underscores
+        def __init__(self):
             super().__init__({"input_ids": FakeTensor([1, 2, 3])})
 
         def to(self, device):
             return self
 
-    # Fake output for model.generate
-    class FakeOutput(list):
+    # Fake output that supports nested subscripting and slicing
+    # The code does: outputs[0][inputs["input_ids"].shape[-1]:]
+    class FakeOutput:
+        def __init__(self, data):
+            self._data = FakeTensor(data)
+        
         @property
         def shape(self):
-            return (len(self),)
+            # Return (batch_size, sequence_length)
+            return (1, len(self._data))
+        
+        def __len__(self):
+            return 1  # batch size
+        
+        def __getitem__(self, idx):
+            # outputs[0] should return the FakeTensor that supports slicing
+            return self._data
+        
+        def __iter__(self):
+            return iter([self._data])
 
     tokenizer = MagicMock()
     tokenizer.apply_chat_template.return_value = FakeInputs()
     tokenizer.decode.return_value = "healthy food"
+    tokenizer.eos_token_id = 2
 
     model = MagicMock()
     model.device = "cpu"
