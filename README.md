@@ -1,3 +1,5 @@
+> This is a fork of the original repository for the Foodalyze project
+> I contributed to the original project as part of a team.
 
 ## Project Overview
 This is a Food Prediction + RAG (Retrieval-Augmented Generation) system that acts as an AI Nutritionist for Indian Cuisine. 
